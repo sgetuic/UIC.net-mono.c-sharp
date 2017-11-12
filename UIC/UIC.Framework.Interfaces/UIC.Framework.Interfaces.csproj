@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{053AB6AA-B79F-4863-9154-A1F51A1678BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UIC.Framework.Interfaces</RootNamespace>
+    <AssemblyName>UIC.Framework.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\UicConfiguartion.cs" />
+    <Compile Include="Util\Url.cs" />
+    <Compile Include="Edm\Value\AttributeValue.cs" />
+    <Compile Include="Communication\CommunicationAgent.cs" />
+    <Compile Include="Edm\Value\Datapointvalue.cs" />
+    <Compile Include="Edm\Value\Command.cs" />
+    <Compile Include="Edm\Definition\CommandDefinition.cs" />
+    <Compile Include="Edm\EmbeddedDriverModule.cs" />
+    <Compile Include="Configuration\UicConfiguartionProvider.cs" />
+    <Compile Include="Util\UicDataType.cs" />
+    <Compile Include="Edm\Definition\EdmCapability.cs" />
+    <Compile Include="Edm\Edmldentifier.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Edm\Definition\AttribtueDefinition.cs" />
+    <Compile Include="Edm\Definition\DatapointDefinition.cs" />
+    <Compile Include="Project\DatapointTaskMetadata.cs" />
+    <Compile Include="Project\DatapointTaskReportingCondition.cs" />
+    <Compile Include="Project\ProjectDatapointTask.cs" />
+    <Compile Include="Project\UicProject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
