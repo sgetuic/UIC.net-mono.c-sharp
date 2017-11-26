@@ -6,7 +6,7 @@ namespace UIC.Framework.Interfaces.Edm.Definition
     public interface AttribtueDefinition
     {
         Guid Id { get; }
-        string Name { get; }
+        string Label { get; }
         string Description { get; }
         UicDataType DataType { get; }
     }

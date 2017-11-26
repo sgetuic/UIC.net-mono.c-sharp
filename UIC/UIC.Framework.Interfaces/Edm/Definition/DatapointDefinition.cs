@@ -7,7 +7,7 @@ namespace UIC.Framework.Interfaces.Edm.Definition
     {
         Guid Id { get; }
         string Key { get; }
-        string Name { get; }
+        string Label { get; }
         string Description { get; }
         UicDataType DataType { get; }
     }
