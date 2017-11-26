@@ -6,7 +6,7 @@ namespace UIC.Framework.Interfaces.Edm.Definition
     public interface CommandDefinition
     {
         Guid Id { get; }
-        string Name { get; }
+        string Label { get; }
         string Description { get; }
         string Command { get; }
         UicDataType DataType { get; }
