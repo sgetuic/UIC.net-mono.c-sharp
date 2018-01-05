@@ -22,7 +22,7 @@ namespace UIC.EDM.System.Reboot
             IEnumerable<CommandDefinition> commandDefinitios = new[] {
                 _rebootCommnand
             };
-            IEnumerable<AttribtueDefinition> attribtueDefinitions = new SgetAttributDefinition[0];
+            IEnumerable<AttributeDefinition> attribtueDefinitions = new SgetAttributDefinition[0];
             IEnumerable<DatapointDefinition> datapointDefinitions = new SgetDatapointDefinition[0];
             _edmCapability = new RebootEdmEdmCapability(Identifier, commandDefinitios, attribtueDefinitions, datapointDefinitions);
         }
@@ -44,7 +44,7 @@ namespace UIC.EDM.System.Reboot
             return null;
         }
 
-        public AttributeValue GetValueFor(AttribtueDefinition attribtue) {
+        public AttributeValue GetValueFor(AttributeDefinition attribute) {
             // no attributes
             return null;
         }
@@ -74,7 +74,7 @@ namespace UIC.EDM.System.Reboot
             // no need for callbacks
         }
 
-        public void SetAttributeCallback(AttribtueDefinition attribtueDefinition, Action<AttributeValue> callback) {
+        public void SetAttributeCallback(AttributeDefinition attributeDefinition, Action<AttributeValue> callback) {
             // no need for callbacks
 
         }

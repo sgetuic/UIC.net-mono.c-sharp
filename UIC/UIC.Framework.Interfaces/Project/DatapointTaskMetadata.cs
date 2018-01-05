@@ -4,7 +4,7 @@ namespace UIC.Framework.Interfaces.Project
     {
         double ExpectedMaximum { get; }
         double ExpectedMinimum { get; }
-        double Warningthreshold { get; }
+        double WarningThreshold { get; }
         double ErrorThreshold { get; }
         bool IslnverseThresholdEvaluation { get; }
         string Tags { get; }

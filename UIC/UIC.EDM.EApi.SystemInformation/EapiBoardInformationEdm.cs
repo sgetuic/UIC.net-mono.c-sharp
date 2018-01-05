@@ -52,23 +52,23 @@ namespace UIC.EDM.EApi.BoardInformation
             return new SgetDatapointValue(value, datapoint);
         }
 
-        public AttributeValue GetValueFor(AttribtueDefinition attribtue) {
+        public AttributeValue GetValueFor(AttributeDefinition attribute) {
             object value;
-            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribtue.Id, out BoardInformationValueId valueId))
+            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out BoardInformationValueId valueId))
             {
                 uint boardInformationOf = _boardInformationDriver.GetBoardInformationOf(valueId);
                 value = boardInformationOf;
             }
-            else if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribtue.Id, out BoardInformationStringId stringId))
+            else if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out BoardInformationStringId stringId))
             {
                 string boardInformationOf = _boardInformationDriver.GetBoardInformationOf(stringId);
                 value = boardInformationOf;
             }
             else
             {
-                throw new ArgumentException($"Unknown {nameof(AttribtueDefinition)} id: " + attribtue.Id);
+                throw new ArgumentException($"Unknown {nameof(AttributeDefinition)} id: " + attribute.Id);
             }
-            return new SgetAttributeValue(value, attribtue);
+            return new SgetAttributeValue(value, attribute);
         }
 
         public bool Handle(Command command) {
@@ -79,7 +79,7 @@ namespace UIC.EDM.EApi.BoardInformation
             // no need for callbacks
         }
 
-        public void SetAttributeCallback(AttribtueDefinition attribtueDefinition, Action<AttributeValue> callback) {
+        public void SetAttributeCallback(AttributeDefinition attributeDefinition, Action<AttributeValue> callback) {
             // no need for callbacks
 
         }

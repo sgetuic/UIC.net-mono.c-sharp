@@ -91,7 +91,7 @@ namespace UIC.Connector.Implementation
             
         }
 
-        private EmbeddedDriverModule GetEdmFor(AttribtueDefinition attribtueDefinition)
+        private EmbeddedDriverModule GetEdmFor(AttributeDefinition attributeDefinition)
         {
             throw new NotImplementedException();
         }

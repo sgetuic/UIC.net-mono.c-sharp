@@ -53,7 +53,7 @@
     <Compile Include="Edm\Definition\EdmCapability.cs" />
     <Compile Include="Edm\Edmldentifier.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Edm\Definition\AttribtueDefinition.cs" />
+    <Compile Include="Edm\Definition\AttributeDefinition.cs" />
     <Compile Include="Edm\Definition\DatapointDefinition.cs" />
     <Compile Include="Project\DatapointTaskMetadata.cs" />
     <Compile Include="Project\DatapointTaskReportingCondition.cs" />

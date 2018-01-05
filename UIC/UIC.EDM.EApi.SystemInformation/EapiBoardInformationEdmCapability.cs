@@ -6,7 +6,7 @@ namespace UIC.EDM.EApi.BoardInformation
 {
     public class EapiBoardInformationEdmCapability : EdmCapability
     {
-        public EapiBoardInformationEdmCapability(Edmldentifier getldentifier, IEnumerable<CommandDefinition> commandDefinitions, IEnumerable<AttribtueDefinition> attribtueDefinitions, IEnumerable<DatapointDefinition> datapointDefinitions) {
+        public EapiBoardInformationEdmCapability(Edmldentifier getldentifier, IEnumerable<CommandDefinition> commandDefinitions, IEnumerable<AttributeDefinition> attribtueDefinitions, IEnumerable<DatapointDefinition> datapointDefinitions) {
             Getldentifier = getldentifier;
             CommandDefinitions = commandDefinitions;
             AttribtueDefinitions = attribtueDefinitions;
@@ -15,7 +15,7 @@ namespace UIC.EDM.EApi.BoardInformation
 
         public Edmldentifier Getldentifier { get; }
         public IEnumerable<CommandDefinition> CommandDefinitions { get; }
-        public IEnumerable<AttribtueDefinition> AttribtueDefinitions { get; }
+        public IEnumerable<AttributeDefinition> AttribtueDefinitions { get; }
         public IEnumerable<DatapointDefinition> DatapointDefinitions { get; }
     }
 }

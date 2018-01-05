@@ -10,5 +10,6 @@ namespace UIC.Framework.Interfaces.Edm.Definition
         string Label { get; }
         string Description { get; }
         UicDataType DataType { get; }
+        string Uri { get; }
     }
 }

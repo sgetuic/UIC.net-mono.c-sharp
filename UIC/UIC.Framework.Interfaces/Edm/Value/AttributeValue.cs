@@ -4,7 +4,7 @@ namespace UIC.Framework.Interfaces.Edm.Value
 {
     public interface AttributeValue
     {
-        AttribtueDefinition Definition { get;  }
+        AttributeDefinition Definition { get;  }
         object Value { get; }
     }
 }

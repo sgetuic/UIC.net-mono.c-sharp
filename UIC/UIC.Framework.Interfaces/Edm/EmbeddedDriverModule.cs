@@ -15,11 +15,11 @@ namespace UIC.Framework.Interfaces.Edm
         EdmCapability GetCapability();
 
         DatapointValue GetValueFor(DatapointDefinition datapoint);
-        AttributeValue GetValueFor(AttribtueDefinition attribtue);
+        AttributeValue GetValueFor(AttributeDefinition attribute);
 
         bool Handle(Command command);
 
         void SetDatapointCallback(ProjectDatapointTask datapointTask, Action<DatapointValue> callback);
-        void SetAttributeCallback(AttribtueDefinition attribtueDefinition, Action<AttributeValue> callback);
+        void SetAttributeCallback(AttributeDefinition attributeDefinition, Action<AttributeValue> callback);
     }
 }

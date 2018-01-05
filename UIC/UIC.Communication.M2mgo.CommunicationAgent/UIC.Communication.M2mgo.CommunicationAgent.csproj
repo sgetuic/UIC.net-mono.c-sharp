@@ -4,4 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="M2Mqtt" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\UIC.Util\UIC.Util.csproj" />
+  </ItemGroup>
+
 </Project>

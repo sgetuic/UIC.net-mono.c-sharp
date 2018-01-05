@@ -13,12 +13,14 @@ namespace UIC.EDM.EApi.BoardInformation
 
         private readonly Dictionary<Guid, BoardInformationValueId> _boardValueDic = new Dictionary<Guid, BoardInformationValueId>();
         private readonly Dictionary<Guid, BoardInformationStringId> _boardÍnfoStringDic = new Dictionary<Guid, BoardInformationStringId>();
+        private string _edmUri;
 
         public EdmCapability EdmCapability { get; }
 
         public EapiBoardInformationEdmCapabilityProvider(Edmldentifier Identifier) {
+            _edmUri = GetType().FullName;
             List<CommandDefinition> commandDefinitions = GetCommands();
-            List<AttribtueDefinition> attribtueDefinitions = GetAttributeDefinitions();
+            List<AttributeDefinition> attribtueDefinitions = GetAttributeDefinitions();
             List<DatapointDefinition> datapointDefinitions = GetDatapointDefinitions();
             EdmCapability = new EapiBoardInformationEdmCapability(Identifier, commandDefinitions, attribtueDefinitions, datapointDefinitions);
         }
@@ -40,19 +42,19 @@ namespace UIC.EDM.EApi.BoardInformation
             };
         }
 
-        private List<AttribtueDefinition> GetAttributeDefinitions() {
+        private List<AttributeDefinition> GetAttributeDefinitions() {
 
-            List<AttribtueDefinition> list = new List<AttribtueDefinition>();
+            List<AttributeDefinition> list = new List<AttributeDefinition>();
             foreach (BoardInformationStringId item in Enum.GetValues(typeof(BoardInformationStringId)))
             {
-                AttribtueDefinition attrDefinition = GetAttributeDefinitionOf(item);
+                AttributeDefinition attrDefinition = GetAttributeDefinitionOf(item);
                 _boardÍnfoStringDic.Add(attrDefinition.Id, item);
                 list.Add(attrDefinition);
             }
 
             foreach (BoardInformationValueId item in Enum.GetValues(typeof(BoardInformationValueId)))
             {
-                AttribtueDefinition attrDefinition = GetAttributeDefinitionOf(item);
+                AttributeDefinition attrDefinition = GetAttributeDefinitionOf(item);
                 if (attrDefinition != null)
                 {
                     _boardValueDic.Add(attrDefinition.Id, item);
@@ -82,9 +84,9 @@ namespace UIC.EDM.EApi.BoardInformation
                 case BoardInformationValueId.EAPI_ID_GET_EAPI_SPEC_VERSION:
                     return null;
                 case BoardInformationValueId.EAPI_ID_BOARD_BOOT_COUNTER_VAL:
-                    return new SgetDatapointDefinition(new Guid("0D516431-537D-49E4-88F7-6FD0ED39A142"), UicDataType.Integer, "BOOT_COUNTER_VAL", "Boot Cpunter", string.Empty);
+                    return new SgetDatapointDefinition(new Guid("0D516431-537D-49E4-88F7-6FD0ED39A142"), GetUri(item), UicDataType.Integer, "BOOT_COUNTER_VAL", "Boot Cpunter", string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_RUNNING_TIME_METER_VAL:
-                    return new SgetDatapointDefinition(new Guid("A7464FB7-1BDD-45AB-9F57-5E591EBC829E"), UicDataType.Integer, "RUNNING_TIME_METER_VAL", "Running Time", string.Empty);
+                    return new SgetDatapointDefinition(new Guid("A7464FB7-1BDD-45AB-9F57-5E591EBC829E"), GetUri(item), UicDataType.Integer, "RUNNING_TIME_METER_VAL", "Running Time", string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_PNPID_VAL:
                     return null;
                 case BoardInformationValueId.EAPI_ID_BOARD_PLATFORM_REV_VAL:
@@ -94,59 +96,67 @@ namespace UIC.EDM.EApi.BoardInformation
                 case BoardInformationValueId.EAPI_ID_BOARD_LIB_VERSION_VAL:
                     return null;
                 case BoardInformationValueId.EAPI_ID_HWMON_CPU_TEMP:
-                    return new SgetDatapointDefinition(new Guid("2C77712B-792E-4525-BF32-43B98ADDB358"), 
+                    return new SgetDatapointDefinition(new Guid("2C77712B-792E-4525-BF32-43B98ADDB358"), GetUri(item), 
                         UicDataType.Double, "HWMON_CPU_TEMP", "CPU Temperature", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_CHIPSET_TEMP:
-                    return new SgetDatapointDefinition(new Guid("32B9D71C-FAE4-459A-B55C-F90043B36FD5"), 
+                    return new SgetDatapointDefinition(new Guid("32B9D71C-FAE4-459A-B55C-F90043B36FD5"), GetUri(item), 
                         UicDataType.Double, "HWMON_CHIPSET_TEMP", "Chipset Temperature", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_SYSTEM_TEMP:
-                    return new SgetDatapointDefinition(new Guid("2B82E7FC-5CF9-47D7-8628-165E41A4D270"), 
+                    return new SgetDatapointDefinition(new Guid("2B82E7FC-5CF9-47D7-8628-165E41A4D270"), GetUri(item), 
                         UicDataType.Double, "HWMON_SYSTEM_TEMP", "System Temperature", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_VCORE:
-                    return new SgetDatapointDefinition(new Guid("EA36D432-D3AA-4FE6-BF1A-5F426391AF29"), 
+                    return new SgetDatapointDefinition(new Guid("EA36D432-D3AA-4FE6-BF1A-5F426391AF29"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_VCORE", "VCore  Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_2V5:
-                    return new SgetDatapointDefinition(new Guid("86AF29CE-1B16-4389-BE3E-B16177AEE8E0"), 
+                    return new SgetDatapointDefinition(new Guid("86AF29CE-1B16-4389-BE3E-B16177AEE8E0"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_2V5", "2V5 Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_3V3:
-                    return new SgetDatapointDefinition(new Guid("2C4BCA30-D414-44E2-8175-4D8EA4FD9AD9"), 
+                    return new SgetDatapointDefinition(new Guid("2C4BCA30-D414-44E2-8175-4D8EA4FD9AD9"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_3V3", "3V3  Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_VBAT:
-                    return new SgetDatapointDefinition(new Guid("1F2B7CFA-4B49-438A-AE0D-D1FC05619C8A"), 
+                    return new SgetDatapointDefinition(new Guid("1F2B7CFA-4B49-438A-AE0D-D1FC05619C8A"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_VBAT", "VBat Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_5V:
-                    return new SgetDatapointDefinition(new Guid("306D9B8C-47B9-471E-BFCE-46D91379495A"), 
+                    return new SgetDatapointDefinition(new Guid("306D9B8C-47B9-471E-BFCE-46D91379495A"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_5V", "5V Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_5VSB:
-                    return new SgetDatapointDefinition(new Guid("9BDDE406-2A79-49FC-A00E-0125855BD7E9"), 
+                    return new SgetDatapointDefinition(new Guid("9BDDE406-2A79-49FC-A00E-0125855BD7E9"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_5VSB", "5VSB Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_12V:
-                    return new SgetDatapointDefinition(new Guid("442911D3-BE9B-4128-80CF-002AEAAD1D61"), 
+                    return new SgetDatapointDefinition(new Guid("442911D3-BE9B-4128-80CF-002AEAAD1D61"), GetUri(item), 
                         UicDataType.Integer, "HWMON_VOLTAGE_12V", "12V Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_FAN_CPU:
-                    return new SgetDatapointDefinition(new Guid("1DB26A04-AE5A-4802-9755-9E411D4B7081"), 
+                    return new SgetDatapointDefinition(new Guid("1DB26A04-AE5A-4802-9755-9E411D4B7081"), GetUri(item), 
                         UicDataType.Integer, "HWMON_FAN_CPU", "CPU Fan", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_FAN_SYSTEM:
-                    return new SgetDatapointDefinition(new Guid("04AEECAC-C183-4910-9C2F-7C1E9C4643B8"), 
+                    return new SgetDatapointDefinition(new Guid("04AEECAC-C183-4910-9C2F-7C1E9C4643B8"), GetUri(item), 
                         UicDataType.Integer, "HWMON_FAN_SYSTEM", "System Fan", string.Empty);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(item), item, null);
             }
         }
 
-        private AttribtueDefinition GetAttributeDefinitionOf(BoardInformationValueId item)
+        private string GetUri(BoardInformationValueId item) {
+            return _edmUri + "." + item;
+        }
+
+        private string GetUri(BoardInformationStringId item) {
+            return _edmUri + "." + item;
+        }
+
+        private AttributeDefinition GetAttributeDefinitionOf(BoardInformationValueId item)
         {
             switch (item) {
                 case BoardInformationValueId.EAPI_ID_GET_EAPI_SPEC_VERSION:
-                    return new SgetAttributDefinition(new Guid("577FEDB1-9D53-421B-9821-104E04D97343"), "EAPI_SPEC_VERSION", UicDataType.Integer, string.Empty);
+                    return new SgetAttributDefinition(new Guid("577FEDB1-9D53-421B-9821-104E04D97343"), GetUri(item), "EAPI_SPEC_VERSION", UicDataType.Integer, string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_PNPID_VAL:
-                    return new SgetAttributDefinition(new Guid("61C8382D-CF27-4F53-B06C-40BC458DBE2A"), "BOARD_PNPID", UicDataType.Integer, string.Empty);
+                    return new SgetAttributDefinition(new Guid("61C8382D-CF27-4F53-B06C-40BC458DBE2A"), GetUri(item), "BOARD_PNPID", UicDataType.Integer, string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_PLATFORM_REV_VAL:
-                    return new SgetAttributDefinition(new Guid("EE24F7B9-46AA-41E7-902D-A20AB316172D"), "PLATFORM_REV", UicDataType.Integer, string.Empty);
+                    return new SgetAttributDefinition(new Guid("EE24F7B9-46AA-41E7-902D-A20AB316172D"), GetUri(item), "PLATFORM_REV", UicDataType.Integer, string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_DRIVER_VERSION_VAL:
-                    return new SgetAttributDefinition(new Guid("D257CEFB-BA12-4637-988F-78BB8FE79BB9"), "DRIVER_VERSION", UicDataType.Integer, string.Empty);
+                    return new SgetAttributDefinition(new Guid("D257CEFB-BA12-4637-988F-78BB8FE79BB9"), GetUri(item), "DRIVER_VERSION", UicDataType.Integer, string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_LIB_VERSION_VAL:
-                    return new SgetAttributDefinition(new Guid("B2BAC5B4-48B7-4F85-BC25-3384B2B9C415"), "LIB_VERSION", UicDataType.Integer, string.Empty);
+                    return new SgetAttributDefinition(new Guid("B2BAC5B4-48B7-4F85-BC25-3384B2B9C415"), GetUri(item), "LIB_VERSION", UicDataType.Integer, string.Empty);
                 case BoardInformationValueId.EAPI_ID_BOARD_BOOT_COUNTER_VAL:
                 case BoardInformationValueId.EAPI_ID_BOARD_RUNNING_TIME_METER_VAL:
                 case BoardInformationValueId.EAPI_ID_HWMON_CPU_TEMP:
@@ -167,27 +177,25 @@ namespace UIC.EDM.EApi.BoardInformation
             }
         }
         
-        private AttribtueDefinition GetAttributeDefinitionOf(BoardInformationStringId item) {
+        private AttributeDefinition GetAttributeDefinitionOf(BoardInformationStringId item) {
             switch (item) {
                 case BoardInformationStringId.EAPI_ID_BOARD_MANUFACTURER_STR:
-                    return new SgetAttributDefinition(new Guid("{6beb6a88-8061-4bdf-a900-1efd70a6686d}"), "MANUFACTURER", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{6beb6a88-8061-4bdf-a900-1efd70a6686d}"), GetUri(item), "MANUFACTURER", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_NAME_STR:
-                    return new SgetAttributDefinition(new Guid("{22e6f4fe-03e7-4c6d-b6f5-5cbf0ab9f9c6}"), "NAME", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{22e6f4fe-03e7-4c6d-b6f5-5cbf0ab9f9c6}"), GetUri(item), "NAME", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_REVISION_STR:
-                    return new SgetAttributDefinition(new Guid("{c0adb64c-5a8a-4653-b42f-580b19a60d1c}"), "REVISION", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{c0adb64c-5a8a-4653-b42f-580b19a60d1c}"), GetUri(item), "REVISION", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_SERIAL_STR:
-                    return new SgetAttributDefinition(new Guid("{a65a6538-96d1-4525-b0f2-5059dfa38e0e}"), "SERIAL", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{a65a6538-96d1-4525-b0f2-5059dfa38e0e}"), GetUri(item), "SERIAL", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_BIOS_REVISION_STR:
-                    return new SgetAttributDefinition(new Guid("{ffd2c0a2-c3be-43b6-8fbf-3a3bd962356c}"), "BIOS_REVISION", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{ffd2c0a2-c3be-43b6-8fbf-3a3bd962356c}"), GetUri(item), "BIOS_REVISION", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_HW_REVISION_STR:
-                    return new SgetAttributDefinition(new Guid("{edb7802a-5e66-4b24-8e6e-4e2876b772f1}"), "HW_REVISION", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{edb7802a-5e66-4b24-8e6e-4e2876b772f1}"), GetUri(item), "HW_REVISION", UicDataType.String, String.Empty);
                 case BoardInformationStringId.EAPI_ID_BOARD_PLATFORM_TYPE_STR:
-                    return new SgetAttributDefinition(new Guid("{ec7a1668-353f-471b-a3fe-32ce072701c8}"), "PLATFORM_TYPE", UicDataType.String, String.Empty);
+                    return new SgetAttributDefinition(new Guid("{ec7a1668-353f-471b-a3fe-32ce072701c8}"), GetUri(item), "PLATFORM_TYPE", UicDataType.String, String.Empty);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(item), item, null);
             }
         }
-
-        
     }
 }
