@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
@@ -17,13 +16,14 @@ namespace UIC.EDM.System.Reboot
         public Edmldentifier Identifier { get; }
 
         public RebootEdm() {
-            Identifier = new RebootEdmldentifier();
-            _rebootCommnand = new SgetCommandDefinition("Reboot System", "reboot", UicDataType.String, "Reboots the system", null, null);
-            IEnumerable<CommandDefinition> commandDefinitios = new[] {
+            Identifier = new RebootEdmldentifier(GetType().FullName);
+            var comandUri = Identifier.Uri + ".command.reboot";
+            _rebootCommnand = new SgetCommandDefinition(new Guid("{f54b990d-25f5-430d-8428-44ab74ed8509}"), comandUri, "Reboot System", "reboot", UicDataType.String, "Reboots the system", null, null);
+            CommandDefinition[] commandDefinitios = {
                 _rebootCommnand
             };
-            IEnumerable<AttributeDefinition> attribtueDefinitions = new SgetAttributDefinition[0];
-            IEnumerable<DatapointDefinition> datapointDefinitions = new SgetDatapointDefinition[0];
+            AttributeDefinition[] attribtueDefinitions = new AttributeDefinition[0];
+            DatapointDefinition[] datapointDefinitions = new DatapointDefinition[0];
             _edmCapability = new RebootEdmEdmCapability(Identifier, commandDefinitios, attribtueDefinitions, datapointDefinitions);
         }
 

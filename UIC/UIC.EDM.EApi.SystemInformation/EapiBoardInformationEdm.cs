@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UIC.EDM.EApi.BoardInformation.EApi;
 using UIC.EDM.EApi.BoardInformation.EApi.BoardInformation;
 using UIC.Framework.Interfaces.Edm;
@@ -20,7 +19,7 @@ namespace UIC.EDM.EApi.BoardInformation
         
 
         public EapiBoardInformationEdm() {
-            Identifier = new EapiBoardInformationEdmIdentifier();
+            Identifier = new EapiBoardInformationEdmIdentifier(GetType().FullName);
             _eapiInitializer = new EapiInitializer();
             _boardInformationDriver = new BoardInformationDriver();
 
