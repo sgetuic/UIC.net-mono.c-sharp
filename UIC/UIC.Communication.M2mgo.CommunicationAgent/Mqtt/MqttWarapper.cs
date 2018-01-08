@@ -5,6 +5,7 @@ using System.Text;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using UIC.Communication.M2mgo.CommunicationAgent.Mqtt.messaging;
+using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Util.Logging;
 
 namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
@@ -12,7 +13,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
         private MqttClient _mqttClient;
         private readonly MqttConnectionWatchdog _mqttConnectionWatchdog;
         private readonly ILogger _logger;
-        private Action<string> _handler;
+        private Action<Command> _handler;
 
         public MqttWarapper(MqttConnectionWatchdog connectionWatchdog, ILogger logger)
         {
@@ -20,14 +21,14 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
             _logger = logger;
         }
 
-        internal void Connect(M2mgoMqttParams param, Action<string> handler)
+        internal void Connect(M2mgoMqttParams param, Action<Command> handler)
         {
             _handler = handler;
             _mqttClient = new MqttClient(param.BrokerUrl, param.BrokerPort, !param.DeactivateSecureChannel, MqttSslProtocols.TLSv1_1, userCertificateSelectionCallback, userCertificateValidationCallback);
 
             _mqttClient.MqttMsgPublishReceived += MqttClientOnMqttMsgPublishReceived;
             _mqttClient.MqttMsgPublished += MqttClientOnMqttMsgPublished;
-            _mqttClient.ProtocolVersion = MqttProtocolVersion.Version_3_1;
+            //_mqttClient.ProtocolVersion = MqttProtocolVersion.Version_3_1;
 
             _logger.Information("Trying to connect to broker: " + param.BrokerUrl);
             _mqttConnectionWatchdog.Connect(_mqttClient);

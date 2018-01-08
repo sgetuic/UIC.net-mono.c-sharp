@@ -19,37 +19,26 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
         private readonly M2mgoUserTokenWebApiWrapper _userTokenWebApiWrapper;
 
 
-        public M2mgoGatewayProjectWebApiWrapper(ISerializer serializer, WebApiRequestExecutor webApiRequestExecutor, ILogger logger, M2mgoUserTokenWebApiWrapper userTokenWebApiWrapper)
+        public M2mgoGatewayProjectWebApiWrapper(ISerializer serializer, ILoggerFactory loggerFactory, WebApiRequestExecutor webApiRequestExecutor, M2mgoUserTokenWebApiWrapper userTokenWebApiWrapper)
         {
             _serializer = serializer;
             _webApiRequestExecutor = webApiRequestExecutor;
-            _logger = logger;
             _userTokenWebApiWrapper = userTokenWebApiWrapper;
+            _logger = loggerFactory.GetLoggerFor(GetType());
         }
 
-        internal string GetGatewayProject(M2MgoCloudAgentConfiguration config, UicProject project)
-        {
+        internal string GetGatewayProject(M2MgoCloudAgentConfiguration config, UicProject project) {
 
-            return _userTokenWebApiWrapper.RetryWithTokenUpdate(config, () =>
-            {
+            return _userTokenWebApiWrapper.RetryWithTokenUpdate(config, () => {
                 var request =
-                    (HttpWebRequest)WebRequest.Create(config.BaseUrl + "api/gatewayProject/" +
-                                      project.CustomerForeignKey.ToString("D") + "/" +
-                                      config.SgetGatewayTypeId.ToString("D") + "/" + project.ProjectKey);
+                    (HttpWebRequest) WebRequest.Create(config.BaseUrl + "api/gatewayProject/" +
+                                                       project.CustomerForeignKey.ToString("D") + "/" +
+                                                       config.SgetGatewayTypeId.ToString("D") + "/" + project.ProjectKey);
                 request.Method = "GET";
-                try
-                {
-                    string executeRequest = _webApiRequestExecutor.ExecuteRequest(request, string.Empty, _userTokenWebApiWrapper.GetToken(), _logger);
-                    return executeRequest;
-                }
-                catch (WebException e)
-                {
-                    if ((e.Response as HttpWebResponse).Return(r => r.StatusCode == HttpStatusCode.NotFound, false))
-                    {
-                        return null;
-                    }
-                    throw;
-                }
+
+                string executeRequest = _webApiRequestExecutor.ExecuteRequest(request, string.Empty, _userTokenWebApiWrapper.GetToken(), _logger);
+                return executeRequest;
+
             });
         }
 
@@ -74,32 +63,20 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
             });
         }
 
-        public string AuthenticateGateway(M2MgoCloudAgentConfiguration config, string serialId)
-        {
-            return _userTokenWebApiWrapper.RetryWithTokenUpdate(config, () =>
-            {
+        public string AuthenticateGateway(M2MgoCloudAgentConfiguration config, string serialId) {
+            return _userTokenWebApiWrapper.RetryWithTokenUpdate(config, () => {
                 if (serialId.IsNullOrEmpty())
                     throw new ArgumentNullException("serialId");
 
-                var request = (HttpWebRequest)WebRequest.Create(config.BaseUrl
-                    + "api/gateway/authenticate" 
-                    + "?gatewayTypeId=" + config.SgetGatewayTypeId.ToString("D")
-                    + "&serial=" + serialId);
+                var request = (HttpWebRequest) WebRequest.Create(config.BaseUrl
+                                                                 + "api/gateway/authenticate"
+                                                                 + "?gatewayTypeId=" + config.SgetGatewayTypeId.ToString("D")
+                                                                 + "&serial=" + serialId);
 
                 request.Method = "POST";
-                try
-                {
-                    return _webApiRequestExecutor.ExecuteRequest(request, null, _userTokenWebApiWrapper.GetToken(), _logger);
-                }
-                catch (WebException e)
-                {
-                    if ((e.Response as HttpWebResponse).Return(r => r.StatusCode == HttpStatusCode.NotFound, false))
-                    {
-                        return null;
-                    }
-                    throw;
-                }
-            }); 
+                return _webApiRequestExecutor.ExecuteRequest(request, null, _userTokenWebApiWrapper.GetToken(), _logger);
+
+            });
 
         }
 

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace UIC.Util.Serialization
 {
-    internal class UicSerializer : ISerializer
+    public class UicSerializer : ISerializer
     {
         public string Serialize(object value, bool formatted = false) {
             if (formatted) {

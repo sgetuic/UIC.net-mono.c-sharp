@@ -21,8 +21,8 @@ namespace UIC.EDM.Test.Mockup
 
         public Edmldentifier Identifier { get; }
 
-        public MockupEdm(ILogger logger) {
-            _logger = logger;
+        public MockupEdm(ILoggerFactory loggerFactory) {
+            _logger = loggerFactory.GetLoggerFor(GetType());
             _mockupValueProvider = new MockupValueProvider();
             Identifier = new MockupEdmldentifier(GetType().FullName);
             AttributeDefinition[] attribtueDefinitions = ConstructAttributes();

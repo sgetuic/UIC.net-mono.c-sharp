@@ -2,7 +2,6 @@
 using System.Net;
 using UIC.Communication.M2mgo.CommunicationAgent.Configuration;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi.infrastructure;
-using UIC.Util.Extensions;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
 
@@ -18,29 +17,24 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
         private M2mgoUserToken _token;
 
 
-        public M2mgoUserTokenWebApiWrapper(ISerializer serializer, WebApiRequestExecutor webApiRequestExecutor, ILogger logger, M2mgoUserTokenCache m2MgoUserTokenCache)
+        public M2mgoUserTokenWebApiWrapper(ISerializer serializer, WebApiRequestExecutor webApiRequestExecutor, ILogger logger)
         {
             _serializer = serializer;
             _webApiRequestExecutor = webApiRequestExecutor;
             _logger = logger;
-            _m2MgoUserTokenCache = m2MgoUserTokenCache;
+            _m2MgoUserTokenCache = new M2mgoUserTokenCache();
             _token = _m2MgoUserTokenCache.Get(_serializer);
         }
 
         internal string RetryWithTokenUpdate(M2MgoCloudAgentConfiguration config, Func<string> func)
         {
-            try
-            {
+            try {
                 return func();
             }
-            catch (WebException e)
-            {
-                if ((e.Response as HttpWebResponse).Return(r => r.StatusCode == HttpStatusCode.Unauthorized, false))
-                {
-                    UpdateAccessToken(config);
-                    return func();
-                }
-                throw;
+            catch (WebException) {
+                UpdateAccessToken(config);
+                return func();
+
             }
         }
 

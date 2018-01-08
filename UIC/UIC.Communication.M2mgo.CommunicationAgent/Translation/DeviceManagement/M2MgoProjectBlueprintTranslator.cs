@@ -118,7 +118,6 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
 
         private IEnumerable<CommandDto> GetCommandsOf(ProjectDatapointTask dataPoint)
         {
-            throw new NotImplementedException();
             //IEnumerable<CommandDto> commandDtos = project.GetCommandsFor(datapoint).Select(c => new CommandDto
             //{
             //    Command = c.InterfaceIdentifier.Name + "." + c.Command,

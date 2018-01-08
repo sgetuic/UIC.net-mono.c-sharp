@@ -53,9 +53,9 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Extensions\UintExtensions.cs" />
     <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\NLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resolver\IResolver.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\UicSerializer.cs" />
   </ItemGroup>

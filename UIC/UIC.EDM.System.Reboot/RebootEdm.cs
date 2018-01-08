@@ -6,6 +6,7 @@ using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
 using UIC.Framework.Interfaces.Util;
 using UIC.Framweork.DefaultImplementation;
+using UIC.Util.Logging;
 
 namespace UIC.EDM.System.Reboot
 {
@@ -13,9 +14,13 @@ namespace UIC.EDM.System.Reboot
     {
         private readonly EdmCapability _edmCapability;
         private readonly SgetCommandDefinition _rebootCommnand;
+        private ILogger _logger;
         public Edmldentifier Identifier { get; }
 
-        public RebootEdm() {
+        public RebootEdm(ILoggerFactory loggerFactory) {
+
+            _logger = loggerFactory.GetLoggerFor(GetType());
+
             Identifier = new RebootEdmldentifier(GetType().FullName);
             var comandUri = Identifier.Uri + ".command.reboot";
             _rebootCommnand = new SgetCommandDefinition(new Guid("{f54b990d-25f5-430d-8428-44ab74ed8509}"), comandUri, "Reboot System", "reboot", UicDataType.String, "Reboots the system", null, null);
@@ -28,11 +33,11 @@ namespace UIC.EDM.System.Reboot
         }
 
         public void Initialize() {
-            
+            _logger.Information("Initialize");   
         }
 
         public void Dispose() {
-            
+            _logger.Information("Dispose");
         }
 
         public EdmCapability GetCapability() {
@@ -50,6 +55,7 @@ namespace UIC.EDM.System.Reboot
         }
 
         public bool Handle(Command command) {
+            _logger.Information("Handle command: " + command.CommandDefinition.Uri);
             if (command.CommandDefinition.Id == _rebootCommnand.Id) {
 
 

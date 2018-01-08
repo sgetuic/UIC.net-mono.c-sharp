@@ -4,6 +4,6 @@
     {
         double ReportingThreshoIdInpercent { get; }
         double MinimalAhsoluteChange { get; }
-        double MinimalPersentageChange { get; }
+        long ReportingThresholdInMilliSecs { get;  }
     }
 }
