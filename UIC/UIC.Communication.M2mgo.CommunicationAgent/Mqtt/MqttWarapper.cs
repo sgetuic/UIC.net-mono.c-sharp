@@ -5,7 +5,10 @@ using System.Text;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using UIC.Communication.M2mgo.CommunicationAgent.Mqtt.messaging;
+using UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagement;
+using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
+using UIC.Framweork.DefaultImplementation;
 using UIC.Util.Logging;
 
 namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
@@ -14,6 +17,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
         private readonly MqttConnectionWatchdog _mqttConnectionWatchdog;
         private readonly ILogger _logger;
         private Action<Command> _handler;
+        private M2MgoProjectBlueprintTranslator _m2MgoProjectBlueprintTranslator;
 
         public MqttWarapper(MqttConnectionWatchdog connectionWatchdog, ILogger logger)
         {
@@ -21,8 +25,10 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
             _logger = logger;
         }
 
-        internal void Connect(M2mgoMqttParams param, Action<Command> handler)
-        {
+        internal void Connect(M2mgoMqttParams param, M2MgoProjectBlueprintTranslator m2MgoProjectBlueprintTranslator, Action<Command> handler) {
+            if (param == null) throw new ArgumentNullException(nameof(param));
+            _m2MgoProjectBlueprintTranslator = m2MgoProjectBlueprintTranslator ?? throw new ArgumentNullException(nameof(m2MgoProjectBlueprintTranslator));
+
             _handler = handler;
             _mqttClient = new MqttClient(param.BrokerUrl, param.BrokerPort, !param.DeactivateSecureChannel, MqttSslProtocols.TLSv1_1, userCertificateSelectionCallback, userCertificateValidationCallback);
 
@@ -36,12 +42,10 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
 
         private void MqttClientOnMqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            string command = Encoding.UTF8.GetString(e.Message);
-            _logger.Debug("Received Mesage: " + e.Topic + " - " + command);
-            if (_handler != null)
-            {
-                _handler(command);
-            }
+            string payload = Encoding.UTF8.GetString(e.Message);
+            _logger.Debug("Received Mesage: " + e.Topic + " - " + payload);
+            var command = _m2MgoProjectBlueprintTranslator.GetCommandFromPayload(payload);
+            _handler(command);
         }
 
         private void MqttClientOnMqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)

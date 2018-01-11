@@ -11,6 +11,7 @@ using UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagement;
 using UIC.Communication.M2mgo.CommunicationAgent.Translation.Project;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi.infrastructure;
+using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
 using UIC.Util.Logging;
@@ -51,8 +52,9 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             _logger.Information("connect");
 
             if (commandHandler == null) throw new ArgumentNullException("commandHandler");
+            if (_m2MgoProjectBlueprintTranslator == null) throw new ApplicationException("Initialize was not called before connection to PST");
             var param = new M2mgoMqttParams(_configuration.BrokerBaseUrl);
-            _mqttWarapper.Connect(param, command => new Thread(() => commandHandler(command)).Start());
+            _mqttWarapper.Connect(param, _m2MgoProjectBlueprintTranslator, command => new Thread(() => commandHandler(command)).Start());
         }
 
         public void Dispose() {
@@ -60,7 +62,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             _mqttWarapper?.Dispose();
         }
 
-        public void Initialize(string serialId, UicProject project) {
+        public void Initialize(string serialId, UicProject project, List<EmbeddedDriverModule> edms) {
             WebApiRequestExecutor webApiRequestExecutor = new WebApiRequestExecutor();
             M2mgoUserTokenWebApiWrapper userTokenWebApiWrapper = new M2mgoUserTokenWebApiWrapper(_serializer, webApiRequestExecutor, _loggerFactory.GetLoggerFor(typeof(M2mgoUserTokenWebApiWrapper)));
             var m2MgoGatewayProjectWebApiWrapper = new M2mgoGatewayProjectWebApiWrapper(_serializer, _loggerFactory, webApiRequestExecutor, userTokenWebApiWrapper);
@@ -71,7 +73,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
 
             M2mgoDeviceWebApiWrapper apiWrapper = new M2mgoDeviceWebApiWrapper(_serializer, webApiRequestExecutor, _loggerFactory.GetLoggerFor(typeof(M2mgoDeviceWebApiWrapper)), userTokenWebApiWrapper);
             M2mgoGatewayBlueprintTranslator blueprintTranslator = new M2mgoGatewayBlueprintTranslator(projectTranslator);
-            _m2MgoProjectBlueprintTranslator = new M2MgoProjectBlueprintTranslator();
+            _m2MgoProjectBlueprintTranslator = new M2MgoProjectBlueprintTranslator(project, edms);
             var blueprintService = new BlueprintService(apiWrapper, _loggerFactory.GetLoggerFor(typeof(BlueprintService)), blueprintTranslator, _m2MgoProjectBlueprintTranslator, projectTranslator, m2MgoGatewayProjectWebApiWrapper);
             _applianceBlueprints = blueprintService.SynchronizeWithCloud(_configuration, serialId, project, gatewayProject);
             _projectDataTopic = new DataTopic(_applianceBlueprints.GatewayBlueprint.Identifier.ID, serialId);

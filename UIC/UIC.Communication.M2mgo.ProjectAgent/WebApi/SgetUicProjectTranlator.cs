@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel;
+using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.EmbeddedModule;
+using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.EmbeddedModule.HwInterface;
+using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.EmbeddedModule.HwInterface.Attribute;
+using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.EmbeddedModule.HwInterface.Command;
+using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.EmbeddedModule.HwInterface.DataPoint;
 using UIC.Communication.M2mgo.ProjectAgent.WebApi.datamodel.Project;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Project;
+using UIC.Framework.Interfaces.Util;
 using UIC.Framweork.DefaultImplementation;
 using UIC.Util.Logging;
 
@@ -14,20 +20,20 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
     internal class SgetUicProjectTranlator
     {
         private readonly ILogger _logger;
-        private readonly Dictionary<Guid, AttributeDefinition> _guidUicAttributeMap  = new Dictionary<Guid, AttributeDefinition>();
-        private readonly Dictionary<Guid, DatapointDefinition> _guidUicDatapointMap  = new Dictionary<Guid, DatapointDefinition>();
+        private readonly Dictionary<string, AttributeDefinition> _guidUicAttributeMap  = new Dictionary<string, AttributeDefinition>();
+        private readonly Dictionary<string, DatapointDefinition> _guidUicDatapointMap  = new Dictionary<string, DatapointDefinition>();
         
         public SgetUicProjectTranlator(List<EmbeddedDriverModule> modules, ILogger logger) {
             _logger = logger;
             foreach (var embeddedDriverModule in modules) {
                 var edmCapability = embeddedDriverModule.GetCapability();
-                BuildEdmMap(edmCapability);
+                 BuildEdmMap(edmCapability);
             }
         }
         public UicProject Translate(SgetProject sgetProject) {
             var attributes = new List<AttributeDefinition>();
             foreach (var property in sgetProject.Properties) {
-                if (_guidUicAttributeMap.TryGetValue(property.AttributeID, out AttributeDefinition definition)) {
+                if (_guidUicAttributeMap.TryGetValue(property.Info.Key, out AttributeDefinition definition)) {
                     attributes.Add(definition);
                 }
                 else {
@@ -38,7 +44,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
 
             var datapointTasks = new List<ProjectDatapointTask>();
             foreach (var task in sgetProject.DataPointTasks) {
-                if (!_guidUicDatapointMap.TryGetValue(task.Info.HwInterfaceSchemeID, out DatapointDefinition datapointDefinition)) {
+                if (!_guidUicDatapointMap.TryGetValue(task.Info.Key, out DatapointDefinition datapointDefinition)) {
                     _logger.Warning("Cannot translate sget project property " + task.Info.Name);
                     continue;
                 }
@@ -62,18 +68,80 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         }
 
         public SgetEmbeddedDriverModuleAppliance Translate(EdmCapability edmCapability) {
-            throw new NotImplementedException();
+            var cloudMapperIdentifier = new CloudMapperIdentifier(new Guid("9D368ED2-075F-4348-831E-D2CEA97E881A"), "SgetUicProjectTranlator");
+            var embeddedModuleIdentifier = new EmbeddedModuleIdentifier(edmCapability.Getldentifier.Id, edmCapability.Getldentifier.Uri);
+            var interfaceIdentifier = new EmbeddedHwInterfaceIdentifier(embeddedModuleIdentifier.Id, embeddedModuleIdentifier.Name);
+            
+            var attributes = Translate(edmCapability.AttribtueDefinitions, interfaceIdentifier);
+            var dataPoints = Translate(edmCapability.DatapointDefinitions, interfaceIdentifier);
+            var commands = Translate(edmCapability.CommandDefinitions, interfaceIdentifier, dataPoints);
+            var embeddedModuleHwInterfaceCapability = new EmbeddedModuleHwInterfaceCapability(interfaceIdentifier, attributes, dataPoints, commands);
+            var interfaces = new List<EmbeddedModuleHwInterfaceCapability> {
+                embeddedModuleHwInterfaceCapability
+            };
+            
+            var embeddedDriverModulCapabilitiy = new EmbeddedDriverModulCapabilitiy(embeddedModuleIdentifier, interfaces);
+            return new SgetEmbeddedDriverModuleAppliance(cloudMapperIdentifier, new []{embeddedDriverModulCapabilitiy});
+        }
+
+        private List<SGetCloudMapperCommandDefinition> Translate(CommandDefinition[] edmCapabilityDatapointDefinitions, EmbeddedHwInterfaceIdentifier interfaceIdentifier, List<SGetCloudMapperDataPointDefinition> sensors) {
+            return edmCapabilityDatapointDefinitions.Select(a => {
+                SGetCloudMapperDataPointDefinition sensor = sensors.Single(s => s.Key == a.RelatedDatapoint.Uri);
+                return new SGetCloudMapperCommandDefinition(a.Uri, a.Command, interfaceIdentifier, a.Tags, sensor);
+            }).ToList();
+        }
+
+        private List<SGetCloudMapperDataPointDefinition> Translate(DatapointDefinition[] edmCapabilityDatapointDefinitions, EmbeddedHwInterfaceIdentifier interfaceIdentifier) {
+            return edmCapabilityDatapointDefinitions.Select(a => new SGetCloudMapperDataPointDefinition(a.Uri, a.Label, a.Description, Translate(a.DataType), interfaceIdentifier)).ToList();
+        }
+
+        private SGetCloudMapperDataType Translate(UicDataType dataType) {
+            switch (dataType) {
+                case UicDataType.String:
+                    return SGetCloudMapperDataType.String;
+                case UicDataType.Integer:
+                    return SGetCloudMapperDataType.Int;
+                case UicDataType.Double:
+                    return SGetCloudMapperDataType.Double;
+                case UicDataType.Byte:
+                    return SGetCloudMapperDataType.Unknown;
+                case UicDataType.Gps:
+                    return SGetCloudMapperDataType.Gps;
+                case UicDataType.Picture:
+                    return SGetCloudMapperDataType.Unknown;
+                case UicDataType.Bool:
+                    return SGetCloudMapperDataType.Boolean;
+                case UicDataType.Unknown:
+                    return SGetCloudMapperDataType.Unknown;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null);
+            }
+        }
+
+        private List<SGetCloudMapperAttributeDefinition> Translate(AttributeDefinition[] edmCapabilityAttribtueDefinitions, EmbeddedHwInterfaceIdentifier interfaceidentifier) {
+            return edmCapabilityAttribtueDefinitions.Select(a => new SGetCloudMapperAttributeDefinition(a.Uri, a.Description, interfaceidentifier)).ToList();
         }
 
         private void BuildEdmMap(EdmCapability edmCapability) {
             foreach (var definition in edmCapability.AttribtueDefinitions) {
-                _guidUicAttributeMap.Add(definition.Id, definition);
+                _guidUicAttributeMap.Add(definition.Uri, definition);
+                if (definition.Id == new Guid("(b68df3f9-4748-4c9d-9bda-567c87fab855)")) {
+                    _guidUicAttributeMap.Add("Id", definition);
+                }
             }
 
             foreach (var definition in edmCapability.DatapointDefinitions) {
-                _guidUicDatapointMap.Add(definition.Id, definition);
+                _guidUicDatapointMap.Add(definition.Uri, definition);
+                if (definition.Id == new Guid("{83f02bea-c22b-46aa-b1c2-4ab8102d8a80}")) {
+                    _guidUicDatapointMap.Add("bool_mock", definition);
+                } else if (definition.Id == new Guid("{4087d40d-d4e2-42b1-89a4-9b9d18499a04}")) {
+                    _guidUicDatapointMap.Add("int_mock", definition);
+                } else if (definition.Id == new Guid("{a41fc3af-4f73-42bf-8290-43ed883edd8f}")) {
+                    _guidUicDatapointMap.Add("double_mock", definition);
+                } else if (definition.Id == new Guid("{fbd3e390-ffb7-455b-b0dc-695b13329eb6}")) {
+                    _guidUicDatapointMap.Add("string_mock", definition);
+                }
             }
-            
         }
     }
 }

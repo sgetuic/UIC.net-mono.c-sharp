@@ -9,41 +9,38 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi.infrastructure
 {
     internal class WebApiRequestExecutor {
         internal string ExecuteRequest(HttpWebRequest request, string payload, M2mgoUserToken token, ILogger logger) {
-            
             request.Accept = "*/*";
-            
-            if (request.Method != "GET")
-            {
-                if (payload.IsNullOrEmpty())
-                {
+
+            if (request.Method != "GET") {
+                if (payload.IsNullOrEmpty()) {
                     request.ContentLength = 0;
                 }
-                else
-                {
+                else {
                     var data = Encoding.UTF8.GetBytes(payload);
                     var reqStr = request.GetRequestStream();
                     reqStr.Write(data, 0, data.Length);
-                    request.ContentType = "application/json";    
+                    request.ContentType = "application/json";
                 }
             }
 
-            if (token != null)
-            {
+            if (token != null) {
                 token.AddAuthorizationHeader(request);
             }
 
             logger.Information(request.RequestUri.ToString());
 
-            using (HttpWebResponse resp = (HttpWebResponse)request.GetResponse()) {
+            using (HttpWebResponse resp = (HttpWebResponse) request.GetResponse()) {
                 string rawData = String.Empty;
                 if (resp.ContentLength > 0) {
                     using (var s = new StreamReader(resp.GetResponseStream())) {
                         rawData = s.ReadToEnd();
                     }
                 }
+
                 if (resp.StatusCode != HttpStatusCode.OK) {
                     throw new Exception(resp.StatusCode + ": " + rawData);
                 }
+
                 return rawData;
             }
         }

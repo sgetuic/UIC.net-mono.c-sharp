@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi.Blueprint.Dto;
+using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
+using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
 using UIC.Framework.Interfaces.Util;
+using UIC.Framweork.DefaultImplementation;
+using UIC.Util.Extensions;
 using Attribute = UIC.Communication.M2mgo.CommunicationAgent.WebApi.Blueprint.Dto.Attribute;
 
 
@@ -14,9 +18,19 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
 {
     internal class M2MgoProjectBlueprintTranslator
     {
-        internal BlueprintDto UpdateProjectDomain(BlueprintDto exisingBlueprint, UicProject project)
+        private readonly UicProject _project;
+        private readonly Dictionary<Guid, CommandDefinition> _guidUicCommandMap  = new Dictionary<Guid, CommandDefinition>();
+        private readonly Dictionary<Guid, List<CommandDefinition>> _guidUicSensorCommandMap  = new Dictionary<Guid, List<CommandDefinition>>();
+      
+
+        public M2MgoProjectBlueprintTranslator(UicProject project, List<EmbeddedDriverModule> edms) {
+            _project = project;
+      
+            edms.ForEach(edm => BuildEdmMap(edm.GetCapability()));
+        }
+        internal BlueprintDto UpdateProjectDomain(BlueprintDto exisingBlueprint)
         {
-            ProjectDatapointTask[] allDataPointTasks = project.DatapointTasks.ToArray();
+            ProjectDatapointTask[] allDataPointTasks = _project.DatapointTasks.ToArray();
             var newSensorList = new List<Sensor>();
             foreach (Sensor item in exisingBlueprint.Sensors)
             {
@@ -32,7 +46,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             }
 
 
-            foreach (AttributeDefinition property in project.Attributes)
+            foreach (AttributeDefinition property in _project.Attributes)
             {
                 Attribute attribute = GetAttributesOf(property);
                 if (exisingBlueprint.Attributes.All(s => s.Name != attribute.Name))
@@ -116,19 +130,35 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             }
         }
 
+        public Command GetCommandFromPayload(string mqttpayload) {
+            if (mqttpayload.IsNullOrEmpty()) return null;
+
+            var indexOf = mqttpayload.IndexOf('.');
+            var id = new Guid(mqttpayload.Substring(0, indexOf));
+            var command = mqttpayload.Substring(indexOf+1);
+
+            var commandDefinition = _guidUicCommandMap[id];
+
+            return new SgetCommand(commandDefinition, command);
+        }
+
         private IEnumerable<CommandDto> GetCommandsOf(ProjectDatapointTask dataPoint)
         {
-            //IEnumerable<CommandDto> commandDtos = project.GetCommandsFor(datapoint).Select(c => new CommandDto
-            //{
-            //    Command = c.InterfaceIdentifier.Name + "." + c.Command,
-            //    Name = c.Name,
-            //    Metadata = new CommandMetadataViewModel
-            //    {
-            //        RelatedToSensorKey = c.RelatedSensorKey.Return(GetKeyFrom(c), ""),
-            //        Tags = c.Tags
-            //    }
-            //}).ToArray();
-            //return commandDtos;
+            if (_guidUicSensorCommandMap.TryGetValue(dataPoint.Definition.Id, out var commandDefinitions)) {
+                IEnumerable<CommandDto> commandDtos = commandDefinitions.Select(c => new CommandDto
+                {
+                    Command = c.Id + "." + c.Command,
+                    Name = c.Label,
+                    Metadata = new CommandMetadataViewModel
+                    {
+                        RelatedToSensorKey = GetKeyFrom(c.RelatedDatapoint),
+                        Tags = c.Tags
+                    }
+                }).ToArray();
+                return commandDtos;
+            }
+
+            return new CommandDto[0];
         }
 
         private Attribute GetAttributesOf(AttributeDefinition attribute)
@@ -161,8 +191,6 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             return sensor;
         }
 
-        
-
         private int GetM2mgoDataTypeOf(UicDataType type)
         {
             switch (type)
@@ -192,18 +220,29 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             return String.Format("{0}: {1} Project", project.Owner, project.Name);
         }
 
-        public string GetKeyFrom(DatapointDefinition definition)
-        {
-
+        public string GetKeyFrom(DatapointDefinition definition) {
+            if (definition == null) return string.Empty;
             return definition.Uri;
         }
 
         public string GetKeyFrom(AttributeDefinition definition)
         {
+            if (definition == null) return string.Empty;
             return definition.Uri;
         }
 
-
-        
+        private void BuildEdmMap(EdmCapability edmCapability) {
+            foreach (var command in edmCapability.CommandDefinitions) {
+                _guidUicCommandMap.Add(command.Id, command);
+                if (command.RelatedDatapoint != null) {
+                    if (_guidUicSensorCommandMap.TryGetValue(command.RelatedDatapoint.Id, out var commandList)) {
+                        commandList.Add(command);
+                    }
+                    else {
+                        _guidUicSensorCommandMap.Add(command.RelatedDatapoint.Id, new List<CommandDefinition>{command});
+                    }
+                }
+            }
+        }
     }   
 }

@@ -25,6 +25,7 @@ namespace UIC.SGeT.Launcher
             try {
                 ILoggerFactory loggerFactory = new NlogLoggerFactory();
                 _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
+                _logger.Information("Let's go");
 
                 ISerializer serializer = new UicSerializer();
 

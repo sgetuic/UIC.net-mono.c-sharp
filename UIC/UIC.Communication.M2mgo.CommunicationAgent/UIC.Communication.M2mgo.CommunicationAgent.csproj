@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\UIC.Framweork.DefaultImplementation\UIC.Framweork.DefaultImplementation.csproj" />
     <ProjectReference Include="..\UIC.Util\UIC.Util.csproj" />
   </ItemGroup>
 

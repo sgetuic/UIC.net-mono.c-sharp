@@ -70,7 +70,7 @@ namespace UIC.SGET.ConnectorImplementation
             else eapiEdm.GetValueFor(eapiEdm.GetCapability().AttribtueDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID));
 
             UicProject project = LoadUicProject();
-            _communicationAgent.Initialize(SerialId, project);
+            _communicationAgent.Initialize(SerialId, project, _embeddedDriverModules);
             _communicationAgent.Connect(CloudAgentCommandHandler);
 
             PushAttributeValues(project);
@@ -132,12 +132,15 @@ namespace UIC.SGET.ConnectorImplementation
 
         private UicProject LoadUicProject() {
             UicProject project;
+            var serializedProjectFilepath = _uicConfiguartion.AbsoluteProjectConfigurationFilePath;
+            var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
+            
             if (_uicConfiguartion.IsRemoteProjectLoadingEnabled) {
                 project = _projectAgent.LoadProject(_uicConfiguartion);
+                jsonFileHandler.Backup(project);
             }
             else {
-                var serializedProjectFilepath = _uicConfiguartion.AbsoluteProjectConfigurationFilePath;
-                project = LoadProjectFromFile(serializedProjectFilepath);
+                project = jsonFileHandler.Load<UicProject>();
             }
 
             if (project == null) throw new ApplicationException("no project could be loaded");
@@ -161,12 +164,6 @@ namespace UIC.SGET.ConnectorImplementation
 
         public void Push(DatapointValue val) {
             _communicationAgent.Push(val);
-        }
-
-        private UicProject LoadProjectFromFile(string serializedProjectFilepath)
-        {
-            var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
-            return jsonFileHandler.Load<UicProject>();
         }
 
         public void Dispose()

@@ -5,7 +5,6 @@ using UIC.Communication.M2mgo.CommunicationAgent.Translation.Project;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi.Blueprint.Dto;
 using UIC.Communication.M2mgo.CommunicationAgent.WebApi.Gateway;
-using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Project;
 using UIC.Util.Logging;
 
@@ -94,7 +93,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
                     blueprintCode));
             }
             if (searchResult.Any()) {
-                BlueprintDto blueprint = _projectBlueprintTranslator.UpdateProjectDomain(searchResult.Single(), project);
+                BlueprintDto blueprint = _projectBlueprintTranslator.UpdateProjectDomain(searchResult.Single());
                 string result = _apiWrapper.UpdateBlueprint(config, blueprint);
                 _logger.Information("Updateing Blueprint: " + result);
                 return blueprint;
@@ -131,16 +130,6 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             string result = _apiWrapper.CreateBlueprint(config, _projectTranslator.GetProjectDomain(project), gatewayBlueprintDefiniton);
             _logger.Information("CreateBlueprint Blueprint: " + result);
             return _apiWrapper.SearchBlueprint(config, _projectTranslator.GetProjectDomain(project), M2mgoGatewayBlueprintTranslator.CloudMapperGatewayAnchorBlueprintCode).Single();
-        }
-
-        public string GetKeyFrom(DatapointDefinition definition)
-        {
-            return _projectBlueprintTranslator.GetKeyFrom(definition);
-        }
-
-        public string GetKeyFrom(AttributeDefinition definition)
-        {
-            return _projectBlueprintTranslator.GetKeyFrom(definition);
         }
     }
 }
