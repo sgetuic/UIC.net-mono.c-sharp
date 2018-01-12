@@ -42,10 +42,15 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SgetAttributeValue.cs" />
+    <Compile Include="SgetCommand.cs" />
+    <Compile Include="SgetDatapointTaskMetadata.cs" />
+    <Compile Include="SgetDatapointTaskReportingCondition.cs" />
     <Compile Include="SgetDatapointValue.cs" />
     <Compile Include="SgetAttributDefinition.cs" />
     <Compile Include="SgetCommandDefinition.cs" />
     <Compile Include="SgetDatapointDefinition.cs" />
+    <Compile Include="SgetProjectDatapointTask.cs" />
+    <Compile Include="SgetUicProject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">

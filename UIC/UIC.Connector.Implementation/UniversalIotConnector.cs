@@ -1,5 +1,5 @@
 ﻿using System;
-using UIC.Framework.Interfaces.Communication;
+using UIC.Framework.Interfaces.Communication.Application;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
@@ -39,8 +39,11 @@ namespace UIC.Connector.Implementation
             UicProject project = null;
             if (_uicConfiguartion.IsRemoteProjectLoadingEnabled)
             {
-                var projectConfigurationUrl = _uicConfiguartion.RemoteProjectConfigurationUrl();
-                project = LoadProjectFromRemote(projectConfigurationUrl);
+                //Url EdmSnychronizationUrl { get; }
+                //Url RemoteProjectConfigurationUrl();
+
+                //var projectConfigurationUrl = _uicConfiguartion.RemoteProjectConfigurationUrl();
+                //project = LoadProjectFromRemote(projectConfigurationUrl);
             }
             else
             {
@@ -91,7 +94,7 @@ namespace UIC.Connector.Implementation
             
         }
 
-        private EmbeddedDriverModule GetEdmFor(AttribtueDefinition attribtueDefinition)
+        private EmbeddedDriverModule GetEdmFor(AttributeDefinition attributeDefinition)
         {
             throw new NotImplementedException();
         }

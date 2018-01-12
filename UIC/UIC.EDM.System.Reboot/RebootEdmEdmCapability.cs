@@ -6,15 +6,15 @@ namespace UIC.EDM.System.Reboot
 {
     public class RebootEdmEdmCapability : EdmCapability
     {
-        public RebootEdmEdmCapability(Edmldentifier getldentifier, IEnumerable<CommandDefinition> commandDefinitios, IEnumerable<AttribtueDefinition> attribtueDefinitions, IEnumerable<DatapointDefinition> datapointDefinitions) {
+        public RebootEdmEdmCapability(Edmldentifier getldentifier, CommandDefinition[] commandDefinitios, AttributeDefinition[] attribtueDefinitions, DatapointDefinition[] datapointDefinitions) {
             Getldentifier = getldentifier;
             CommandDefinitions = commandDefinitios;
             AttribtueDefinitions = attribtueDefinitions;
             DatapointDefinitions = datapointDefinitions;
         }
         public Edmldentifier Getldentifier { get; }
-        public IEnumerable<CommandDefinition> CommandDefinitions { get; }
-        public IEnumerable<AttribtueDefinition> AttribtueDefinitions { get; }
-        public IEnumerable<DatapointDefinition> DatapointDefinitions { get; }
+        public CommandDefinition[] CommandDefinitions { get; }
+        public AttributeDefinition[] AttribtueDefinitions { get; }
+        public DatapointDefinition[] DatapointDefinitions { get; }
     }
 }

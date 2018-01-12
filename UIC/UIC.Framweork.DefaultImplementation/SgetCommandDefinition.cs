@@ -6,16 +6,19 @@ namespace UIC.Framweork.DefaultImplementation
 {
     public class SgetCommandDefinition: CommandDefinition
     {
-        public SgetCommandDefinition(string label, string command, UicDataType dataType, string description, DatapointDefinition relatedDatapoint, string[] tags) {
+        public SgetCommandDefinition(Guid id, string uri, string label, string command, UicDataType dataType, string description, DatapointDefinition relatedDatapoint, string[] tags) {
             Label = label;
             Command = command;
             DataType = dataType;
             Description = description;
             RelatedDatapoint = relatedDatapoint;
             Tags = tags;
+            Uri = uri;
+            Id = id;
         }
 
         public Guid Id { get; }
+        public string Uri { get; }
         public string Label { get; }
         public string Description { get; }
         public string Command { get; }

@@ -40,20 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\Projects\ProjectAgent.cs" />
     <Compile Include="Configuration\UicConfiguartion.cs" />
-    <Compile Include="Util\Url.cs" />
+    <Compile Include="UniversalIotConnector.cs" />
     <Compile Include="Edm\Value\AttributeValue.cs" />
-    <Compile Include="Communication\CommunicationAgent.cs" />
+    <Compile Include="Communication\Application\CommunicationAgent.cs" />
     <Compile Include="Edm\Value\Datapointvalue.cs" />
     <Compile Include="Edm\Value\Command.cs" />
     <Compile Include="Edm\Definition\CommandDefinition.cs" />
     <Compile Include="Edm\EmbeddedDriverModule.cs" />
-    <Compile Include="Configuration\UicConfiguartionProvider.cs" />
     <Compile Include="Util\UicDataType.cs" />
     <Compile Include="Edm\Definition\EdmCapability.cs" />
     <Compile Include="Edm\Edmldentifier.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Edm\Definition\AttribtueDefinition.cs" />
+    <Compile Include="Edm\Definition\AttributeDefinition.cs" />
     <Compile Include="Edm\Definition\DatapointDefinition.cs" />
     <Compile Include="Project\DatapointTaskMetadata.cs" />
     <Compile Include="Project\DatapointTaskReportingCondition.cs" />

@@ -12,7 +12,7 @@ namespace UIC.Framework.Interfaces.Project
         string Owner { get; }
         Guid CustomerForeignKey { get; }
 
-        IEnumerable<AttribtueDefinition> Attributes { get; }
-        IEnumerable<ProjectDatapointTask> DatapointTasks { get; }
+        List<AttributeDefinition> Attributes { get; }
+        List<ProjectDatapointTask> DatapointTasks { get; }
     }
 }

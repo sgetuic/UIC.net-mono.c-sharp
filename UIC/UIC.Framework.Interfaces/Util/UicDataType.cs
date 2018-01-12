@@ -7,6 +7,8 @@ namespace UIC.Framework.Interfaces.Util
         Double,
         Byte,
         Gps,
-        Picture
+        Picture,
+        Bool,
+        Unknown
     }
 }

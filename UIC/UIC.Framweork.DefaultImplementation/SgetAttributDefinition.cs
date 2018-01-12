@@ -5,17 +5,19 @@ using UIC.Framework.Interfaces.Util;
 namespace UIC.Framweork.DefaultImplementation
 
 {
-    public class SgetAttributDefinition : AttribtueDefinition
+    public class SgetAttributDefinition : AttributeDefinition
     {
-        public SgetAttributDefinition(Guid id, string label, UicDataType dataType, string description) {
+        public SgetAttributDefinition(Guid id, string uri, string label, UicDataType dataType, string description) {
             Id = id;
             Label = label;
             DataType = dataType;
             Description = description;
+            Uri = uri;
         }
         public Guid Id { get; }
         public string Label { get; }
         public string Description { get; }
         public UicDataType DataType { get; }
+        public string Uri { get; }
     }
 }

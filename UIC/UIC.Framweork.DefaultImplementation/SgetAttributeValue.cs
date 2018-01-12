@@ -5,11 +5,11 @@ namespace UIC.Framweork.DefaultImplementation
 {
     public class SgetAttributeValue : AttributeValue
     {
-        public SgetAttributeValue(object value, AttribtueDefinition definition) {
+        public SgetAttributeValue(object value, AttributeDefinition definition) {
             Value = value;
             Definition = definition;
         }
-        public AttribtueDefinition Definition { get; }
+        public AttributeDefinition Definition { get; }
         public object Value { get; }
     }
 }
