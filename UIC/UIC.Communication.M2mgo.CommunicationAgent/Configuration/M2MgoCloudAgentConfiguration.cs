@@ -26,7 +26,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Configuration
         internal static M2MgoCloudAgentConfiguration PstConfig() {
             return new M2MgoCloudAgentConfiguration {
                 BaseUrl = "https://pst.m2mgo.com/",
-                BrokerBaseUrl = "f5281d80-0528-4dc8-b297-fd7efd164b65",
+                BrokerBaseUrl = "broker-pst.m2mgo.com",
                 SgetGatewayTypeId = new Guid("f5281d80-0528-4dc8-b297-fd7efd164b65"),
                 User = "gateway.agent@m2mgo.com",
                 Password = "sgetsget",

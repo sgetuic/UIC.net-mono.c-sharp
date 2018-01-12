@@ -40,12 +40,12 @@ namespace UIC.EDM.Test.Mockup
 
         private DatapointDefinition[] ConstructDatapoints(out DatapointDefinition boolDatapoint) {
             var datapoints = new List<DatapointDefinition>();
-            boolDatapoint = new SgetDatapointDefinition(new Guid("{83f02bea-c22b-46aa-b1c2-4ab8102d8a80}"), GetUriOf("datapoint", "Bool_mock"), UicDataType.Bool, "Randon Bool", "Digital input mockup");
+            boolDatapoint = new SgetDatapointDefinition(new Guid("{83f02bea-c22b-46aa-b1c2-4ab8102d8a80}"), GetUriOf("datapoint", "Bool_mock"), UicDataType.Bool, "Random Bool", "Digital input mockup");
             datapoints.Add(boolDatapoint);
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{4087d40d-d4e2-42b1-89a4-9b9d18499a04}"), GetUriOf("datapoint", "Integer_mock"), UicDataType.Integer, "Randon Integer", "Integer measurement mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{a41fc3af-4f73-42bf-8290-43ed883edd8f}"), GetUriOf("datapoint", "Double_mock"), UicDataType.Double, "Randon Double", "Double measurement mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{3b20829f-cc30-4923-a2d6-30502ccb9acd}"), GetUriOf("datapoint", "Gps_mock"), UicDataType.Gps, "Randon GPS", "geo location mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{fbd3e390-ffb7-455b-b0dc-695b13329eb6}"), GetUriOf("datapoint", "String_mock"), UicDataType.String, "Randon String", "messaging mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{4087d40d-d4e2-42b1-89a4-9b9d18499a04}"), GetUriOf("datapoint", "Integer_mock"), UicDataType.Integer, "Random Integer", "Integer measurement mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{a41fc3af-4f73-42bf-8290-43ed883edd8f}"), GetUriOf("datapoint", "Double_mock"), UicDataType.Double, "Random Double", "Double measurement mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{3b20829f-cc30-4923-a2d6-30502ccb9acd}"), GetUriOf("datapoint", "Gps_mock"), UicDataType.Gps, "Random GPS", "geo location mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{fbd3e390-ffb7-455b-b0dc-695b13329eb6}"), GetUriOf("datapoint", "String_mock"), UicDataType.String, "Random String", "messaging mockup"));
 
             return datapoints.ToArray();
         }

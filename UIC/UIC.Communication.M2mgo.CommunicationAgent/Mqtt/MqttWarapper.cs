@@ -6,9 +6,7 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using UIC.Communication.M2mgo.CommunicationAgent.Mqtt.messaging;
 using UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagement;
-using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
-using UIC.Framweork.DefaultImplementation;
 using UIC.Util.Logging;
 
 namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
@@ -40,12 +38,19 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
             _mqttConnectionWatchdog.Connect(_mqttClient);
         }
 
-        private void MqttClientOnMqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        private void MqttClientOnMqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs arg)
         {
-            string payload = Encoding.UTF8.GetString(e.Message);
-            _logger.Debug("Received Mesage: " + e.Topic + " - " + payload);
-            var command = _m2MgoProjectBlueprintTranslator.GetCommandFromPayload(payload);
-            _handler(command);
+            string payload = Encoding.UTF8.GetString(arg.Message);
+            _logger.Debug("Received Mesage: " + arg.Topic + " - " + payload);
+            try
+            {
+                var command = _m2MgoProjectBlueprintTranslator.GetCommandFromPayload(payload);
+                _handler(command);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Could not handle command: " + payload);
+            }
         }
 
         private void MqttClientOnMqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)

@@ -65,17 +65,29 @@ namespace UIC.SGET.ConnectorImplementation
                 }
             }
 
-            var eapiEdm = GetEdmFor(BOARD_IDENTIFIER_DEFINITION_ID);
-            if (eapiEdm == null) SerialId = Environment.MachineName;
-            else eapiEdm.GetValueFor(eapiEdm.GetCapability().AttribtueDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID));
-
             UicProject project = LoadUicProject();
+
+            SerialId = GernerateApplianceSerialKey(project);
+
             _communicationAgent.Initialize(SerialId, project, _embeddedDriverModules);
             _communicationAgent.Connect(CloudAgentCommandHandler);
 
             PushAttributeValues(project);
             
             StartDatapointMonitoring(project);
+        }
+
+        private string GernerateApplianceSerialKey(UicProject project) {
+            string serialKey;
+            var eapiEdm = GetEdmFor(BOARD_IDENTIFIER_DEFINITION_ID);
+            if (eapiEdm == null) {
+                serialKey = Environment.MachineName;
+            }
+            else {
+                serialKey = eapiEdm.GetValueFor(eapiEdm.GetCapability().AttribtueDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID)).Value.ToString();
+            }
+
+            return serialKey + "." + project.ProjectKey;
         }
 
         private void StartDatapointMonitoring(UicProject project) {

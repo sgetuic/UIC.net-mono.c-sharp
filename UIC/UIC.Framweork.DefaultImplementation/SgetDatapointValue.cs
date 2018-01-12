@@ -37,7 +37,16 @@ namespace UIC.Framweork.DefaultImplementation
                 case UicDataType.Double:
                     return double.Parse(value, CultureInfo.InvariantCulture);
                 case UicDataType.Bool:
-                    return bool.Parse(value);
+                    if (bool.TryParse(value, out bool result)) {
+                        return result;
+                    }
+                    else if(value=="1") {
+                        return true;
+                    }
+                    else if(value=="0") {
+                        return false;
+                    }
+                    throw new ArgumentException("Could not verify value to bool: " + value);
                 case UicDataType.Gps:
                     return value;
                 case UicDataType.String:

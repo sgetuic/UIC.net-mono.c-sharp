@@ -29,19 +29,39 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi.infrastructure
 
             logger.Information(request.RequestUri.ToString());
 
-            using (HttpWebResponse resp = (HttpWebResponse) request.GetResponse()) {
-                string rawData = String.Empty;
-                if (resp.ContentLength > 0) {
-                    using (var s = new StreamReader(resp.GetResponseStream())) {
-                        rawData = s.ReadToEnd();
+            try
+            {
+                using (HttpWebResponse resp = (HttpWebResponse)request.GetResponse())
+                {
+                    string rawData = String.Empty;
+                    if (resp.ContentLength > 0)
+                    {
+                        using (var s = new StreamReader(resp.GetResponseStream()))
+                        {
+                            rawData = s.ReadToEnd();
+                        }
                     }
-                }
 
-                if (resp.StatusCode != HttpStatusCode.OK) {
-                    throw new Exception(resp.StatusCode + ": " + rawData);
-                }
+                    if (resp.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        return String.Empty;
+                    }
 
-                return rawData;
+                    if (resp.StatusCode != HttpStatusCode.OK)
+                    {
+                        throw new Exception(resp.StatusCode + ": " + rawData);
+                    }
+
+                    return rawData;
+                }
+            }
+            catch (WebException e)
+            {
+                if (e.Response != null && e.Response is HttpWebResponse) {
+                    if (((HttpWebResponse) e.Response).StatusCode == HttpStatusCode.NotFound) return string.Empty;
+                }
+                
+                throw;
             }
         }
     }

@@ -165,7 +165,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
         {
             return new Attribute
             {
-                Description = attribute.Description,
+                Description = attribute.Uri,
                 Name = GetKeyFrom(attribute)
             };
         }
@@ -175,7 +175,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             Sensor sensor = new Sensor
             {
                 DataType = GetM2mgoDataTypeOf(dataPoint.Definition.DataType),
-                Description = dataPoint.Description,
+                Description = dataPoint.Definition.Uri,
                 Name = dataPoint.Definition.Label,
                 SensorKey = GetKeyFrom(dataPoint.Definition),
                 Metadata = new SensorMetadataViewModel
@@ -222,13 +222,13 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
 
         public string GetKeyFrom(DatapointDefinition definition) {
             if (definition == null) return string.Empty;
-            return definition.Uri;
+            return definition.Label.Replace(" ", "") + "-" + definition.Id.ToString("N");
         }
 
         public string GetKeyFrom(AttributeDefinition definition)
         {
             if (definition == null) return string.Empty;
-            return definition.Uri;
+            return definition.Label.Replace(" ", "") + "-" + definition.Id.ToString("N");
         }
 
         private void BuildEdmMap(EdmCapability edmCapability) {

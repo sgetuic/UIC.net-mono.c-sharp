@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
-      <Project>{F36D5237-4A77-47DA-96B4-D08E9CCA0FB5}</Project>
+      <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>
       <Name>UIC.Communication.M2mgo.CommunicationAgent</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.ProjectAgent\UIC.Communication.M2mgo.ProjectAgent.csproj">

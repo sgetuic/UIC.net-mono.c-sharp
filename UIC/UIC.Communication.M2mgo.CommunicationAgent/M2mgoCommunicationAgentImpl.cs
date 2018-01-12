@@ -75,9 +75,11 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             M2mgoGatewayBlueprintTranslator blueprintTranslator = new M2mgoGatewayBlueprintTranslator(projectTranslator);
             _m2MgoProjectBlueprintTranslator = new M2MgoProjectBlueprintTranslator(project, edms);
             var blueprintService = new BlueprintService(apiWrapper, _loggerFactory.GetLoggerFor(typeof(BlueprintService)), blueprintTranslator, _m2MgoProjectBlueprintTranslator, projectTranslator, m2MgoGatewayProjectWebApiWrapper);
+            
             _applianceBlueprints = blueprintService.SynchronizeWithCloud(_configuration, serialId, project, gatewayProject);
-            _projectDataTopic = new DataTopic(_applianceBlueprints.GatewayBlueprint.Identifier.ID, serialId);
-            _projectAttributeTopic = new AttributeTopic(_applianceBlueprints.GatewayBlueprint.Identifier.ID, serialId);
+            
+            _projectDataTopic = new DataTopic(_applianceBlueprints.ProjectBlueprint.Identifier.ID, serialId);
+            _projectAttributeTopic = new AttributeTopic(_applianceBlueprints.ProjectBlueprint.Identifier.ID, serialId);
             _gatewayDataTopic = new DataTopic(_applianceBlueprints.GatewayBlueprint.Identifier.ID, serialId);
         }
 
