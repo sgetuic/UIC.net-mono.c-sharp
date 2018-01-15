@@ -12,8 +12,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
         private readonly ISerializer _serializer;
         private readonly WebApiRequestExecutor _webApiRequestExecutor;
         private readonly ILogger _logger;
-        private readonly M2mgoUserTokenCache _m2MgoUserTokenCache;
-
+        
         private M2mgoUserToken _token;
 
 
@@ -22,23 +21,28 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
             _serializer = serializer;
             _webApiRequestExecutor = webApiRequestExecutor;
             _logger = logger;
-            _m2MgoUserTokenCache = new M2mgoUserTokenCache();
-            _token = _m2MgoUserTokenCache.Get(_serializer);
+            
         }
 
         internal string RetryWithTokenUpdate(M2MgoCloudAgentConfiguration config, Func<string> func)
         {
+            if(_token == null) _token = UpdateAccessToken(config);
             try {
                 return func();
             }
-            catch (WebException) {
-                UpdateAccessToken(config);
-                return func();
+            catch (WebException e) {
+                if (_token.GetSecondsSinceTokenCreation() < 5) throw;
+                
+                if (e.Response != null && e.Response is HttpWebResponse) {
+                    if (((HttpWebResponse) e.Response).StatusCode == HttpStatusCode.NotFound) return string.Empty;
+                }
 
+                _token = UpdateAccessToken(config);
+                return func();
             }
         }
 
-        private void UpdateAccessToken(M2MgoCloudAgentConfiguration config)
+        private M2mgoUserToken UpdateAccessToken(M2MgoCloudAgentConfiguration config)
         {
             var request = (HttpWebRequest)WebRequest.Create(config.BaseUrl + "/api/cms/membership-user/token");
             request.Method = "POST";
@@ -46,8 +50,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
             string serializeObject =
                 _serializer.Serialize(new {Email = config.User, Password = config.Password});
             string result = _webApiRequestExecutor.ExecuteRequest(request, serializeObject, null, _logger);
-            _token = _serializer.Deserialize<M2mgoUserToken>(result);
-            _m2MgoUserTokenCache.Cache(result);
+            return _serializer.Deserialize<M2mgoUserToken>(result);
         }
 
 

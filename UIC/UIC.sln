@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.Communication.M2mgo.Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.Communication.M2mgo.CommunicationAgent", "UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj", "{8EB5006F-836C-448D-8901-1A37E27C6459}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.EDM.EApi.I2c", "UIC.EDM.EApi.I2c\UIC.EDM.EApi.I2c.csproj", "{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{8EB5006F-836C-448D-8901-1A37E27C6459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EB5006F-836C-448D-8901-1A37E27C6459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EB5006F-836C-448D-8901-1A37E27C6459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{7BA6C0E5-89BD-49E3-866B-EEF8D123C838} = {816521BE-27AF-47BB-A4BF-4E20303741EE}
 		{7FBE24B8-1C8D-406A-A3FC-A7366C9AD572} = {7BA6C0E5-89BD-49E3-866B-EEF8D123C838}
 		{8EB5006F-836C-448D-8901-1A37E27C6459} = {7BA6C0E5-89BD-49E3-866B-EEF8D123C838}
+		{8911BF0D-BD52-4CE5-AD8D-810EDB43E7D3} = {7FE818AE-42D1-4006-A8CB-4CDCAAFA2721}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18036194-1948-4D0C-BF64-813DE104D780}

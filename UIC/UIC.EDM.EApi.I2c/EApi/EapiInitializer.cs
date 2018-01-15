@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using UIC.EDM.EApi.I2c.EApi;
 
-namespace UIC.EDM.EApi.BoardInformation.EApi {
+namespace UIC.EDM.EApi.I2c {
     class EapiInitializer {
         private readonly EApiStatusCodes _eApiStatusCodes;
 

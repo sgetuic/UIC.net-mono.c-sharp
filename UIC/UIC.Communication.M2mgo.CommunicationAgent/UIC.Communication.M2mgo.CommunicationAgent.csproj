@@ -85,7 +85,6 @@
     <Compile Include="WebApi\M2mgoDeviceWebApiWrapper.cs" />
     <Compile Include="WebApi\M2mgoGatewayProjectWebApiWrapper.cs" />
     <Compile Include="WebApi\M2mgoUserToken.cs" />
-    <Compile Include="WebApi\M2mgoUserTokenCache.cs" />
     <Compile Include="WebApi\M2mgoUserTokenWebApiWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
