@@ -9,13 +9,13 @@ namespace UIC.EDM.EApi.BoardInformation
         public EapiBoardInformationEdmCapability(Edmldentifier getldentifier, CommandDefinition[] commandDefinitions, AttributeDefinition[] attribtueDefinitions, DatapointDefinition[] datapointDefinitions) {
             Getldentifier = getldentifier;
             CommandDefinitions = commandDefinitions;
-            AttribtueDefinitions = attribtueDefinitions;
+            AttributeDefinitions = attribtueDefinitions;
             DatapointDefinitions = datapointDefinitions;
         }
 
         public Edmldentifier Getldentifier { get; }
         public CommandDefinition[] CommandDefinitions { get; }
-        public AttributeDefinition[] AttribtueDefinitions { get; }
+        public AttributeDefinition[] AttributeDefinitions { get; }
         public DatapointDefinition[] DatapointDefinitions { get; }
     }
 }

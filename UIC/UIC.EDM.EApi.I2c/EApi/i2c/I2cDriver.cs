@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UIC.Util.Logging;
 
-namespace UIC.EDM.EApi.I2c.EApi {
+namespace UIC.EDM.EApi.I2c.EApi.i2c {
     internal class I2cDriver {
         private readonly ILogger _logger;
         private readonly EApiStatusCodes _eApiStatusCodes;
@@ -49,7 +49,7 @@ namespace UIC.EDM.EApi.I2c.EApi {
 
         
 
-        internal byte[] Read(I2cReadParameter param, uint byteCount) {
+        public byte[] Read(I2cReadParameter param, uint byteCount) {
             I2CBusCapability capability = GetBusCapabilities();
             if (capability.IsUnsupported) {
                 throw new Exception("I2C Bus not supported");

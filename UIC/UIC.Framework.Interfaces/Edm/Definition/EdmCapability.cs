@@ -6,7 +6,7 @@ namespace UIC.Framework.Interfaces.Edm.Definition
     {
         Edmldentifier Getldentifier { get; }
         CommandDefinition[] CommandDefinitions { get; }
-        AttributeDefinition[] AttribtueDefinitions { get; }
+        AttributeDefinition[] AttributeDefinitions { get; }
         DatapointDefinition[] DatapointDefinitions { get; }
         
     }

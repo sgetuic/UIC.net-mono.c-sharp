@@ -1,4 +1,4 @@
-﻿namespace UIC.EDM.EApi.I2c.EApi {
+﻿namespace UIC.EDM.EApi.I2c.EApi.i2c {
     internal class Eapi_I2C_Address {
         private readonly uint _addr;
 

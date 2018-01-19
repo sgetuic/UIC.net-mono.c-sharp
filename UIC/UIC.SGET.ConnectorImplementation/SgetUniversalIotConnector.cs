@@ -84,7 +84,7 @@ namespace UIC.SGET.ConnectorImplementation
                 serialKey = Environment.MachineName;
             }
             else {
-                serialKey = eapiEdm.GetValueFor(eapiEdm.GetCapability().AttribtueDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID)).Value.ToString();
+                serialKey = eapiEdm.GetValueFor(eapiEdm.GetCapability().AttributeDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID)).Value.ToString();
             }
 
             return serialKey + "." + project.ProjectKey;
@@ -129,7 +129,7 @@ namespace UIC.SGET.ConnectorImplementation
         }
 
         private void BuildEdmMap(EmbeddedDriverModule edm, EdmCapability edmCapability) {
-            foreach (var definition in edmCapability.AttribtueDefinitions) {
+            foreach (var definition in edmCapability.AttributeDefinitions) {
                 _definitionEdmMap.Add(definition.Id, edm);
             }
 

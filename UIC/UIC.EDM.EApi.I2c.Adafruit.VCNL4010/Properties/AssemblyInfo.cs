@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UIC.EDM.EApi.I2c")]
+[assembly: AssemblyTitle("UIC.EDM.EApi.I2c.Adafruit.VCNL4010")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UIC.EDM.EApi.I2c")]
+[assembly: AssemblyProduct("UIC.EDM.EApi.I2c.Adafruit.VCNL4010")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8911bf0d-bd52-4ce5-ad8d-810edb43e7d3")]
+[assembly: Guid("cf3cedcf-9d98-40fa-bb33-b092fd51421b")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,6 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-
-[assembly:InternalsVisibleToAttribute("UIC.EDM.EApi.I2c.Adafruit.VCNL4010")]

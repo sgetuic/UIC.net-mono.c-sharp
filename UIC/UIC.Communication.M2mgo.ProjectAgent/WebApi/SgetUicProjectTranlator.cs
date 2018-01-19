@@ -72,7 +72,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
             var embeddedModuleIdentifier = new EmbeddedModuleIdentifier(edmCapability.Getldentifier.Id, edmCapability.Getldentifier.Uri);
             var interfaceIdentifier = new EmbeddedHwInterfaceIdentifier(embeddedModuleIdentifier.Id, embeddedModuleIdentifier.Name);
             
-            var attributes = Translate(edmCapability.AttribtueDefinitions, interfaceIdentifier);
+            var attributes = Translate(edmCapability.AttributeDefinitions, interfaceIdentifier);
             var dataPoints = Translate(edmCapability.DatapointDefinitions, interfaceIdentifier);
             var commands = Translate(edmCapability.CommandDefinitions, interfaceIdentifier, dataPoints);
             var embeddedModuleHwInterfaceCapability = new EmbeddedModuleHwInterfaceCapability(interfaceIdentifier, attributes, dataPoints, commands);
@@ -123,7 +123,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         }
 
         private void BuildEdmMap(EdmCapability edmCapability) {
-            foreach (var definition in edmCapability.AttribtueDefinitions) {
+            foreach (var definition in edmCapability.AttributeDefinitions) {
                 _guidUicAttributeMap.Add(definition.Uri, definition);
                 if (definition.Id == new Guid("(b68df3f9-4748-4c9d-9bda-567c87fab855)")) {
                     _guidUicAttributeMap.Add("Id", definition);

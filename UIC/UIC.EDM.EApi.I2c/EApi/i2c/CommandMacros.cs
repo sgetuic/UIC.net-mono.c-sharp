@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UIC.EDM.EApi.I2c.EApi {
+namespace UIC.EDM.EApi.I2c.EApi.i2c {
     internal class CommandMacros {
         internal uint EAPI_I2C_STD_CMD()
         {

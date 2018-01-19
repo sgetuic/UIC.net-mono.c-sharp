@@ -2,7 +2,7 @@
 
 namespace UIC.EDM.EApi.I2c.EApi
 {
-    internal class EApiStatusCodes
+    public class EApiStatusCodes
     {
         internal string GetStatusStringFrom(uint resultcode)
         {

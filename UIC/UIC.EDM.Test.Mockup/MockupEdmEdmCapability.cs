@@ -8,12 +8,12 @@ namespace UIC.EDM.Test.Mockup
         public MockupEdmEdmCapability(Edmldentifier getldentifier, CommandDefinition[] commandDefinitios, AttributeDefinition[] attribtueDefinitions, DatapointDefinition[] datapointDefinitions) {
             Getldentifier = getldentifier;
             CommandDefinitions = commandDefinitios;
-            AttribtueDefinitions = attribtueDefinitions;
+            AttributeDefinitions = attribtueDefinitions;
             DatapointDefinitions = datapointDefinitions;
         }
         public Edmldentifier Getldentifier { get; }
         public CommandDefinition[] CommandDefinitions { get; }
-        public AttributeDefinition[] AttribtueDefinitions { get; }
+        public AttributeDefinition[] AttributeDefinitions { get; }
         public DatapointDefinition[] DatapointDefinitions { get; }
     }
 }

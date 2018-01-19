@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UIC.EDM.EApi.I2c.EApi;
+using UIC.EDM.EApi.I2c.EApi.i2c;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
@@ -17,6 +18,7 @@ namespace UIC.EDM.EApi.I2c
         private readonly EapiInitializer _eapiInitializer;
         private readonly EdmCapability _edmCapability;
         private readonly Guid _maxblockLengthAttributeId = new Guid("{16c89a68-a270-489b-affb-2f9c1c43902e}");
+        private EmbeddedDriverModule _owner;
 
         public Edmldentifier Identifier { get; }
         
@@ -76,6 +78,12 @@ namespace UIC.EDM.EApi.I2c
         public void SetAttributeCallback(AttributeDefinition attributeDefinition, Action<AttributeValue> callback) {
             // no need for callbacks
 
+        }
+
+        internal I2cDriver GetDriver(EmbeddedDriverModule edm) {
+            if(_owner != null && _owner != edm) throw new Exception($"{Identifier.Uri} is already in use by {edm.Identifier.Uri}");
+            _owner = edm;
+            return _i2CDriver;
         }
     }
 }

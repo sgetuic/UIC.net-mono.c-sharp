@@ -1,4 +1,4 @@
-﻿namespace UIC.EDM.EApi.I2c.EApi
+﻿namespace UIC.EDM.EApi.I2c.EApi.i2c
 {
     internal class I2cReadParameter
     {
