@@ -144,7 +144,7 @@ namespace UIC.SGET.ConnectorImplementation
 
         private UicProject LoadUicProject() {
             UicProject project;
-            var serializedProjectFilepath = _uicConfiguartion.AbsoluteProjectConfigurationFilePath;
+            var serializedProjectFilepath = _uicConfiguartion.ProjectJsonFilePath;
             var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
             
             if (_uicConfiguartion.IsRemoteProjectLoadingEnabled) {

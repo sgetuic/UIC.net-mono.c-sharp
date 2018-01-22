@@ -2,7 +2,7 @@ using System;
 
 namespace UIC.Framework.Interfaces.Edm
 {
-    public interface Edmldentifier
+    public interface EdmIdentifier
     {
         Guid Id { get; }
         string Uri { get; }

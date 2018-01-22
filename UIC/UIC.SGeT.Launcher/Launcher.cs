@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UIC.Communication.M2mgo.CommunicationAgent;
 using UIC.Communication.M2mgo.ProjectAgent;
+using UIC.EDM.EApi.BoardInformation;
+using UIC.EDM.EApi.Gpio;
+using UIC.EDM.EApi.I2c.Adafruit.VCNL4010;
 using UIC.EDM.System.Reboot;
 using UIC.EDM.Test.Mockup;
 using UIC.Framework.Interfaces;
@@ -65,6 +68,9 @@ namespace UIC.SGeT.Launcher
             return new List<EmbeddedDriverModule> {
                 new RebootEdm(loggerFactory),
                 new MockupEdm(loggerFactory),
+                new GpioEdm(loggerFactory),
+                new EapiBoardInformationEdm(),
+                new Vcnl4010Edm(loggerFactory),
             };
         }
 
@@ -79,7 +85,6 @@ namespace UIC.SGeT.Launcher
             else
             {
                 config = new PstUicConfiguartion();
-                //config = new LocalhostConfiguration();
                 configHandler.Backup(config);
             }
             return config;

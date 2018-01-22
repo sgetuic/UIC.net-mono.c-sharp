@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{739E81BD-8ABE-49D8-BC4D-49B232F5193D}</ProjectGuid>
+    <ProjectGuid>{A2C48529-0606-4CD5-A82B-956608CDC95B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UIC.EDM.System.Reboot</RootNamespace>
-    <AssemblyName>UIC.EDM.System.Reboot</AssemblyName>
+    <RootNamespace>UIC.EDM.EApi.Gpio</RootNamespace>
+    <AssemblyName>UIC.EDM.EApi.Gpio</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,10 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RebootEdm.cs" />
+    <Compile Include="Eapi\EapiGpioDirectionEnum.cs" />
+    <Compile Include="Eapi\EapiGpioId.cs" />
+    <Compile Include="Eapi\EapiInitializer.cs" />
+    <Compile Include="Eapi\EApiStatusCodes.cs" />
+    <Compile Include="Eapi\GpioCapability.cs" />
+    <Compile Include="Eapi\GpioDriver.cs" />
+    <Compile Include="Eapi\GpioLevel.cs" />
+    <Compile Include="Eapi\GpioLevelEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RebootEdmEdmCapability.cs" />
-    <Compile Include="RebootEdmIdentifier.cs" />
+    <Compile Include="GpioEdm.cs" />
+    <Compile Include="GpioEdmIdentifier.cs" />
+    <Compile Include="GpioEdmCapability.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">

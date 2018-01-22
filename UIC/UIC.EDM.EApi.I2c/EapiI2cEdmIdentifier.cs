@@ -3,7 +3,7 @@ using UIC.Framework.Interfaces.Edm;
 
 namespace UIC.EDM.EApi.I2c
 {
-    public class EapiI2cEdmIdentifier : Edmldentifier
+    public class EapiI2cEdmIdentifier : EdmIdentifier
     {
         public Guid Id { get; }
         public string Uri { get; }

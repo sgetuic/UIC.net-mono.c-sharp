@@ -20,7 +20,7 @@ namespace UIC.EDM.EApi.I2c
         private readonly Guid _maxblockLengthAttributeId = new Guid("{16c89a68-a270-489b-affb-2f9c1c43902e}");
         private EmbeddedDriverModule _owner;
 
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
         
 
         public EapiI2cEdm(ILoggerFactory loggerFactory) {
@@ -36,7 +36,7 @@ namespace UIC.EDM.EApi.I2c
             attribtueDefinitions.Add(
                 new SgetAttributDefinition(
                     _maxblockLengthAttributeId,
-                    Identifier.Uri + ".datapoint.MaxBlockLength",
+                    UicUriBuilder.DatapointFrom(this, "MaxBlockLength"),
                     "I2C MaxBlockLength",
                     UicDataType.Integer,
                     string.Empty));

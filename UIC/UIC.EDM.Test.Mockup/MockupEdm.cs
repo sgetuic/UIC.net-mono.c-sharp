@@ -19,12 +19,12 @@ namespace UIC.EDM.Test.Mockup
         private static readonly Guid CommandOnId = new Guid("{4129a33b-3f65-4169-92c8-95c1942a32f8}");
         private static readonly Guid CommandOffId = new Guid("{7f72d80d-43f8-49ae-a808-5f6026960c49}");
 
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
 
         public MockupEdm(ILoggerFactory loggerFactory) {
             _logger = loggerFactory.GetLoggerFor(GetType());
             _mockupValueProvider = new MockupValueProvider();
-            Identifier = new MockupEdmldentifier(GetType().FullName);
+            Identifier = new MockupEdmIdentifier(GetType().FullName);
             AttributeDefinition[] attribtueDefinitions = ConstructAttributes();
             DatapointDefinition[] datapointDefinitions = ConstructDatapoints(out var boolDatapointMockup);
             CommandDefinition[] commandDefinitios = ConstructCommandsForBoolDatapoint(boolDatapointMockup);
@@ -33,34 +33,30 @@ namespace UIC.EDM.Test.Mockup
 
         private CommandDefinition[] ConstructCommandsForBoolDatapoint(DatapointDefinition boDatapointDefinition) {
             var commands = new List<CommandDefinition>();
-            commands.Add(new SgetCommandDefinition(CommandOnId, GetUriOf("command", "SWITCH_ON"), "Switch On", "1", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"On"}));
-            commands.Add(new SgetCommandDefinition(CommandOffId, GetUriOf("command", "SWITCH_OFF"), "Switch Off", "0", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"Off"}));
+            commands.Add(new SgetCommandDefinition(CommandOnId, UicUriBuilder.CommandFrom(this, "SWITCH_ON"), "Switch On", "1", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"On"}));
+            commands.Add(new SgetCommandDefinition(CommandOffId, UicUriBuilder.CommandFrom(this, "SWITCH_OFF"), "Switch Off", "0", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"Off"}));
             return commands.ToArray();
         }
 
         private DatapointDefinition[] ConstructDatapoints(out DatapointDefinition boolDatapoint) {
             var datapoints = new List<DatapointDefinition>();
-            boolDatapoint = new SgetDatapointDefinition(new Guid("{83f02bea-c22b-46aa-b1c2-4ab8102d8a80}"), GetUriOf("datapoint", "Bool_mock"), UicDataType.Bool, "Random Bool", "Digital input mockup");
+            boolDatapoint = new SgetDatapointDefinition(new Guid("{83f02bea-c22b-46aa-b1c2-4ab8102d8a80}"), UicUriBuilder.DatapointFrom(this, "Bool_mock"), UicDataType.Bool, "Random Bool", "Digital input mockup");
             datapoints.Add(boolDatapoint);
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{4087d40d-d4e2-42b1-89a4-9b9d18499a04}"), GetUriOf("datapoint", "Integer_mock"), UicDataType.Integer, "Random Integer", "Integer measurement mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{a41fc3af-4f73-42bf-8290-43ed883edd8f}"), GetUriOf("datapoint", "Double_mock"), UicDataType.Double, "Random Double", "Double measurement mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{3b20829f-cc30-4923-a2d6-30502ccb9acd}"), GetUriOf("datapoint", "Gps_mock"), UicDataType.Gps, "Random GPS", "geo location mockup"));
-            datapoints.Add(new SgetDatapointDefinition(new Guid("{fbd3e390-ffb7-455b-b0dc-695b13329eb6}"), GetUriOf("datapoint", "String_mock"), UicDataType.String, "Random String", "messaging mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{4087d40d-d4e2-42b1-89a4-9b9d18499a04}"), UicUriBuilder.DatapointFrom(this, "Integer_mock"), UicDataType.Integer, "Random Integer", "Integer measurement mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{a41fc3af-4f73-42bf-8290-43ed883edd8f}"), UicUriBuilder.DatapointFrom(this, "Double_mock"), UicDataType.Double, "Random Double", "Double measurement mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{3b20829f-cc30-4923-a2d6-30502ccb9acd}"), UicUriBuilder.DatapointFrom(this, "Gps_mock"), UicDataType.Gps, "Random GPS", "geo location mockup"));
+            datapoints.Add(new SgetDatapointDefinition(new Guid("{fbd3e390-ffb7-455b-b0dc-695b13329eb6}"), UicUriBuilder.DatapointFrom(this, "String_mock"), UicDataType.String, "Random String", "messaging mockup"));
 
             return datapoints.ToArray();
         }
 
         private AttributeDefinition[] ConstructAttributes() {
             var attributes = new List<AttributeDefinition>();
-            attributes.Add(new SgetAttributDefinition(new Guid("(b68df3f9-4748-4c9d-9bda-567c87fab855)"), GetUriOf("attribute", "timestamp"), "Timestamp", UicDataType.String, "Simple DateTime string"));
+            attributes.Add(new SgetAttributDefinition(new Guid("(b68df3f9-4748-4c9d-9bda-567c87fab855)"), UicUriBuilder.AttributeFrom(this, "timestamp"), "Timestamp", UicDataType.String, "Simple DateTime string"));
 
             return attributes.ToArray();
         }
-
-        private string GetUriOf(string type, string leaf) {
-            return Identifier.Uri + "." + type + "." + leaf;
-        }
-
+        
         public void Initialize() {
             _logger.Information("Initialize");
         }

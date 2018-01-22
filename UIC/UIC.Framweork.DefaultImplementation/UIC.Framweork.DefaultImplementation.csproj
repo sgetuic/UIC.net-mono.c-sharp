@@ -51,6 +51,7 @@
     <Compile Include="SgetDatapointDefinition.cs" />
     <Compile Include="SgetProjectDatapointTask.cs" />
     <Compile Include="SgetUicProject.cs" />
+    <Compile Include="UriBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">

@@ -4,7 +4,7 @@
     {
         string ProjectKey { get; }
         bool IsEdmSnychronizationEnabled { get; }
-        string AbsoluteProjectConfigurationFilePath { get; }
+        string ProjectJsonFilePath { get; }
         bool IsRemoteProjectLoadingEnabled { get; }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 
-namespace UIC.EDM.EApi.I2c.Adafruit.VCNL4010
+namespace UIC.EDM.EApi.Gpio
 {
-    internal class Vlnc4010EdmCapability : EdmCapability
+    internal class GpioEdmCapability : EdmCapability
     {
-        public Vlnc4010EdmCapability(EdmIdentifier identifier, CommandDefinition[] commandDefinitions, AttributeDefinition[] attributeDefinitions, DatapointDefinition[] datapointDefinitions) {
+        public GpioEdmCapability(EdmIdentifier identifier, DatapointDefinition[] datapointDefinitions, AttributeDefinition[] attributeDefinitions, CommandDefinition[] commandDefinitions) {
             Identifier = identifier;
-            CommandDefinitions = commandDefinitions;
-            AttributeDefinitions = attributeDefinitions;
             DatapointDefinitions = datapointDefinitions;
+            AttributeDefinitions = attributeDefinitions;
+            CommandDefinitions = commandDefinitions;
         }
 
         public EdmIdentifier Identifier { get; }

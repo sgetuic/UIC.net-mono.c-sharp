@@ -69,7 +69,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
 
         public SgetEmbeddedDriverModuleAppliance Translate(EdmCapability edmCapability) {
             var cloudMapperIdentifier = new CloudMapperIdentifier(new Guid("9D368ED2-075F-4348-831E-D2CEA97E881A"), "SgetUicProjectTranlator");
-            var embeddedModuleIdentifier = new EmbeddedModuleIdentifier(edmCapability.Getldentifier.Id, edmCapability.Getldentifier.Uri);
+            var embeddedModuleIdentifier = new EmbeddedModuleIdentifier(edmCapability.Identifier.Id, edmCapability.Identifier.Uri);
             var interfaceIdentifier = new EmbeddedHwInterfaceIdentifier(embeddedModuleIdentifier.Id, embeddedModuleIdentifier.Name);
             
             var attributes = Translate(edmCapability.AttributeDefinitions, interfaceIdentifier);
@@ -86,7 +86,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
 
         private List<SGetCloudMapperCommandDefinition> Translate(CommandDefinition[] edmCapabilityDatapointDefinitions, EmbeddedHwInterfaceIdentifier interfaceIdentifier, List<SGetCloudMapperDataPointDefinition> sensors) {
             return edmCapabilityDatapointDefinitions.Select(a => {
-                SGetCloudMapperDataPointDefinition sensor = sensors.Single(s => s.Key == a.RelatedDatapoint.Uri);
+                SGetCloudMapperDataPointDefinition sensor = sensors.SingleOrDefault(s => s.Key == a.RelatedDatapoint.Uri);
                 return new SGetCloudMapperCommandDefinition(a.Uri, a.Command, interfaceIdentifier, a.Tags, sensor);
             }).ToList();
         }

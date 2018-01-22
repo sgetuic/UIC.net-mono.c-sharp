@@ -44,7 +44,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MockupEdm.cs" />
     <Compile Include="MockupEdmEdmCapability.cs" />
-    <Compile Include="MockupEdmldentifier.cs" />
+    <Compile Include="MockupEdmIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">

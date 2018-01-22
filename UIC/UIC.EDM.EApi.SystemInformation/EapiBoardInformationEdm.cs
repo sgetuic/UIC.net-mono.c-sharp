@@ -15,7 +15,7 @@ namespace UIC.EDM.EApi.BoardInformation
         private readonly EapiInitializer _eapiInitializer;
         private readonly EapiBoardInformationEdmCapabilityProvider _eapiBoardInformationEdmCapabilityProvider;
 
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
         
 
         public EapiBoardInformationEdm() {
@@ -23,7 +23,7 @@ namespace UIC.EDM.EApi.BoardInformation
             _eapiInitializer = new EapiInitializer();
             _boardInformationDriver = new BoardInformationDriver();
 
-            _eapiBoardInformationEdmCapabilityProvider = new EapiBoardInformationEdmCapabilityProvider(Identifier);
+            _eapiBoardInformationEdmCapabilityProvider = new EapiBoardInformationEdmCapabilityProvider(this);
         }
 
         public void Initialize() {

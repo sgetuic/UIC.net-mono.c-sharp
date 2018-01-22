@@ -51,7 +51,7 @@
     <Compile Include="Edm\EmbeddedDriverModule.cs" />
     <Compile Include="Util\UicDataType.cs" />
     <Compile Include="Edm\Definition\EdmCapability.cs" />
-    <Compile Include="Edm\Edmldentifier.cs" />
+    <Compile Include="Edm\EdmIdentifier.cs" />
     <Compile Include="Edm\Definition\AttributeDefinition.cs" />
     <Compile Include="Edm\Definition\DatapointDefinition.cs" />
     <Compile Include="Project\DatapointTaskMetadata.cs" />

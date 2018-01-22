@@ -20,7 +20,7 @@ namespace UIC.EDM.EApi.I2c.Adafruit.VCNL4010
         private EapiI2cEdm _eapiI2CEdm;
         private Vcnl4010Driver _vcnl4010Driver;
         
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
 
         public Vcnl4010Edm(ILoggerFactory loggerFactory) {
             _loggerFactory = loggerFactory;
