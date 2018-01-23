@@ -144,7 +144,8 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
 
         private IEnumerable<CommandDto> GetCommandsOf(ProjectDatapointTask dataPoint)
         {
-            if (_guidUicSensorCommandMap.TryGetValue(dataPoint.Definition.Id, out var commandDefinitions)) {
+            List<CommandDefinition> commandDefinitions;
+            if (_guidUicSensorCommandMap.TryGetValue(dataPoint.Definition.Id, out commandDefinitions)) {
                 IEnumerable<CommandDto> commandDtos = commandDefinitions.Select(c => new CommandDto
                 {
                     Command = c.Id + "." + c.Command,
@@ -235,7 +236,8 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
             foreach (var command in edmCapability.CommandDefinitions) {
                 _guidUicCommandMap.Add(command.Id, command);
                 if (command.RelatedDatapoint != null) {
-                    if (_guidUicSensorCommandMap.TryGetValue(command.RelatedDatapoint.Id, out var commandList)) {
+                    List<CommandDefinition> commandList;
+                    if (_guidUicSensorCommandMap.TryGetValue(command.RelatedDatapoint.Id, out commandList)) {
                         commandList.Add(command);
                     }
                     else {

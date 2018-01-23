@@ -5,15 +5,15 @@ namespace UIC.EDM.Test.Mockup
 {
     public class MockupEdmEdmCapability : EdmCapability
     {
-        public MockupEdmEdmCapability(Edmldentifier getldentifier, CommandDefinition[] commandDefinitios, AttributeDefinition[] attribtueDefinitions, DatapointDefinition[] datapointDefinitions) {
-            Getldentifier = getldentifier;
+        public MockupEdmEdmCapability(EdmIdentifier getldentifier, CommandDefinition[] commandDefinitios, AttributeDefinition[] attribtueDefinitions, DatapointDefinition[] datapointDefinitions) {
+            Identifier = getldentifier;
             CommandDefinitions = commandDefinitios;
-            AttribtueDefinitions = attribtueDefinitions;
+            AttributeDefinitions = attribtueDefinitions;
             DatapointDefinitions = datapointDefinitions;
         }
-        public Edmldentifier Getldentifier { get; }
+        public EdmIdentifier Identifier { get; }
         public CommandDefinition[] CommandDefinitions { get; }
-        public AttributeDefinition[] AttribtueDefinitions { get; }
+        public AttributeDefinition[] AttributeDefinitions { get; }
         public DatapointDefinition[] DatapointDefinitions { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using UIC.Framework.Interfaces;
+using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
 using UIC.SGET.ConnectorImplementation.Monitoring.Evaluation;
@@ -14,16 +15,20 @@ namespace UIC.SGET.ConnectorImplementation.Monitoring {
         private bool _isDisposed;
         private IDataPointEvaluator _evaluator;
         private readonly ProjectDatapointTask _dataPointTask;
+        private readonly EmbeddedDriverModule _edm;
 
-        public DatapointMonitor(ProjectDatapointTask dataPointTask, DataPointEvaluatorProvider evaluatorProvider, UniversalIotConnector connector, ILogger logger)
+        public DatapointMonitor(ProjectDatapointTask dataPointTask, DataPointEvaluatorProvider evaluatorProvider, UniversalIotConnector connector, ILogger logger, EmbeddedDriverModule edm)
         {
             if (dataPointTask == null) throw new ArgumentNullException("dataPointTask");
             if (logger == null) throw new ArgumentNullException("logger");
-            
+            if (connector == null) throw new ArgumentNullException("connector");
+            if (edm == null) throw new ArgumentNullException("edm");
+
             _dataPointTask = dataPointTask;
             _evaluatorProvider = evaluatorProvider;
-            _connector = connector ?? throw new ArgumentNullException(nameof(connector));
+            _connector = connector;
             _logger = logger;
+            _edm = edm;
             (new Thread(Target)).Start();
         }
 
@@ -40,8 +45,6 @@ namespace UIC.SGET.ConnectorImplementation.Monitoring {
                 }
                 _logger.Information("Start Monitoring with intervall in seconds: " + pollIntervall);
 
-                var edm = _connector.GetEdmFor(_dataPointTask.Definition.Id);
-
                 while (!_isDisposed) {
                     if (_dataPointTask.Definition == null) {
                         _logger.Warning("Skip Datapoint evaluation because the EDM might not be installed correctly");
@@ -49,7 +52,7 @@ namespace UIC.SGET.ConnectorImplementation.Monitoring {
                         try
                         {
                             _logger.Information("ReadDatapoint: " + _dataPointTask.Definition);
-                            DatapointValue val = edm.GetValueFor(_dataPointTask.Definition);
+                            DatapointValue val = _edm.GetValueFor(_dataPointTask.Definition);
                             if (Evaluate(val))
                             {
                                 _connector.Push(val);

@@ -7,7 +7,7 @@ namespace UIC.Framework.Interfaces.Edm
 {
     public interface EmbeddedDriverModule
     {
-        Edmldentifier Identifier { get; }
+        EdmIdentifier Identifier { get; }
 
         void Initialize();
         void Dispose();

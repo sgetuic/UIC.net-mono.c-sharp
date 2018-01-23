@@ -34,7 +34,8 @@ namespace UIC.Util.Extensions {
         public static TEnum ToEnum<TEnum>(this string stringValue, TEnum defaultValue, bool ignoreCase = false) where TEnum : struct {
             if (stringValue.IsNullOrEmpty())
                 return defaultValue;
-            if (!Enum.TryParse(stringValue, ignoreCase, out TEnum result)) {
+            TEnum result;
+            if (!Enum.TryParse(stringValue, ignoreCase, out result)) {
                 throw new Exception("Could not parse " + stringValue + " into Enum " + typeof(TEnum));
             }
             return result;

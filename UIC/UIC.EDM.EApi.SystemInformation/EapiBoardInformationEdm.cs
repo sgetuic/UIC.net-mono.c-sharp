@@ -1,6 +1,7 @@
 ﻿using System;
 using UIC.EDM.EApi.BoardInformation.EApi;
 using UIC.EDM.EApi.BoardInformation.EApi.BoardInformation;
+using UIC.EDM.EApi.Shared;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
@@ -15,7 +16,7 @@ namespace UIC.EDM.EApi.BoardInformation
         private readonly EapiInitializer _eapiInitializer;
         private readonly EapiBoardInformationEdmCapabilityProvider _eapiBoardInformationEdmCapabilityProvider;
 
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
         
 
         public EapiBoardInformationEdm() {
@@ -23,7 +24,7 @@ namespace UIC.EDM.EApi.BoardInformation
             _eapiInitializer = new EapiInitializer();
             _boardInformationDriver = new BoardInformationDriver();
 
-            _eapiBoardInformationEdmCapabilityProvider = new EapiBoardInformationEdmCapabilityProvider(Identifier);
+            _eapiBoardInformationEdmCapabilityProvider = new EapiBoardInformationEdmCapabilityProvider(this);
         }
 
         public void Initialize() {
@@ -41,7 +42,8 @@ namespace UIC.EDM.EApi.BoardInformation
         public DatapointValue GetValueFor(DatapointDefinition datapoint) {
 
             object value;
-            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(datapoint.Id, out BoardInformationValueId valueId)) {
+            BoardInformationValueId valueId;
+            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(datapoint.Id, out valueId)) {
                 uint boardInformationValue = _boardInformationDriver.GetBoardInformationOf(valueId);
                 value = boardInformationValue;
             }
@@ -52,13 +54,15 @@ namespace UIC.EDM.EApi.BoardInformation
         }
 
         public AttributeValue GetValueFor(AttributeDefinition attribute) {
+            BoardInformationStringId stringId;
+            BoardInformationValueId valueId;
             object value;
-            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out BoardInformationValueId valueId))
+            if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out valueId))
             {
                 uint boardInformationOf = _boardInformationDriver.GetBoardInformationOf(valueId);
                 value = boardInformationOf;
             }
-            else if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out BoardInformationStringId stringId))
+            else if (_eapiBoardInformationEdmCapabilityProvider.TryGet(attribute.Id, out stringId))
             {
                 string boardInformationOf = _boardInformationDriver.GetBoardInformationOf(stringId);
                 value = boardInformationOf;

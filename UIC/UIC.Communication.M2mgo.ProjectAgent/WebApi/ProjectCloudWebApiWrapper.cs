@@ -31,8 +31,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
             string url = configuration.EdmSnychronizationUrl;
             WebRequest request = WebRequest.Create(url);
             request.Method = "POST";
-            string result = new WebApiRequestExecutor().ExecuteRequest(request, postData);
-            _logger.Information("Result of url request: " + result);
+            string result = new WebApiRequestExecutor().ExecuteRequest(request, postData, _logger);
         }
 
 
@@ -42,7 +41,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
             string url = configuration.RemoteProjectConfigurationUrl.TrimEnd('/') + "/" + projectKey;
             WebRequest request = WebRequest.Create(url);
             request.Method = "GET";
-            string rawData =  new WebApiRequestExecutor().ExecuteRequest(request, string.Empty);
+            string rawData =  new WebApiRequestExecutor().ExecuteRequest(request, string.Empty, _logger);
             var sgetProject = _serializer.Deserialize<SgetProject>(rawData);
             return sgetProject;
         }

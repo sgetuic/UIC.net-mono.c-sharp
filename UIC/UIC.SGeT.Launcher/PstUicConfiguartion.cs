@@ -5,14 +5,14 @@ namespace UIC.SGeT.Launcher
     internal class PstUicConfiguartion : UicConfiguartion
     {
         public PstUicConfiguartion() {
-            IsEdmSnychronizationEnabled = false;
+            IsEdmSnychronizationEnabled = true;
             IsRemoteProjectLoadingEnabled = true;
             ProjectKey = "26895846c960465ebd89f28d10e6460c";
-            AbsoluteProjectConfigurationFilePath = @".\project.json";
+            ProjectJsonFilePath = @".\project.json";
         }
         public string ProjectKey { get; }
         public bool IsEdmSnychronizationEnabled { get; }
-        public string AbsoluteProjectConfigurationFilePath { get; }
+        public string ProjectJsonFilePath { get; }
         public bool IsRemoteProjectLoadingEnabled { get; }
     }
 }

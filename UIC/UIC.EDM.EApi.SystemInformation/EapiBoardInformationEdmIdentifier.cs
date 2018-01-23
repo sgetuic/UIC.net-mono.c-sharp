@@ -3,7 +3,7 @@ using UIC.Framework.Interfaces.Edm;
 
 namespace UIC.EDM.EApi.BoardInformation
 {
-    public class EapiBoardInformationEdmIdentifier : Edmldentifier
+    public class EapiBoardInformationEdmIdentifier : EdmIdentifier
     {
         public Guid Id { get; }
         public string Uri { get; }

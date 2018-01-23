@@ -15,15 +15,14 @@ namespace UIC.EDM.System.Reboot
         private readonly EdmCapability _edmCapability;
         private readonly SgetCommandDefinition _rebootCommnand;
         private ILogger _logger;
-        public Edmldentifier Identifier { get; }
+        public EdmIdentifier Identifier { get; }
 
         public RebootEdm(ILoggerFactory loggerFactory) {
 
             _logger = loggerFactory.GetLoggerFor(GetType());
 
-            Identifier = new RebootEdmldentifier(GetType().FullName);
-            var comandUri = Identifier.Uri + ".command.reboot";
-            _rebootCommnand = new SgetCommandDefinition(new Guid("{f54b990d-25f5-430d-8428-44ab74ed8509}"), comandUri, "Reboot System", "reboot", UicDataType.String, "Reboots the system", null, null);
+            Identifier = new RebootEdmIdentifier(GetType().FullName);
+            _rebootCommnand = new SgetCommandDefinition(new Guid("{f54b990d-25f5-430d-8428-44ab74ed8509}"), UicUriBuilder.CommandFrom(this, "reboot"), "Reboot System", "reboot", UicDataType.String, "Reboots the system", null, null);
             CommandDefinition[] commandDefinitios = {
                 _rebootCommnand
             };

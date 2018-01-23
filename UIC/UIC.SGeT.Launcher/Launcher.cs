@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UIC.Communication.M2mgo.CommunicationAgent;
 using UIC.Communication.M2mgo.ProjectAgent;
+using UIC.EDM.EApi.BoardInformation;
+using UIC.EDM.EApi.Gpio;
+using UIC.EDM.EApi.I2c.Adafruit.VCNL4010;
 using UIC.EDM.System.Reboot;
 using UIC.EDM.Test.Mockup;
 using UIC.Framework.Interfaces;
@@ -33,9 +36,9 @@ namespace UIC.SGeT.Launcher
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
                 CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                 
-                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory, embeddedDriverModules);
-                uic = new SgetUniversalIotConnector(uicConfiguartion, embeddedDriverModules, communicationAgent, projectAgent, serializer, loggerFactory);
-                uic.Initialize();
+                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
+                uic.Initialize(embeddedDriverModules.ToArray());
 
                 _logger.Information("Enter to Dispose ....");
                 Console.ReadLine();
@@ -65,12 +68,15 @@ namespace UIC.SGeT.Launcher
             return new List<EmbeddedDriverModule> {
                 new RebootEdm(loggerFactory),
                 new MockupEdm(loggerFactory),
+                new GpioEdm(loggerFactory),
+                new EapiBoardInformationEdm(),
+                new Vcnl4010Edm(loggerFactory),
             };
         }
 
         private static UicConfiguartion GetConfiguration(ISerializer serializer)
         {
-            var configHandler = new ConfigurationJsonFileHandler(@".\cloudmapper.json", serializer, _logger);
+            var configHandler = new ConfigurationJsonFileHandler(@".\uic_config.json", serializer, _logger);
             UicConfiguartion config;
             if (configHandler.IsConfigFileExisting())
             {
@@ -79,7 +85,6 @@ namespace UIC.SGeT.Launcher
             else
             {
                 config = new PstUicConfiguartion();
-                //config = new LocalhostConfiguration();
                 configHandler.Backup(config);
             }
             return config;

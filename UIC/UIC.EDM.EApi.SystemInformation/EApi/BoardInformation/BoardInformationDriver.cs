@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using UIC.EDM.EApi.Shared;
 
 namespace UIC.EDM.EApi.BoardInformation.EApi.BoardInformation {
     internal class BoardInformationDriver

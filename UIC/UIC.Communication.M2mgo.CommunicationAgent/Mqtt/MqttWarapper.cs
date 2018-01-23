@@ -25,7 +25,8 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
 
         internal void Connect(M2mgoMqttParams param, M2MgoProjectBlueprintTranslator m2MgoProjectBlueprintTranslator, Action<Command> handler) {
             if (param == null) throw new ArgumentNullException(nameof(param));
-            _m2MgoProjectBlueprintTranslator = m2MgoProjectBlueprintTranslator ?? throw new ArgumentNullException(nameof(m2MgoProjectBlueprintTranslator));
+            if (m2MgoProjectBlueprintTranslator == null) throw new ArgumentNullException(nameof(m2MgoProjectBlueprintTranslator));
+            _m2MgoProjectBlueprintTranslator = m2MgoProjectBlueprintTranslator;
 
             _handler = handler;
             _mqttClient = new MqttClient(param.BrokerUrl, param.BrokerPort, !param.DeactivateSecureChannel, MqttSslProtocols.TLSv1_1, userCertificateSelectionCallback, userCertificateValidationCallback);

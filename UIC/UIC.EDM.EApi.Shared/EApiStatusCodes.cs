@@ -1,19 +1,19 @@
-﻿using UIC.EDM.EApi.BoardInformation.Util;
+﻿using UIC.Util.Extensions;
 
-namespace UIC.EDM.EApi.BoardInformation.EApi
+namespace UIC.EDM.EApi.Shared
 {
-    internal class EApiStatusCodes
+    public class EApiStatusCodes
     {
-        internal string GetStatusStringFrom(uint resultcode)
+        public string GetStatusStringFrom(uint resultcode)
         {
             return resultcode.ToEnum<EAPI_STATUS_CODE>().ToString();
         }
 
 
-        internal enum EAPI_STATUS_CODE : uint
+        public enum EAPI_STATUS_CODE : uint
         {
             EAPI_STATUS_SUCCESS = 0,
-            
+
             /* Description
              *   The EAPI library is not yet or unsuccessfully initialized. 
              *   EApiLibInitialize needs to be called prior to the first access of any 
@@ -179,14 +179,14 @@ namespace UIC.EDM.EApi.BoardInformation.EApi
             EAPI_STATUS_ERROR = 0xFFFFF0FF,
         }
 
-        internal bool IsUnsupported(uint resultCode)
+        public bool IsUnsupported(uint resultCode)
         {
             return resultCode == (uint)EAPI_STATUS_CODE.EAPI_STATUS_UNSUPPORTED;
         }
 
-        internal bool IsSuccess(uint resultCode)
+        public bool IsSuccess(uint resultCode)
         {
-            return resultCode == (uint) EAPI_STATUS_CODE.EAPI_STATUS_SUCCESS;
+            return resultCode == (uint)EAPI_STATUS_CODE.EAPI_STATUS_SUCCESS;
         }
     }
 }

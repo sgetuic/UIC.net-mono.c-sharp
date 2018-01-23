@@ -22,7 +22,6 @@ namespace UIC.SGET.ConnectorImplementation
         private static readonly Guid BOARD_IDENTIFIER_DEFINITION_ID = new Guid("{a65a6538-96d1-4525-b0f2-5059dfa38e0e}");
         
         private readonly UicConfiguartion _uicConfiguartion;
-        private readonly List<EmbeddedDriverModule> _embeddedDriverModules;
         private readonly CommunicationAgent _communicationAgent;
         private readonly ProjectAgent _projectAgent;
         private readonly ISerializer _serializer;
@@ -31,17 +30,16 @@ namespace UIC.SGET.ConnectorImplementation
 
         private readonly Dictionary<Guid, EmbeddedDriverModule> _definitionEdmMap = new Dictionary<Guid, EmbeddedDriverModule>();
         private readonly List<DatapointMonitor> _datapointMonitors = new List<DatapointMonitor>();
-        
+        private List<EmbeddedDriverModule> _initializedEDMs;
+
 
         public SgetUniversalIotConnector(
             UicConfiguartion uicConfiguartion, 
-            List<EmbeddedDriverModule> embeddedDriverModules,
             CommunicationAgent communicationAgent, 
             ProjectAgent projectAgent, 
             ISerializer serializer, 
             ILoggerFactory loggerFactory) {
             _uicConfiguartion = uicConfiguartion;
-            _embeddedDriverModules = embeddedDriverModules;
             _communicationAgent = communicationAgent;
             _projectAgent = projectAgent;
             _serializer = serializer;
@@ -52,24 +50,44 @@ namespace UIC.SGET.ConnectorImplementation
 
         public string SerialId { get; private set; }
 
-        public void Initialize()
+        public void Initialize(EmbeddedDriverModule[] embeddedDriverModules)
         {
+            _initializedEDMs = new List<EmbeddedDriverModule>();
             _logger.Information("Initialize");
-            foreach (EmbeddedDriverModule edm in _embeddedDriverModules)
+            foreach (EmbeddedDriverModule edm in embeddedDriverModules)
             {
-                edm.Initialize();
-                EdmCapability edmCapability = edm.GetCapability();
-                BuildEdmMap(edm, edmCapability);
-                if (_uicConfiguartion.IsEdmSnychronizationEnabled) {
+                try
+                {
+                    edm.Initialize();
+                    EdmCapability edmCapability = edm.GetCapability();
+                    BuildEdmMap(edm, edmCapability);
+                    _initializedEDMs.Add(edm);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, $"Initializating of EDM {edm.Identifier.Uri} failed");
+                }
+               
+            }
+
+            _projectAgent.Initialize(_initializedEDMs.ToArray());
+
+            if (_uicConfiguartion.IsEdmSnychronizationEnabled)
+            {
+                foreach (EmbeddedDriverModule edm in _initializedEDMs)
+                {
                     _projectAgent.Synchronize(edm.GetCapability());
                 }
+                
             }
+
+
 
             UicProject project = LoadUicProject();
 
             SerialId = GernerateApplianceSerialKey(project);
 
-            _communicationAgent.Initialize(SerialId, project, _embeddedDriverModules);
+            _communicationAgent.Initialize(SerialId, project, _initializedEDMs);
             _communicationAgent.Connect(CloudAgentCommandHandler);
 
             PushAttributeValues(project);
@@ -84,7 +102,7 @@ namespace UIC.SGET.ConnectorImplementation
                 serialKey = Environment.MachineName;
             }
             else {
-                serialKey = eapiEdm.GetValueFor(eapiEdm.GetCapability().AttribtueDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID)).Value.ToString();
+                serialKey = eapiEdm.GetValueFor(eapiEdm.GetCapability().AttributeDefinitions.Single(a => a.Id == BOARD_IDENTIFIER_DEFINITION_ID)).Value.ToString();
             }
 
             return serialKey + "." + project.ProjectKey;
@@ -97,7 +115,7 @@ namespace UIC.SGET.ConnectorImplementation
                 {
                     EmbeddedDriverModule edm = GetEdmFor(datapointTask.Definition.Id);
 
-                    _datapointMonitors.Add(new DatapointMonitor(datapointTask, dataPointEvaluatorProvider, this, _loggerFactory.GetLoggerFor("DatapointMonitor-"+datapointTask.Definition.Label)));
+                    _datapointMonitors.Add(new DatapointMonitor(datapointTask, dataPointEvaluatorProvider, this, _loggerFactory.GetLoggerFor("DatapointMonitor-"+datapointTask.Definition.Label), edm));
                     
                     //Set Asynchronous EDM Calbbacks if necessary
                     edm.SetDatapointCallback(datapointTask, datapointValue => new Thread(() => _communicationAgent.Push(datapointValue)).Start());
@@ -129,7 +147,7 @@ namespace UIC.SGET.ConnectorImplementation
         }
 
         private void BuildEdmMap(EmbeddedDriverModule edm, EdmCapability edmCapability) {
-            foreach (var definition in edmCapability.AttribtueDefinitions) {
+            foreach (var definition in edmCapability.AttributeDefinitions) {
                 _definitionEdmMap.Add(definition.Id, edm);
             }
 
@@ -144,7 +162,7 @@ namespace UIC.SGET.ConnectorImplementation
 
         private UicProject LoadUicProject() {
             UicProject project;
-            var serializedProjectFilepath = _uicConfiguartion.AbsoluteProjectConfigurationFilePath;
+            var serializedProjectFilepath = _uicConfiguartion.ProjectJsonFilePath;
             var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
             
             if (_uicConfiguartion.IsRemoteProjectLoadingEnabled) {
@@ -161,14 +179,15 @@ namespace UIC.SGET.ConnectorImplementation
 
         private void CloudAgentCommandHandler(Command command)
         {
-            EmbeddedDriverModule edm = GetEdmFor(command.CommandDefinition.RelatedDatapoint.Id);
+            EmbeddedDriverModule edm = GetEdmFor(command.CommandDefinition.Id);
             edm.Handle(command);
         }
 
 
         public EmbeddedDriverModule GetEdmFor(Guid definitionId)
         {
-            if (_definitionEdmMap.TryGetValue(definitionId, out var edm)) {
+            EmbeddedDriverModule edm;
+            if (_definitionEdmMap.TryGetValue(definitionId, out edm)) {
                 return edm;
             }
             return null;
@@ -209,7 +228,7 @@ namespace UIC.SGET.ConnectorImplementation
                 _logger.Error(e, "Dispose _communicationAgent " + _communicationAgent);
             }
 
-            foreach (var edm in _embeddedDriverModules) {
+            foreach (var edm in _initializedEDMs) {
                 try
                 {
                     _logger.Information("Dispose EDM " + edm.Identifier);
