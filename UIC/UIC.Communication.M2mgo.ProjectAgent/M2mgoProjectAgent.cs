@@ -51,14 +51,10 @@ namespace UIC.Communication.M2mgo.ProjectAgent
             }
             else
             {
-                //config = new M2mgoProjectAgentConfiguration {
-                //    RemoteProjectConfigurationUrl =  "https://pst.m2mgo.com/api/sget/project/board/",
-                //    EdmSnychronizationUrl =  "https://pst.m2mgo.com/api/sget/embedded-modules/synch/"
-
-                //};
-                config = new M2mgoProjectAgentConfiguration {
-                    RemoteProjectConfigurationUrl =  "https://pst.m2mgo.com/api/sget/project/board/",
-                    EdmSnychronizationUrl =  "https://development.m2mgo.com/api/sget/embedded-modules/synch/"
+                config = new M2mgoProjectAgentConfiguration
+                {
+                    RemoteProjectConfigurationUrl = "https://pst.m2mgo.com/api/sget/project/board/",
+                    EdmSnychronizationUrl = "https://pst.m2mgo.com/api/sget/embedded-modules/synch/"
 
                 };
                 configHandler.Backup(config);

@@ -37,8 +37,8 @@ namespace UIC.SGeT.Launcher
                 CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                 
                 ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
-                uic = new SgetUniversalIotConnector(uicConfiguartion, embeddedDriverModules, communicationAgent, projectAgent, serializer, loggerFactory);
-                uic.Initialize();
+                uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
+                uic.Initialize(embeddedDriverModules.ToArray());
 
                 _logger.Information("Enter to Dispose ....");
                 Console.ReadLine();

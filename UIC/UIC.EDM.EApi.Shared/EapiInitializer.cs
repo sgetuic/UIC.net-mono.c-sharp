@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UIC.EDM.EApi.Shared
 {
@@ -13,6 +9,7 @@ namespace UIC.EDM.EApi.Shared
 
         private static bool _initDone = false;
         private static bool _isDisposed = false;
+        private static bool _initFailed = false;
 
         [DllImport("Eapi_1.dll")]
         public static extern UInt32 EApiLibInitialize();
@@ -28,12 +25,24 @@ namespace UIC.EDM.EApi.Shared
 
         public void Init()
         {
+            if (_initFailed) {
+                throw new Exception("Eapi Init failed");
+            }
+
             if (_initDone) return;
             _initDone = true;
-            var result = EApiLibInitialize();
-            if (!_eApiStatusCodes.IsSuccess(result))
+            
+            try
             {
-                throw new Exception("Eapi Init failed: " + _eApiStatusCodes.GetStatusStringFrom(result));
+                var result = EApiLibInitialize();
+                if (!_eApiStatusCodes.IsSuccess(result))
+                {
+                    throw new Exception("Eapi Init failed: " + _eApiStatusCodes.GetStatusStringFrom(result));
+                }
+            }
+            catch (Exception) {
+                _initFailed = true;
+                throw;
             }
         }
 
