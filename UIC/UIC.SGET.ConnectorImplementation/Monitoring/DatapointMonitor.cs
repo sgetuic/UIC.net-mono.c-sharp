@@ -19,10 +19,11 @@ namespace UIC.SGET.ConnectorImplementation.Monitoring {
         {
             if (dataPointTask == null) throw new ArgumentNullException("dataPointTask");
             if (logger == null) throw new ArgumentNullException("logger");
-            
+            if (connector == null) throw new ArgumentNullException("connector");
+
             _dataPointTask = dataPointTask;
             _evaluatorProvider = evaluatorProvider;
-            _connector = connector ?? throw new ArgumentNullException(nameof(connector));
+            _connector = connector;
             _logger = logger;
             (new Thread(Target)).Start();
         }

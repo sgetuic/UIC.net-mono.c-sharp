@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using UIC.EDM.EApi.Shared;
 using UIC.Util.Extensions;
 using UIC.Util.Logging;
 

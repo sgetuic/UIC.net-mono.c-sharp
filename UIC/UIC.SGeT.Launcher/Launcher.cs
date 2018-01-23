@@ -36,7 +36,7 @@ namespace UIC.SGeT.Launcher
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
                 CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                 
-                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory, embeddedDriverModules);
+                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                 uic = new SgetUniversalIotConnector(uicConfiguartion, embeddedDriverModules, communicationAgent, projectAgent, serializer, loggerFactory);
                 uic.Initialize();
 
@@ -76,7 +76,7 @@ namespace UIC.SGeT.Launcher
 
         private static UicConfiguartion GetConfiguration(ISerializer serializer)
         {
-            var configHandler = new ConfigurationJsonFileHandler(@".\cloudmapper.json", serializer, _logger);
+            var configHandler = new ConfigurationJsonFileHandler(@".\uic_config.json", serializer, _logger);
             UicConfiguartion config;
             if (configHandler.IsConfigFileExisting())
             {

@@ -30,15 +30,20 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
             try {
                 return func();
             }
-            catch (WebException e) {
-                if (_token.GetSecondsSinceTokenCreation() < 5) throw;
-                
-                if (e.Response != null && e.Response is HttpWebResponse) {
-                    if (((HttpWebResponse) e.Response).StatusCode == HttpStatusCode.NotFound) return string.Empty;
-                }
-
+            catch (WebException) {
                 _token = UpdateAccessToken(config);
-                return func();
+                try
+                {
+                    return func();
+                }
+                catch (WebException e)
+                {
+                    if (e.Response != null && e.Response is HttpWebResponse)
+                    {
+                        if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) return string.Empty;
+                    }
+                    throw;
+                }
             }
         }
 

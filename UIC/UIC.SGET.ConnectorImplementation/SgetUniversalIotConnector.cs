@@ -60,10 +60,22 @@ namespace UIC.SGET.ConnectorImplementation
                 edm.Initialize();
                 EdmCapability edmCapability = edm.GetCapability();
                 BuildEdmMap(edm, edmCapability);
-                if (_uicConfiguartion.IsEdmSnychronizationEnabled) {
+               
+            }
+
+            _projectAgent.Initialize(_embeddedDriverModules.ToArray());
+
+            if (_uicConfiguartion.IsEdmSnychronizationEnabled)
+            {
+                foreach (EmbeddedDriverModule edm in _embeddedDriverModules)
+                {
+                    EdmCapability edmCapability = edm.GetCapability();
                     _projectAgent.Synchronize(edm.GetCapability());
                 }
+                
             }
+
+
 
             UicProject project = LoadUicProject();
 
@@ -168,7 +180,8 @@ namespace UIC.SGET.ConnectorImplementation
 
         public EmbeddedDriverModule GetEdmFor(Guid definitionId)
         {
-            if (_definitionEdmMap.TryGetValue(definitionId, out var edm)) {
+            EmbeddedDriverModule edm;
+            if (_definitionEdmMap.TryGetValue(definitionId, out edm)) {
                 return edm;
             }
             return null;

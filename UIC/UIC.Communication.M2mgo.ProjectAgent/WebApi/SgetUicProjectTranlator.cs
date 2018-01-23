@@ -23,7 +23,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         private readonly Dictionary<string, AttributeDefinition> _guidUicAttributeMap  = new Dictionary<string, AttributeDefinition>();
         private readonly Dictionary<string, DatapointDefinition> _guidUicDatapointMap  = new Dictionary<string, DatapointDefinition>();
         
-        public SgetUicProjectTranlator(List<EmbeddedDriverModule> modules, ILogger logger) {
+        public SgetUicProjectTranlator(EmbeddedDriverModule[] modules, ILogger logger) {
             _logger = logger;
             foreach (var embeddedDriverModule in modules) {
                 var edmCapability = embeddedDriverModule.GetCapability();
@@ -33,7 +33,8 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         public UicProject Translate(SgetProject sgetProject) {
             var attributes = new List<AttributeDefinition>();
             foreach (var property in sgetProject.Properties) {
-                if (_guidUicAttributeMap.TryGetValue(property.Info.Key, out AttributeDefinition definition)) {
+                AttributeDefinition definition;
+                if (_guidUicAttributeMap.TryGetValue(property.Info.Key, out definition)) {
                     attributes.Add(definition);
                 }
                 else {
@@ -44,7 +45,8 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
 
             var datapointTasks = new List<ProjectDatapointTask>();
             foreach (var task in sgetProject.DataPointTasks) {
-                if (!_guidUicDatapointMap.TryGetValue(task.Info.Key, out DatapointDefinition datapointDefinition)) {
+                DatapointDefinition datapointDefinition;
+                if (!_guidUicDatapointMap.TryGetValue(task.Info.Key, out datapointDefinition)) {
                     _logger.Warning("Cannot translate sget project property " + task.Info.Name);
                     continue;
                 }
@@ -85,10 +87,23 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         }
 
         private List<SGetCloudMapperCommandDefinition> Translate(CommandDefinition[] edmCapabilityDatapointDefinitions, EmbeddedHwInterfaceIdentifier interfaceIdentifier, List<SGetCloudMapperDataPointDefinition> sensors) {
-            return edmCapabilityDatapointDefinitions.Select(a => {
-                SGetCloudMapperDataPointDefinition sensor = sensors.SingleOrDefault(s => s.Key == a.RelatedDatapoint.Uri);
-                return new SGetCloudMapperCommandDefinition(a.Uri, a.Command, interfaceIdentifier, a.Tags, sensor);
-            }).ToList();
+            var result = new List<SGetCloudMapperCommandDefinition>();
+            foreach (var item in edmCapabilityDatapointDefinitions)
+            {
+                SGetCloudMapperDataPointDefinition sensor = null;
+                if (item.RelatedDatapoint != null) {
+                    sensor = sensors.SingleOrDefault(s => s.Key == item.RelatedDatapoint.Uri);
+                }
+                if(sensor != null)
+                {
+                    result.Add(new SGetCloudMapperCommandDefinition(item.Uri, item.Command, interfaceIdentifier, item.Tags, sensor));
+                }
+            }
+            return result;
+            //return edmCapabilityDatapointDefinitions.Select(a => {
+            //    SGetCloudMapperDataPointDefinition sensor = sensors.SingleOrDefault(s => s.Key == a.RelatedDatapoint.Uri);
+            //    return new SGetCloudMapperCommandDefinition(a.Uri, a.Command, interfaceIdentifier, a.Tags, sensor);
+            //}).ToList();
         }
 
         private List<SGetCloudMapperDataPointDefinition> Translate(DatapointDefinition[] edmCapabilityDatapointDefinitions, EmbeddedHwInterfaceIdentifier interfaceIdentifier) {

@@ -14,8 +14,8 @@ namespace UIC.EDM.EApi.I2c.Adafruit.VCNL4010
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly EdmCapability _edmCapability;
-        private readonly DatapointDefinition _sgetProximityDefinition;
-        private readonly DatapointDefinition _sgetAmbientDefinition;
+        private DatapointDefinition _sgetProximityDefinition;
+        private DatapointDefinition _sgetAmbientDefinition;
 
         private EapiI2cEdm _eapiI2CEdm;
         private Vcnl4010Driver _vcnl4010Driver;
@@ -28,14 +28,13 @@ namespace UIC.EDM.EApi.I2c.Adafruit.VCNL4010
             _edmCapability = CreateEdmCapability();
 
 
-            _sgetProximityDefinition = new SgetDatapointDefinition(new Guid("38910527-F62E-4EB3-8874-89A9AA2C07A8"), GetType().FullName + ".datapoint.proximity", UicDataType.Integer, "Proximity", string.Empty);
-            _sgetAmbientDefinition = new SgetDatapointDefinition(new Guid("0D11024B-2133-4CAA-9E37-A6F22BCF12C0"), GetType().FullName + ".datapoint.ambient", UicDataType.Integer, "Ambient", string.Empty);
+            _edmCapability = CreateEdmCapability();
         }
 
         private EdmCapability CreateEdmCapability() {
 
-
-
+            _sgetProximityDefinition = new SgetDatapointDefinition(new Guid("38910527-F62E-4EB3-8874-89A9AA2C07A8"), GetType().FullName + ".datapoint.proximity", UicDataType.Integer, "Proximity", string.Empty);
+            _sgetAmbientDefinition = new SgetDatapointDefinition(new Guid("0D11024B-2133-4CAA-9E37-A6F22BCF12C0"), GetType().FullName + ".datapoint.ambient", UicDataType.Integer, "Ambient", string.Empty);
             List<DatapointDefinition> datapointDefinitions = new List<DatapointDefinition>();
             datapointDefinitions.Add(_sgetProximityDefinition);
             datapointDefinitions.Add(_sgetAmbientDefinition);

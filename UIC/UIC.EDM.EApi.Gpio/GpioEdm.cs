@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UIC.EDM.EApi.Gpio.Eapi;
+using UIC.EDM.EApi.Shared;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
@@ -40,7 +41,7 @@ namespace UIC.EDM.EApi.Gpio
             _eapiInitializer.Init();
             var gpioCapabilities = _gpioDriver.GetGpioCapabilities();
             _edmCapability = CreateEdmCapability();
-            Test(gpioCapabilities);
+            //Test(gpioCapabilities);
         }
 
         private EdmCapability CreateEdmCapability() {
@@ -106,7 +107,8 @@ namespace UIC.EDM.EApi.Gpio
         }
 
         public bool Handle(Command command) {
-            if (_onCommandMap.TryGetValue(command.CommandDefinition.Uri, out var pin)) {
+            EapiGpioId pin;
+            if (_onCommandMap.TryGetValue(command.CommandDefinition.Uri, out pin)) {
                 _gpioDriver.SetLevel(pin, GpioLevelEnum.EapiGpioHigh);
                 var gpioLevel = _gpioDriver.GetLevel();
                 _action(new SgetDatapointValue(gpioLevel.GetLevelOf(pin), command.CommandDefinition.RelatedDatapoint));

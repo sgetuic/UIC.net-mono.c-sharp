@@ -26,7 +26,8 @@ namespace UIC.EDM.Test.Mockup
             _mockupValueProvider = new MockupValueProvider();
             Identifier = new MockupEdmIdentifier(GetType().FullName);
             AttributeDefinition[] attribtueDefinitions = ConstructAttributes();
-            DatapointDefinition[] datapointDefinitions = ConstructDatapoints(out var boolDatapointMockup);
+            DatapointDefinition boolDatapointMockup;
+            DatapointDefinition[] datapointDefinitions = ConstructDatapoints(out boolDatapointMockup);
             CommandDefinition[] commandDefinitios = ConstructCommandsForBoolDatapoint(boolDatapointMockup);
             _edmCapability = new MockupEdmEdmCapability(Identifier, commandDefinitios, attribtueDefinitions, datapointDefinitions);
         }

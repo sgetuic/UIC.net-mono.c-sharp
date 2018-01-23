@@ -37,7 +37,8 @@ namespace UIC.Framweork.DefaultImplementation
                 case UicDataType.Double:
                     return double.Parse(value, CultureInfo.InvariantCulture);
                 case UicDataType.Bool:
-                    if (bool.TryParse(value, out bool result)) {
+                    bool result;
+                    if (bool.TryParse(value, out result)) {
                         return result;
                     }
                     else if(value=="1") {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UIC.EDM.EApi.I2c.EApi;
 using UIC.EDM.EApi.I2c.EApi.i2c;
+using UIC.EDM.EApi.Shared;
 using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;

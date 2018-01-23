@@ -7,7 +7,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Configuration
     internal static class ConfigurationProvider
     {
         public static M2MgoCloudAgentConfiguration GetConfiguration(ISerializer serializer, ILogger _logger) {
-            var configHandler = new ConfigurationJsonFileHandler(@".\CloudAgentConfiguration.json", serializer, _logger);
+            var configHandler = new ConfigurationJsonFileHandler(@".\m2mgo_communication_agnet.json", serializer, _logger);
             if (configHandler.IsConfigFileExisting()) {
                 return configHandler.Load<M2MgoCloudAgentConfiguration>();
             }

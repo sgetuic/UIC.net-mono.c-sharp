@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using UIC.EDM.EApi.Shared;
 using UIC.Util.Logging;
 
 namespace UIC.EDM.EApi.I2c.EApi.i2c {
