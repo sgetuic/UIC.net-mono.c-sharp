@@ -134,7 +134,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         }
 
         private List<SGetCloudMapperAttributeDefinition> Translate(AttributeDefinition[] edmCapabilityAttribtueDefinitions, EmbeddedHwInterfaceIdentifier interfaceidentifier) {
-            return edmCapabilityAttribtueDefinitions.Select(a => new SGetCloudMapperAttributeDefinition(a.Uri, a.Description, interfaceidentifier)).ToList();
+            return edmCapabilityAttribtueDefinitions.Select(a => new SGetCloudMapperAttributeDefinition(a.Uri, a.Label, a.Description, interfaceidentifier)).ToList();
         }
 
         private void BuildEdmMap(EdmCapability edmCapability) {
