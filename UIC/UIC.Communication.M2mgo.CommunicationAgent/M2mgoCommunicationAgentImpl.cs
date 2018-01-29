@@ -55,6 +55,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             if (_m2MgoProjectBlueprintTranslator == null) throw new ApplicationException("Initialize was not called before connection to PST");
             var param = new M2mgoMqttParams(_configuration.BrokerBaseUrl);
             _mqttWarapper.Connect(param, _m2MgoProjectBlueprintTranslator, command => new Thread(() => commandHandler(command)).Start());
+            Debug(GetType() + " started");
         }
 
         public void Dispose() {
@@ -81,6 +82,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             _projectDataTopic = new DataTopic(_applianceBlueprints.ProjectBlueprint.Identifier.ID, serialId);
             _projectAttributeTopic = new AttributeTopic(_applianceBlueprints.ProjectBlueprint.Identifier.ID, serialId);
             _gatewayDataTopic = new DataTopic(_applianceBlueprints.GatewayBlueprint.Identifier.ID, serialId);
+            
         }
 
         public void Push(DatapointValue value) {
