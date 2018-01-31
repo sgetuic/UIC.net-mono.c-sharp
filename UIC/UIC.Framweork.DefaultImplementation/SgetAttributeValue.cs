@@ -11,5 +11,10 @@ namespace UIC.Framweork.DefaultImplementation
         }
         public AttributeDefinition Definition { get; }
         public object Value { get; }
+
+        public override string ToString()
+        {
+            return Value + " - " + Definition;
+        }
     }
 }

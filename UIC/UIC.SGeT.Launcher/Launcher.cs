@@ -38,6 +38,7 @@ namespace UIC.SGeT.Launcher
                 
                 ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
+
                 uic.Initialize(embeddedDriverModules.ToArray());
 
                 _logger.Information("Enter to Dispose ....");
@@ -80,7 +81,7 @@ namespace UIC.SGeT.Launcher
             UicConfiguartion config;
             if (configHandler.IsConfigFileExisting())
             {
-                config = configHandler.Load<UicConfiguartion>();
+                config = configHandler.Load<SGeTUicConfiguartion>();
             }
             else
             {

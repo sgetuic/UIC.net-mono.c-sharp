@@ -41,7 +41,7 @@ namespace UIC.EDM.EApi.Gpio
             _eapiInitializer.Init();
             var gpioCapabilities = _gpioDriver.GetGpioCapabilities();
             _edmCapability = CreateEdmCapability();
-            //Test(gpioCapabilities);
+            Test(gpioCapabilities);
         }
 
         private EdmCapability CreateEdmCapability() {
