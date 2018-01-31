@@ -120,7 +120,7 @@ namespace UIC.EDM.EApi.BoardInformation
                         UicDataType.Integer, "VBat Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_5V:
                     return new SgetDatapointDefinition(new Guid("306D9B8C-47B9-471E-BFCE-46D91379495A"), UicUriBuilder.DatapointFrom(_edm, item.ToString()), 
-                        UicDataType.Integer, "5V Voltage", string.Empty);
+                        UicDataType.Integer, "5mV Voltage", string.Empty);
                 case BoardInformationValueId.EAPI_ID_HWMON_VOLTAGE_5VSB:
                     return new SgetDatapointDefinition(new Guid("9BDDE406-2A79-49FC-A00E-0125855BD7E9"), UicUriBuilder.DatapointFrom(_edm, item.ToString()), 
                         UicDataType.Integer, "5VSB Voltage", string.Empty);
