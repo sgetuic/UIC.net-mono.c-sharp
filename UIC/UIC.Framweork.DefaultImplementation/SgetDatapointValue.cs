@@ -12,15 +12,26 @@ namespace UIC.Framweork.DefaultImplementation
         public DatapointDefinition Definition { get; }
         public object Value { get; }
 
-        public SgetDatapointValue(object value, DatapointDefinition definition) {
-            Definition = definition;
-            Value = VerifiyValue(value);
-        }
-
+        
         public SgetDatapointValue(string value, DatapointDefinition definition) {
             Value = value;
             Definition = definition;
             Value = VerifiyValue(value);
+        }
+
+        public SgetDatapointValue(int value, DatapointDefinition definition)
+        {
+            Definition = definition;
+            if(definition.DataType == UicDataType.Integer)Value = value;
+            else if (definition.DataType == UicDataType.Double) Value = (double)value;
+            else throw new Exception(definition + " is not of datatype int or double: " + definition.DataType.ToString());
+        }
+
+        public SgetDatapointValue(bool value, DatapointDefinition definition)
+        {
+            if (definition.DataType != UicDataType.Bool) throw new Exception(definition + " is not of datatype bool: " + definition.DataType.ToString());
+            Definition = definition;
+            Value = value;
         }
 
         private object VerifiyValue(string value)
@@ -50,27 +61,6 @@ namespace UIC.Framweork.DefaultImplementation
                     return value;
                 case UicDataType.String:
                     return value;
-                default:
-                    throw new ArgumentOutOfRangeException(Definition.DataType.ToString());
-            }
-        }
-
-        private object VerifiyValue(object value)
-        {
-            switch (Definition.DataType)
-            {
-                case UicDataType.Unknown:
-                    return value;
-                case UicDataType.Integer:
-                    return (int)value;
-                case UicDataType.Double:
-                    return (double)value;
-                case UicDataType.Bool:
-                    return (bool)value;
-                case UicDataType.Gps:
-                    return value;
-                case UicDataType.String:
-                    return value.ToString();
                 default:
                     throw new ArgumentOutOfRangeException(Definition.DataType.ToString());
             }

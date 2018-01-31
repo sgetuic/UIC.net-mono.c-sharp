@@ -66,7 +66,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
         }
 
         private DatapointTaskMetadata GetSgetCloudViewMetadata(SgetCloudViewMetadata data) {
-            return new SgetDatapointTaskMetadata(data.Min ?? 0, data.Max ?? 100, data.WarningThreshold ?? 80, data.ErrorThreshold ?? 90, data.IsInverseThresholdEvaluation, data.Tags.FirstOrDefault());
+            return new SgetDatapointTaskMetadata(data.Max ?? 0, data.Min ?? 100, data.WarningThreshold ?? 80, data.ErrorThreshold ?? 90, data.IsInverseThresholdEvaluation, data.Tags.FirstOrDefault());
         }
 
         public SgetEmbeddedDriverModuleAppliance Translate(EdmCapability edmCapability) {

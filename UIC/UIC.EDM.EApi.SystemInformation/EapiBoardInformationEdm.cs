@@ -41,16 +41,14 @@ namespace UIC.EDM.EApi.BoardInformation
 
         public DatapointValue GetValueFor(DatapointDefinition datapoint) {
 
-            object value;
             BoardInformationValueId valueId;
             if (_eapiBoardInformationEdmCapabilityProvider.TryGet(datapoint.Id, out valueId)) {
                 uint boardInformationValue = _boardInformationDriver.GetBoardInformationOf(valueId);
-                value = (int)boardInformationValue;
+                return new SgetDatapointValue((int)boardInformationValue, datapoint);
             }
             else {
                 throw new ArgumentException("Unknown datapoitn defintion id: " + datapoint.Id);
             }
-            return new SgetDatapointValue(value, datapoint);
         }
 
         public AttributeValue GetValueFor(AttributeDefinition attribute) {
