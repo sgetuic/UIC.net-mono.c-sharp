@@ -13,13 +13,11 @@ namespace UIC.Framweork.DefaultImplementation
         public object Value { get; }
 
         public SgetDatapointValue(object value, DatapointDefinition definition) {
-
             Definition = definition;
             Value = VerifiyValue(value);
         }
 
         public SgetDatapointValue(string value, DatapointDefinition definition) {
-
             Value = value;
             Definition = definition;
             Value = VerifiyValue(value);
@@ -59,7 +57,6 @@ namespace UIC.Framweork.DefaultImplementation
 
         private object VerifiyValue(object value)
         {
-
             switch (Definition.DataType)
             {
                 case UicDataType.Unknown:
@@ -78,6 +75,10 @@ namespace UIC.Framweork.DefaultImplementation
                     throw new ArgumentOutOfRangeException(Definition.DataType.ToString());
             }
         }
-        
+
+        public override string ToString()
+        {
+            return Value + " - " + Definition;
+        }
     }
 }

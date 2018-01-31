@@ -45,7 +45,7 @@ namespace UIC.EDM.EApi.BoardInformation
             BoardInformationValueId valueId;
             if (_eapiBoardInformationEdmCapabilityProvider.TryGet(datapoint.Id, out valueId)) {
                 uint boardInformationValue = _boardInformationDriver.GetBoardInformationOf(valueId);
-                value = boardInformationValue;
+                value = (int)boardInformationValue;
             }
             else {
                 throw new ArgumentException("Unknown datapoitn defintion id: " + datapoint.Id);

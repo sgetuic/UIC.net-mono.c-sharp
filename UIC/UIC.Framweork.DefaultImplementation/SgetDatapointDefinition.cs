@@ -18,5 +18,11 @@ namespace UIC.Framweork.DefaultImplementation
         public string Description { get; }
         public UicDataType DataType { get; }
         public string Uri { get;  }
+
+        public override string ToString()
+        {
+            return Uri;
+        }
     }
+
 }
