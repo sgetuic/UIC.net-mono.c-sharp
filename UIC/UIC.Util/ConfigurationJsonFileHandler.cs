@@ -10,9 +10,15 @@ namespace UIC.Util {
         private readonly ILogger _logger;
         private readonly FileInfo _backupPath;
 
-        public ConfigurationJsonFileHandler(string filePath, ISerializer serializer, ILogger logger)
-        {
-            _filePath = filePath;
+        public ConfigurationJsonFileHandler(string filePath, ISerializer serializer, ILogger logger) {
+            var pathSeparator = Path.DirectorySeparatorChar;
+            logger.Information("DirectorySeparatorChar: " + pathSeparator);
+            if (pathSeparator == '/') {
+                _filePath = filePath.Replace("\\", "/");
+            } else {
+                _filePath = filePath.Replace("/", "\\");
+            }
+            logger.Information("_filePath: " + _filePath);
             string[] strings = _filePath.Split('.');
             if(strings.Length < 2)throw new Exception("config file must have an extension: " + _filePath);
             strings[strings.Length - 2] = strings[strings.Length - 2] + "_bak";

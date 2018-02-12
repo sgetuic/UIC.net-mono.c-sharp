@@ -30,23 +30,27 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi.infrastructure
             logger.Information(request.RequestUri.ToString());
 
             using (HttpWebResponse resp = (HttpWebResponse) request.GetResponse()) {
-                string rawData = String.Empty;
-                if (resp.ContentLength > 0) {
-                    using (var s = new StreamReader(resp.GetResponseStream())) {
-                        rawData = s.ReadToEnd();
-                    }
-                }
-
-                if (resp.StatusCode == HttpStatusCode.NotFound) {
-                    return String.Empty;
-                }
-
-                if (resp.StatusCode != HttpStatusCode.OK) {
-                    throw new Exception(resp.StatusCode + ": " + rawData);
-                }
-
-                return rawData;
+                return ReadDataFrom(resp);
             }
+        }
+
+        internal static string ReadDataFrom(HttpWebResponse resp) {
+            string rawData = String.Empty;
+            if (resp.ContentLength > 0) {
+                using (var s = new StreamReader(resp.GetResponseStream())) {
+                    rawData = s.ReadToEnd();
+                }
+            }
+
+            if (resp.StatusCode == HttpStatusCode.NotFound) {
+                return String.Empty;
+            }
+
+            if (resp.StatusCode != HttpStatusCode.OK) {
+                throw new Exception(resp.StatusCode + ": " + rawData);
+            }
+
+            return rawData;
         }
     }
 }

@@ -38,9 +38,10 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.WebApi
                 }
                 catch (WebException e)
                 {
-                    if (e.Response != null && e.Response is HttpWebResponse)
-                    {
-                        if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) return string.Empty;
+                    var resp = e.Response as HttpWebResponse;
+                    if (resp != null) {
+                        if (resp.StatusCode == HttpStatusCode.NotFound) return string.Empty;
+                        throw new Exception(WebApiRequestExecutor.ReadDataFrom(resp), e);
                     }
                     throw;
                 }
