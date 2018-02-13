@@ -30,7 +30,7 @@ namespace UIC.Util {
         
         public T Load<T>()
         {
-            _logger.Information("Load Config from {0}", _backupPath.FullName);
+            _logger.Information("Load Config from {0}", _filePath);
             if (IsConfigFileExisting())
             {
                 string json = File.ReadAllText(_filePath);
@@ -42,7 +42,7 @@ namespace UIC.Util {
         public bool IsConfigFileExisting()
         {
             bool exists = File.Exists(_filePath);
-            _logger.Information("{0} exists: {1}", _backupPath.FullName, exists);
+            _logger.Information("{0} exists: {1}", _filePath, exists);
             return exists;
         }
 
