@@ -62,7 +62,7 @@ namespace UIC.Communication.M2mgo.ProjectAgent.WebApi
     
 
         private SgetDatapointTaskReportingCondition GetSgetCloudReportingCondition(SgetCloudReportingCondition condition) {
-            return new SgetDatapointTaskReportingCondition(condition.ReportingThresholdInMilliSecs, condition.ReportingThresholdInPercent, condition.ReportingThresholdInMilliSecs);
+            return new SgetDatapointTaskReportingCondition(condition.ReportingThresholdInPercent, condition.MinimalAbsoluteDifference, condition.ReportingThresholdInMilliSecs);
         }
 
         private DatapointTaskMetadata GetSgetCloudViewMetadata(SgetCloudViewMetadata data) {
