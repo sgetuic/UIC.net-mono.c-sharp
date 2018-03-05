@@ -31,15 +31,13 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Translation.DeviceManagemen
         internal BlueprintDto UpdateProjectDomain(BlueprintDto exisingBlueprint)
         {
             ProjectDatapointTask[] allDataPointTasks = _project.DatapointTasks.ToArray();
-            var newSensorList = new List<Sensor>();
-            foreach (Sensor item in exisingBlueprint.Sensors)
+            foreach (ProjectDatapointTask datapoint in _project.DatapointTasks)
             {
-                if (allDataPointTasks.Any(d => GetKeyFrom(d.Definition) == item.SensorKey))
+                if (exisingBlueprint.Sensors.All(d => GetKeyFrom(datapoint.Definition) != d.SensorKey))
                 {
-                    newSensorList.Add(item);
+                    exisingBlueprint.Sensors.Add(GetSensorsOf(datapoint));
                 }
             }
-            exisingBlueprint.Sensors = newSensorList;
             foreach (var datapoint in allDataPointTasks)
             {
                 UdpateSensorAndCorrespondingCommands(exisingBlueprint, datapoint);
