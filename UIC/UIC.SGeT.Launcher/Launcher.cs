@@ -16,6 +16,7 @@ using UIC.SGET.ConnectorImplementation;
 using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
+using HAW.AWS.CommunicationAgent;
 
 namespace UIC.SGeT.Launcher
 {
@@ -34,7 +35,7 @@ namespace UIC.SGeT.Launcher
 
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
-                CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                CommunicationAgent communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
                 
                 ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);

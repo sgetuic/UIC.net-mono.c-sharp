@@ -98,6 +98,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HAW.AWS.CommunicationAgent\HAW.AWS.CommunicationAgent.csproj">
+      <Project>{48cbfdd1-c16c-426d-aecc-46989c0c744f}</Project>
+      <Name>HAW.AWS.CommunicationAgent</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
       <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>
       <Name>UIC.Communication.M2mgo.CommunicationAgent</Name>

@@ -19,48 +19,58 @@ using UIC.Util.Serialization;
 
 
 
+
 namespace HAW.AWS.CommunicationAgent 
 {
-    class HAWCommunicationAgent : UIC.Framework.Interfaces.Communication.Application.CommunicationAgent
+    public class HAWCommunicationAgent : UIC.Framework.Interfaces.Communication.Application.CommunicationAgent
     {
+        private ISerializer serializer;
+        private ILoggerFactory loggerFactory;
+
+        public HAWCommunicationAgent(ISerializer serializer, ILoggerFactory loggerFactory)
+        {
+            this.serializer = serializer;
+            this.loggerFactory = loggerFactory;
+        }
+
         public void Connect(Action<Command> commandHandler)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Connect");
         }
 
         public void Debug(string debug)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Debug");
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Dispose");
         }
 
         public void Initialize(string serialId, UicProject project, List<EmbeddedDriverModule> edms)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Initialize");
         }
 
         public void Push(DatapointValue value)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Push DatapointValue");
         }
 
         public void Push(IEnumerable<DatapointValue> values)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Enum<Push DatapointValue>");
         }
 
         public void Push(AttributeValue value)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Push AttributeValue>");
         }
 
         public void Push(IEnumerable<AttributeValue> values)
         {
-            throw new NotImplementedException();
+            RESTClient.RESTClient.PushAsync("Enum<Push AttributeValue>");
         }
     }
 }

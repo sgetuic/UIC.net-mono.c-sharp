@@ -6,24 +6,33 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
+
 
 namespace HAW.AWS.CommunicationAgent.RESTClient
 {
     static class RESTClient
     {
-        static HttpClient client = new HttpClient();
+        private static String buffer = "";
 
-       async public static void Push(String msg)
+     
+public static async Task PushAsync(String msg)
         {
-            // Update port # in the following line.
-            client.BaseAddress = new Uri("http://localhost:8080/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+            try
+            {
+                HttpClient client = new HttpClient();
+                // Update port # in the following line.
+                client.BaseAddress = new Uri("http://localhost:8080/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = await client.PutAsJsonAsync($"rest/iot/, "+msg);
-            response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await client.GetAsync($"rest/iot/" + msg);
+                response.EnsureSuccessStatusCode();
+            }
+            catch
+            {
+                buffer = buffer + msg;
+            }
 
         }
     }
