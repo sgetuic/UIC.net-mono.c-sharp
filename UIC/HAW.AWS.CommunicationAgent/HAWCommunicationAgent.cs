@@ -16,61 +16,67 @@ using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
-
-
-
+using HAW.AWS.CommunicationAgent.Wrapper;
+using System.ServiceModel.Web;
+using HAW.AWS.CommunicationAgent.RESTClient;
 
 namespace HAW.AWS.CommunicationAgent 
 {
     public class HAWCommunicationAgent : UIC.Framework.Interfaces.Communication.Application.CommunicationAgent
     {
         private ISerializer serializer;
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory _loggerFactory;
+        private ILogger _logger;
 
         public HAWCommunicationAgent(ISerializer serializer, ILoggerFactory loggerFactory)
         {
             this.serializer = serializer;
-            this.loggerFactory = loggerFactory;
+            this._loggerFactory = loggerFactory;
+            _logger = loggerFactory.GetLoggerFor(GetType());
+            _logger.Information("HAW Communication Agent built.");
+
+            Thread RestServiceThread = new Thread(RestServer.startRESTService);
+            RestServiceThread.Start();
         }
 
         public void Connect(Action<Command> commandHandler)
         {
-            RESTClient.RESTClient.PushAsync("Connect");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON("Connect"), _logger);
         }
 
         public void Debug(string debug)
         {
-            RESTClient.RESTClient.PushAsync("Debug");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(debug), _logger);
         }
 
         public void Dispose()
         {
-            RESTClient.RESTClient.PushAsync("Dispose");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON("Dispose"), _logger);
         }
 
         public void Initialize(string serialId, UicProject project, List<EmbeddedDriverModule> edms)
         {
-            RESTClient.RESTClient.PushAsync("Initialize");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(edms), _logger);
         }
 
         public void Push(DatapointValue value)
         {
-            RESTClient.RESTClient.PushAsync("Push DatapointValue");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
         }
 
         public void Push(IEnumerable<DatapointValue> values)
         {
-            RESTClient.RESTClient.PushAsync("Enum<Push DatapointValue>");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
         }
 
         public void Push(AttributeValue value)
         {
-            RESTClient.RESTClient.PushAsync("Push AttributeValue>");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
         }
 
         public void Push(IEnumerable<AttributeValue> values)
         {
-            RESTClient.RESTClient.PushAsync("Enum<Push AttributeValue>");
+            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
         }
     }
 }
