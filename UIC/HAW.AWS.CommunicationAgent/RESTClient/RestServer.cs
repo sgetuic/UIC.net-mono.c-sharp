@@ -13,7 +13,7 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
         {
             UICRestService DemoServices = new UICRestIMPL();
             WebServiceHost _serviceHost = new WebServiceHost(DemoServices,
-            new Uri("http://localhost:8000/"));
+            new Uri("http://localhost:8081/"));
 
             _serviceHost.Open();
             Console.ReadKey();

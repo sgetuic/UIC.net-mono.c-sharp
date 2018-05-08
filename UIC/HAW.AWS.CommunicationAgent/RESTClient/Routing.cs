@@ -8,6 +8,6 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
 {
     class Routing
     {
-        public const string GetClientRoute = "/";
+        public const string GetClientRoute = "/backchannel/";
     }
 }
