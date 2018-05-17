@@ -41,42 +41,42 @@ namespace HAW.AWS.CommunicationAgent
 
         public void Connect(Action<Command> commandHandler)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON("Connect"), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON("Connect"), _logger);
         }
 
         public void Debug(string debug)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(debug), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON(debug), _logger);
         }
 
         public void Dispose()
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON("Dispose"), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON("Dispose"), _logger);
         }
 
         public void Initialize(string serialId, UicProject project, List<EmbeddedDriverModule> edms)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(edms), _logger);
+            RESTClient.RESTClient.Initialize(serialId, DataAndAttributeValueWrapper.GetJSON("Initialise"), _logger);
         }
 
         public void Push(DatapointValue value)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
         }
 
         public void Push(IEnumerable<DatapointValue> values)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
         }
 
         public void Push(AttributeValue value)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON(value), _logger);
         }
 
         public void Push(IEnumerable<AttributeValue> values)
         {
-            RESTClient.RESTClient.PushAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
+            RESTClient.RESTClient.PostAsync(DataAndAttributeValueWrapper.GetJSON(values), _logger);
         }
     }
 }
