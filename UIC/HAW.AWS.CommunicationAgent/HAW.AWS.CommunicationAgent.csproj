@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{05525BA9-B626-4314-84BF-4475FEB8DAF3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>UIC.SGeT.Launcher</RootNamespace>
-    <AssemblyName>UIC.SGeT.Launcher</AssemblyName>
+    <ProjectGuid>{48CBFDD1-C16C-426D-AECC-46989C0C744F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>HAW.AWS.CommunicationAgent</RootNamespace>
+    <AssemblyName>HAW.AWS.CommunicationAgent</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,49 +32,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,66 +50,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Launcher.cs" />
+    <Compile Include="RESTClient\RESTClient.cs" />
+    <Compile Include="HAWCommunicationAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PstUicConfiguartion.cs" />
-    <Compile Include="SGeTUicConfiguartion.cs" />
+    <Compile Include="RESTClient\RestServer.cs" />
+    <Compile Include="RESTClient\Routing.cs" />
+    <Compile Include="RESTClient\UICRESTDataContract.cs" />
+    <Compile Include="RESTClient\UICRestIMPL.cs" />
+    <Compile Include="RESTClient\UICRestService.cs" />
+    <Compile Include="RestDemoServices.cs" />
+    <Compile Include="Wrapper\DataAndAttributeValueWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HAW.AWS.CommunicationAgent\HAW.AWS.CommunicationAgent.csproj">
-      <Project>{48cbfdd1-c16c-426d-aecc-46989c0c744f}</Project>
-      <Name>HAW.AWS.CommunicationAgent</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
       <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>
       <Name>UIC.Communication.M2mgo.CommunicationAgent</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.ProjectAgent\UIC.Communication.M2mgo.ProjectAgent.csproj">
-      <Project>{7FBE24B8-1C8D-406A-A3FC-A7366C9AD572}</Project>
+      <Project>{7fbe24b8-1c8d-406a-a3fc-a7366c9ad572}</Project>
       <Name>UIC.Communication.M2mgo.ProjectAgent</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.EDM.EApi.Gpio\UIC.EDM.EApi.Gpio.csproj">
-      <Project>{A2C48529-0606-4CD5-A82B-956608CDC95B}</Project>
+      <Project>{a2c48529-0606-4cd5-a82b-956608cdc95b}</Project>
       <Name>UIC.EDM.EApi.Gpio</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.EDM.EApi.I2c.Adafruit.VCNL4010\UIC.EDM.EApi.I2c.Adafruit.VCNL4010.csproj">
-      <Project>{CF3CEDCF-9D98-40FA-BB33-B092FD51421B}</Project>
+      <Project>{cf3cedcf-9d98-40fa-bb33-b092fd51421b}</Project>
       <Name>UIC.EDM.EApi.I2c.Adafruit.VCNL4010</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.I2c\UIC.EDM.EApi.I2c.csproj">
+      <Project>{8911bf0d-bd52-4ce5-ad8d-810edb43e7d3}</Project>
+      <Name>UIC.EDM.EApi.I2c</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.Shared\UIC.EDM.EApi.Shared.csproj">
+      <Project>{319e76ce-fec5-400b-aebf-d1c61ffd9655}</Project>
+      <Name>UIC.EDM.EApi.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.EDM.EApi.SystemInformation\UIC.EDM.EApi.BoardInformation.csproj">
-      <Project>{BF95EB75-BE3C-4DE9-9CB4-1C85C6FA773E}</Project>
+      <Project>{bf95eb75-be3c-4de9-9cb4-1c85c6fa773e}</Project>
       <Name>UIC.EDM.EApi.BoardInformation</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.EDM.System.Reboot\UIC.EDM.System.Reboot.csproj">
-      <Project>{739E81BD-8ABE-49D8-BC4D-49B232F5193D}</Project>
+      <Project>{739e81bd-8abe-49d8-bc4d-49b232f5193d}</Project>
       <Name>UIC.EDM.System.Reboot</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.EDM.Test.Mockup\UIC.EDM.Test.Mockup.csproj">
-      <Project>{CF8190BF-9DC3-4BD7-BBC3-E4838124058B}</Project>
+      <Project>{cf8190bf-9dc3-4bd7-bbc3-e4838124058b}</Project>
       <Name>UIC.EDM.Test.Mockup</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">
-      <Project>{053AB6AA-B79F-4863-9154-A1F51A1678BD}</Project>
+      <Project>{053ab6aa-b79f-4863-9154-a1f51a1678bd}</Project>
       <Name>UIC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIC.Framweork.DefaultImplementation\UIC.Framweork.DefaultImplementation.csproj">
+      <Project>{f541717b-4af7-44ca-b35b-94be445243ae}</Project>
+      <Name>UIC.Framweork.DefaultImplementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.SGET.ConnectorImplementation\UIC.SGET.ConnectorImplementation.csproj">
-      <Project>{C70B4235-F1FE-475E-A219-1BE0C30414F5}</Project>
+      <Project>{c70b4235-f1fe-475e-a219-1be0c30414f5}</Project>
       <Name>UIC.SGET.ConnectorImplementation</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIC.Util\UIC.Util.csproj">
-      <Project>{6A6813E5-3AE7-4E4F-8EFA-39907510759D}</Project>
+      <Project>{6a6813e5-3ae7-4e4f-8efa-39907510759d}</Project>
       <Name>UIC.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
