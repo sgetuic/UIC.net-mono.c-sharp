@@ -16,9 +16,11 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
     {
         public string pushEDMActionData(UICRESTDataContract JSONdata)
         {
-         
-
-            return JSONdata.OrderID;
+            HAWCommunicationAgent.getInstance().handleCommand(JSONdata);
+            return JSONdata.payload +"topic: " + JSONdata.topic;
         }
+
+
+                
     }
 }

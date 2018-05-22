@@ -55,10 +55,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RESTClient\RestServer.cs" />
     <Compile Include="RESTClient\Routing.cs" />
+    <Compile Include="RESTClient\CommandContract.cs" />
     <Compile Include="RESTClient\UICRESTDataContract.cs" />
     <Compile Include="RESTClient\UICRestIMPL.cs" />
     <Compile Include="RESTClient\UICRestService.cs" />
     <Compile Include="RestDemoServices.cs" />
+    <Compile Include="Wrapper\EDMWrapper.cs" />
     <Compile Include="Wrapper\DataAndAttributeValueWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

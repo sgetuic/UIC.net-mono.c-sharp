@@ -9,9 +9,10 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
     
        
             [DataMember]
-            public string OrderID { get; set; }
+            public string topic { get; set; }
+            [DataMember]
+            public string payload { get; set; }
 
-        
-        }
+    }
     }
 
