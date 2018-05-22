@@ -18,9 +18,6 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
         {
             HAWCommunicationAgent.getInstance().handleCommand(JSONdata);
             return JSONdata.payload +"topic: " + JSONdata.topic;
-        }
-
-
-                
+        }          
     }
 }

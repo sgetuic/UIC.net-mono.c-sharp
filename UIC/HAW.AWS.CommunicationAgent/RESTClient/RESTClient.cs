@@ -41,7 +41,6 @@ public static async Task PushAsync(String msg, ILogger logger)
             }
 
         }
-    
 
 
 
@@ -84,5 +83,30 @@ public static  void  Initialize(String serialID,String msg, ILogger logger)
             logger.Error("Initialize failed finally");
         }
     }
-}  
+  
 
+        public static async Task PostAsync(String msg, ILogger logger)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                // Update port # in the following line.
+                client.BaseAddress = new Uri("http://localhost:8080/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                var content = new StringContent(msg, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("rest/iot/push", content);
+                msgID++;
+                //response.EnsureSuccessStatusCode();
+                logger.Information("[DEBUG] pushing to:" + "rest/iot/legacy" + msg);
+                buffer = "";
+            }
+            catch
+            {
+                logger.Error("REST Connection failed");
+                buffer = buffer + msg;
+            }
+
+        }
+}

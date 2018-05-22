@@ -14,5 +14,5 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
             public string payload { get; set; }
 
     }
-    }
+ }
 
