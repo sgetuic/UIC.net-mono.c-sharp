@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -41,6 +42,49 @@ public static async Task PushAsync(String msg, ILogger logger)
 
         }
 
+
+
+
+
+public static  void  Initialize(String serialID,String msg, ILogger logger)
+
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                try
+                {
+                    String url = "http://localhost:8080/";
+                    String path = "/rest/iot/init";
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(url);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        var content = new FormUrlEncodedContent(new[]
+                            {
+                        new KeyValuePair<string, string>("serialid", serialID),
+                        new KeyValuePair<string, string>("edms", msg)
+
+                    });
+                        var response = client.PostAsync(path, content).Result;
+                        string resultContent = response.Content.ReadAsStringAsync().Result;
+                        Console.WriteLine(resultContent);
+                        response.EnsureSuccessStatusCode();
+                        logger.Information("[DEBUG] Initialize on:" + client.BaseAddress + path + " with content: " + msg);
+                        return;
+                    }
+                }
+                catch
+                {
+                    logger.Error("Initialize failed on try number: " + i);
+                    Thread.Sleep(3000);
+                }
+
+            }
+            logger.Error("Initialize failed finally");
+        }
+    }
+  
+
         public static async Task PostAsync(String msg, ILogger logger)
         {
             try
@@ -65,37 +109,4 @@ public static async Task PushAsync(String msg, ILogger logger)
             }
 
         }
-
-
-        public static void Initialize(String serialID, String msg, ILogger logger)
-        {
-            try
-            {
-                String url = "http://localhost:8080/";
-                String path = "/rest/iot/init";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(url);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    var content = new FormUrlEncodedContent(new[]
-                        {
-                        new KeyValuePair<string, string>("uic_id", serialID)
-                    });
-                    var response = client.PostAsync(path, content).Result;
-                    string resultContent = response.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(resultContent);
-                    response.EnsureSuccessStatusCode();
-                    logger.Information("[DEBUG] Initialize on:" + client.BaseAddress + path + " with content: " + msg);
-                }
-            }
-            catch
-            {
-                logger.Error("Initialize failed");
-            }
-        }
-    }
 }
-    
-
-
