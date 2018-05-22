@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using UIC.Util.Logging;
@@ -14,10 +12,11 @@ namespace HAW.AWS.CommunicationAgent.RESTClient
     static class RESTClient
     {
         private static String buffer = "";
-        private static int msgID = 0;
 
-     
-public static async Task PushAsync(String msg, ILogger logger)
+
+
+        //deprecated asigned for deletion
+        public static async Task PushAsync(String msg, ILogger logger)
         {
             try
             {
@@ -27,17 +26,13 @@ public static async Task PushAsync(String msg, ILogger logger)
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-
                 HttpResponseMessage response = await client.GetAsync($"rest/iot/legacy/" + msg);
-                msgID++;
                 response.EnsureSuccessStatusCode();
                 logger.Information("[DEBUG] pushing to:" + "rest/iot/legacy" + msg);
-                buffer = "";
             }
             catch
             {
                 logger.Error("REST Connection failed");
-                buffer = buffer + msg;
             }
 
         }
@@ -46,8 +41,7 @@ public static async Task PushAsync(String msg, ILogger logger)
 
 
 
-public static  void  Initialize(String serialID,String msg, ILogger logger)
-
+        public static void Initialize(String serialID, String msg, ILogger logger)
         {
             for (int i = 0; i < 100; i++)
             {
@@ -82,8 +76,8 @@ public static  void  Initialize(String serialID,String msg, ILogger logger)
             }
             logger.Error("Initialize failed finally");
         }
-    }
-  
+
+
 
         public static async Task PostAsync(String msg, ILogger logger)
         {
@@ -97,16 +91,15 @@ public static  void  Initialize(String serialID,String msg, ILogger logger)
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(msg, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("rest/iot/push", content);
-                msgID++;
                 //response.EnsureSuccessStatusCode();
-                logger.Information("[DEBUG] pushing to:" + "rest/iot/legacy" + msg);
-                buffer = "";
+                logger.Information("[DEBUG] pushing to:" + "rest/iot/push");
             }
             catch
             {
                 logger.Error("REST Connection failed");
-                buffer = buffer + msg;
             }
 
         }
+    }
+
 }
