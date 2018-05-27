@@ -25,6 +25,7 @@ using HAW.AWS.CommunicationAgent.Backchannel;
 using System.Web.Script.Serialization;
 using UIC.Framweork.DefaultImplementation;
 using UIC.Framework.Interfaces.Edm.Definition;
+using HAW.AWS.CommunicationAgent.PropertiesFileReaders;
 
 namespace HAW.AWS.CommunicationAgent 
 {
@@ -35,8 +36,9 @@ namespace HAW.AWS.CommunicationAgent
         private ILogger _logger;
         private Action<Command> _commandHandler;
         private List<EmbeddedDriverModule> _edms;
+        private PropertiesFileReader _propertyreader;
 
-
+        public static string CONFIG_PATH ="config.properties";
         private static HAWCommunicationAgent _instance;
         private readonly Dictionary<Guid, CommandDefinition> _guidUicCommandMap = new Dictionary<Guid, CommandDefinition>();
         private readonly Dictionary<Guid, List<CommandDefinition>> _guidUicSensorCommandMap = new Dictionary<Guid, List<CommandDefinition>>();
@@ -48,6 +50,7 @@ namespace HAW.AWS.CommunicationAgent
             _logger = loggerFactory.GetLoggerFor(GetType());
             _logger.Information("HAW Communication Agent built.");
 
+            _propertyreader = new PropertiesFileReader(CONFIG_PATH);
             Thread RestServiceThread = new Thread(RestServer.startRESTService);
             RestServiceThread.Start();
             _instance = this;

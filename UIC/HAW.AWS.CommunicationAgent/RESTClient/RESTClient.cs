@@ -6,23 +6,27 @@ using System.Threading;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using UIC.Util.Logging;
+using HAW.AWS.CommunicationAgent.PropertiesFileReaders;
 
 namespace HAW.AWS.CommunicationAgent.RESTClient
 {
     static class RESTClient
     {
         private static String buffer = "";
-
-
-
+        private static PropertiesFileReader reader = new PropertiesFileReader(HAWCommunicationAgent.CONFIG_PATH);
+        public static String PORT_UAS = "port_uas";
+            
         //deprecated asigned for deletion
         public static async Task PushAsync(String msg, ILogger logger)
         {
+
+
+
             try
             {
                 HttpClient client = new HttpClient();
                 // Update port # in the following line.
-                client.BaseAddress = new Uri("http://localhost:8080/");
+                client.BaseAddress = new Uri("http://localhost:" + reader.getValue(PORT_UAS)  +"/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
