@@ -37,7 +37,11 @@ namespace UIC.SGeT.Launcher
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
                 CommunicationAgent communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
                 _logger.Information("Used HAW Communication Agent");
+
+
                 ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+
+
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
                 uic.Initialize(embeddedDriverModules.ToArray());
