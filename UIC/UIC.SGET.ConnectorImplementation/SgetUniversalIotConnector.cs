@@ -10,6 +10,7 @@ using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
+using UIC.Framweork.DefaultImplementation;
 using UIC.SGET.ConnectorImplementation.Monitoring;
 using UIC.Util;
 using UIC.Util.Logging;
@@ -80,8 +81,6 @@ namespace UIC.SGET.ConnectorImplementation
                 }
                 
             }
-
-
 
             UicProject project = LoadUicProject();
 
@@ -170,7 +169,7 @@ namespace UIC.SGET.ConnectorImplementation
                 jsonFileHandler.Backup(project);
             }
             else {
-                project = jsonFileHandler.Load<UicProject>();
+                project = jsonFileHandler.Load<SgetUicProject>();
             }
 
             if (project == null) throw new ApplicationException("no project could be loaded");
