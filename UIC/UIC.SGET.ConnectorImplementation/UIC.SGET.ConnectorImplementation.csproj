@@ -102,6 +102,10 @@
       <Project>{053AB6AA-B79F-4863-9154-A1F51A1678BD}</Project>
       <Name>UIC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIC.Framweork.DefaultImplementation\UIC.Framweork.DefaultImplementation.csproj">
+      <Project>{F541717B-4AF7-44CA-B35B-94BE445243AE}</Project>
+      <Name>UIC.Framweork.DefaultImplementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.Util\UIC.Util.csproj">
       <Project>{6A6813E5-3AE7-4E4F-8EFA-39907510759D}</Project>
       <Name>UIC.Util</Name>

@@ -10,6 +10,7 @@ using UIC.Framework.Interfaces.Edm;
 using UIC.Framework.Interfaces.Edm.Definition;
 using UIC.Framework.Interfaces.Edm.Value;
 using UIC.Framework.Interfaces.Project;
+using UIC.Framweork.DefaultImplementation;
 using UIC.SGET.ConnectorImplementation.Monitoring;
 using UIC.Util;
 using UIC.Util.Logging;
@@ -80,8 +81,6 @@ namespace UIC.SGET.ConnectorImplementation
                 }
                 
             }
-
-
 
             UicProject project = LoadUicProject();
 
@@ -183,34 +182,7 @@ namespace UIC.SGET.ConnectorImplementation
                 jsonFileHandler.Backup(project);
             }
             else {
-
-                /*'using (StreamReader r = new StreamReader("file.json"))
-                {
-                    string json = r.ReadToEnd();
-                    List<Item> items = JsonConvert.DeserializeObject<List<Item>>(json);
-                }*/
-
-
-                if (jsonFileHandler.IsConfigFileExisting())
-                {
-                project = jsonFileHandler.Load<ProjectConfigImpl>();
-                Console.WriteLine("[HAW DEBUG] Name:" + project.Name);
-                Console.WriteLine("[HAW DEBUG] Project Key:" + project.ProjectKey);
-                Console.WriteLine("[HAW DEBUG] Description:" + project.Description);
-                Console.WriteLine("[HAW DEBUG] Owner:" + project.Owner);
-                Console.WriteLine("[HAW DEBUG] Attributes:" + project.Attributes);
-                Console.WriteLine("[HAW DEBUG] DataPointsTaks:" + project.DatapointTasks);
-                    Console.WriteLine("local config was loaded successfully");
-
-                }
-                else
-                {
-                    Console.WriteLine("[ERROR CRITICAL] Configfile is missing: " + serializedProjectFilepath);
-                    project = null;
-                }
-                   
-
-
+                project = jsonFileHandler.Load<SgetUicProject>();
             }
 
             if (project == null) throw new ApplicationException("no project could be loaded");
