@@ -21,7 +21,17 @@ namespace HAW.AWS.CommunicationAgent.PropertiesFileReaders
         {
             data = new Dictionary<string, string>();
             this.filepath = filepath;
-            writePropertiesFromFileToDictonary();
+            try{
+                writePropertiesFromFileToDictonary();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("ERROR: Configfile config.properties was not found or could not be read. Using DEFAULT VALUES: \n port_uic=8081, port_uas=8081");
+                data.Add("port_uic", "8081");
+                data.Add("port_uas", "8080");
+            }
+           
+
         }
 
         private void writePropertiesFromFileToDictonary()
