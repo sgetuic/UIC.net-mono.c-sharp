@@ -24,9 +24,11 @@ namespace UIC.SGeT.Launcher
     {
         private static ILogger _logger;
 
-        static void Main() {
+        static void Main()
+        {
             UniversalIotConnector uic = null;
-            try {
+            try
+            {
                 ILoggerFactory loggerFactory = new NlogLoggerFactory();
                 _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
                 _logger.Information("Let's go");
@@ -35,8 +37,30 @@ namespace UIC.SGeT.Launcher
 
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
-                CommunicationAgent communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
-                _logger.Information("Used HAW Communication Agent");
+
+                CommunicationAgent communicationAgent;
+
+                if (uicConfiguartion.CommunicationAgent == null)
+                {
+                    communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                    _logger.Information("Used M2MGO Communication Agent as default");
+                }
+                else
+                {
+                    if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
+                    {
+                        communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
+                        _logger.Information("Used HAW Communication Agent");
+                    }
+                    else
+                    {
+                        communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                        _logger.Information("Used M2MGO Communication Agent");
+                    }
+                }
+
+
+
 
 
                 ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
@@ -49,7 +73,8 @@ namespace UIC.SGeT.Launcher
                 _logger.Information("Enter to Dispose ....");
                 Console.ReadLine();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 _logger.Error(e);
             }
             finally
@@ -57,20 +82,24 @@ namespace UIC.SGeT.Launcher
                 if (uic != null)
                 {
                     _logger.Information("Dipose uic ");
-                    try {
+                    try
+                    {
                         uic.Dispose();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         _logger.Error(e);
-                    }    
+                    }
                 }
-                
+
             }
 
             _logger.Information("Enter to end ....");
             Console.ReadLine();
         }
 
-        private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory) {
+        private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory)
+        {
             return new List<EmbeddedDriverModule> {
                 new RebootEdm(loggerFactory),
                 new MockupEdm(loggerFactory),
@@ -96,6 +125,6 @@ namespace UIC.SGeT.Launcher
             return config;
         }
 
-        
+
     }
 }
