@@ -77,10 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatapointDefinitionImpl.cs" />
-    <Compile Include="DatapointTaskReportingConditionImpl.cs" />
-    <Compile Include="DatapointTaskMetadataImpl.cs" />
-    <Compile Include="ProjectDatapointTaskImpl.cs" />
     <Compile Include="Monitoring\DataPointEvaluatorProvider.cs" />
     <Compile Include="Monitoring\DatapointMonitor.cs" />
     <Compile Include="Monitoring\Evaluation\DataPointEvaluator.cs" />
@@ -91,11 +87,9 @@
     <Compile Include="Monitoring\Evaluation\DataPointEvaluatorParam.cs" />
     <Compile Include="Monitoring\Evaluation\DataPointEvaluatorStringImpl.cs" />
     <Compile Include="Monitoring\Evaluation\IDataPointEvaluator.cs" />
-    <Compile Include="AttributeDefinitionIml.cs" />
     <Compile Include="Newtonsoft\Json.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SgetUniversalIotConnector.cs" />
-    <Compile Include="ProjectConfigImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">
