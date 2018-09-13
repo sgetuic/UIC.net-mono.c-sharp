@@ -11,10 +11,10 @@ namespace UIC.EDM.EApi.Shared
         private static bool _isDisposed = false;
         private static bool _initFailed = false;
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern UInt32 EApiLibInitialize();
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern UInt32 EApiLibUnInitialize();
 
         public EapiInitializer()

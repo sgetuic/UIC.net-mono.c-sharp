@@ -15,16 +15,16 @@ namespace UIC.EDM.EApi.I2c.EApi.i2c {
             _eApiStatusCodes = eApiStatusCodes;
         }
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiI2CGetBusCap(UInt32 id, ref UInt32 maxBlkLen);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiI2CWriteTransfer(UInt32 i2CBusId, UInt32 addr, UInt32 cmd, byte[] buffer, UInt32 byteCnt);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiI2CReadTransfer(UInt32 i2CBusId, UInt32 addr, UInt32 cmd, byte[] buffer, UInt32 bufLen, UInt32 bytgeCnt);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiI2CProbeDevice(UInt32 i2CBusId, UInt32 addr);
 
     

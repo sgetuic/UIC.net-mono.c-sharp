@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UIC.Communication.M2mgo.CommunicationAgent;
 using UIC.Communication.M2mgo.ProjectAgent;
+using UIC.Communication.Azure.CommunicationAgent;
 using UIC.EDM.EApi.BoardInformation;
 using UIC.EDM.EApi.Gpio;
 using UIC.EDM.EApi.I2c.Adafruit.VCNL4010;
@@ -16,6 +17,7 @@ using UIC.SGET.ConnectorImplementation;
 using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
+using UIC.Communication.Azure.ProjectAgent;
 
 namespace UIC.SGeT.Launcher
 {
@@ -32,11 +34,18 @@ namespace UIC.SGeT.Launcher
 
                 ISerializer serializer = new UicSerializer();
 
+                //PstUicProject pstProject = new PstUicProject(loggerFactory);
+                //System.Console.Write(serializer.Serialize(pstProject, true));
+
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
-                CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                 
-                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                //CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                //ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+
+                CommunicationAgent communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
+                ProjectAgent projectAgent = new AzureProjectAgent(serializer, loggerFactory);
+
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
                 uic.Initialize(embeddedDriverModules.ToArray());
@@ -67,11 +76,11 @@ namespace UIC.SGeT.Launcher
 
         private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory) {
             return new List<EmbeddedDriverModule> {
-                new RebootEdm(loggerFactory),
+//                new RebootEdm(loggerFactory),
                 new MockupEdm(loggerFactory),
                 new GpioEdm(loggerFactory),
                 new EapiBoardInformationEdm(),
-                new Vcnl4010Edm(loggerFactory),
+//                new Vcnl4010Edm(loggerFactory),
             };
         }
 

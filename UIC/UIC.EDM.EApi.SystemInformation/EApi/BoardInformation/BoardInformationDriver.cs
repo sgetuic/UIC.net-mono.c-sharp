@@ -26,10 +26,10 @@ namespace UIC.EDM.EApi.BoardInformation.EApi.BoardInformation {
             return ((celsius) - EAPI_KELVINS_OFFSET)/10;
         }
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiBoardGetValue(UInt32 id, ref UInt32 value);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiBoardGetStringA(UInt32 id, StringBuilder pBuffer, ref UInt32 pBufferLength);
 
 
