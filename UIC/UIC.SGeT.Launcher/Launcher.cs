@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UIC.Communication.M2mgo.CommunicationAgent;
 using UIC.Communication.M2mgo.ProjectAgent;
@@ -18,33 +19,50 @@ using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
 using UIC.Communication.Azure.ProjectAgent;
+using CommandLine;
+
 
 namespace UIC.SGeT.Launcher
 {
     public class Launcher
     {
         private static ILogger _logger;
+        private static ILoggerFactory loggerFactory;
 
-        static void Main() {
+        private static Options options;
+
+        private static void Start(Options opts)
+        {
+            options = opts;
             UniversalIotConnector uic = null;
-            try {
-                ILoggerFactory loggerFactory = new NlogLoggerFactory();
-                _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
-                _logger.Information("Let's go");
-
+            try
+            {
                 ISerializer serializer = new UicSerializer();
 
+                // Azure project JSON demo:
                 //PstUicProject pstProject = new PstUicProject(loggerFactory);
                 //System.Console.Write(serializer.Serialize(pstProject, true));
 
+                CommunicationAgent communicationAgent = null;
+                ProjectAgent projectAgent = null;
+
+                if ("m2mgo".Equals(options.AgentName.ToLower()))
+                {
+                    communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                    projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                }
+                else if ("azure".Equals(options.AgentName.ToLower()))
+                {
+                    communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
+                    projectAgent = new AzureProjectAgent(serializer, loggerFactory);
+                }
+                else
+                {
+                    throw new Exception("illegal agent name: " + options.AgentName);
+                }
+
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
-                
-                //CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
-                //ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
-
-                CommunicationAgent communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
-                ProjectAgent projectAgent = new AzureProjectAgent(serializer, loggerFactory);
 
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
@@ -53,7 +71,8 @@ namespace UIC.SGeT.Launcher
                 _logger.Information("Enter to Dispose ....");
                 Console.ReadLine();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 _logger.Error(e);
             }
             finally
@@ -61,27 +80,62 @@ namespace UIC.SGeT.Launcher
                 if (uic != null)
                 {
                     _logger.Information("Dipose uic ");
-                    try {
+                    try
+                    {
                         uic.Dispose();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         _logger.Error(e);
-                    }    
+                    }
                 }
-                
+
             }
+        }
+
+        static void Main(string[] args) {
+            loggerFactory = new NlogLoggerFactory();
+            _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
+            _logger.Information("Let's go");
+
+            CommandLine.Parser.Default.ParseArguments<Options>(args)
+                .WithParsed<Options>(opts => Start(opts))/*
+                .WithNotParsed<Options>((errs) => )*/;
 
             _logger.Information("Enter to end ....");
             Console.ReadLine();
         }
 
+
+
         private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory) {
-            return new List<EmbeddedDriverModule> {
-//                new RebootEdm(loggerFactory),
-                new MockupEdm(loggerFactory),
-                new GpioEdm(loggerFactory),
-                new EapiBoardInformationEdm(),
-//                new Vcnl4010Edm(loggerFactory),
-            };
+            List<EmbeddedDriverModule> edms = new List<EmbeddedDriverModule>();
+
+            if (!options.EDMNames.Any() || options.EDMNames.Contains("RebootEdm", StringComparer.InvariantCultureIgnoreCase)) {
+                edms.Add(new RebootEdm(loggerFactory));
+            }
+
+            if (!options.EDMNames.Any() || options.EDMNames.Contains("MockupEdm", StringComparer.InvariantCultureIgnoreCase)) {
+                edms.Add(new MockupEdm(loggerFactory));
+            }
+
+            if (!options.EDMNames.Any() || options.EDMNames.Contains("GpioEdm", StringComparer.InvariantCultureIgnoreCase))
+            {
+                edms.Add(new GpioEdm(loggerFactory));
+            }
+
+            if (!options.EDMNames.Any() || options.EDMNames.Contains("EapiBoardInformationEdm", StringComparer.InvariantCultureIgnoreCase))
+            {
+                edms.Add(new EapiBoardInformationEdm());
+            }
+
+            // this is not default
+            if (/*!options.EDMNames.Any() ||*/ options.EDMNames.Contains("Vcnl4010Edm", StringComparer.InvariantCultureIgnoreCase))
+            {
+                edms.Add(new Vcnl4010Edm(loggerFactory));
+            }
+
+            return edms;
         }
 
         private static UicConfiguartion GetConfiguration(ISerializer serializer)
@@ -100,6 +154,14 @@ namespace UIC.SGeT.Launcher
             return config;
         }
 
-        
+        class Options
+        {
+            [Option("agent", Required = true, HelpText = "Communication and Project Agent, possible values: 'm2mgo', 'azure'.")]
+            public string AgentName { get; set; }
+
+            [Option("edms", Required = false, HelpText = "Embedded Driver Modules (possible options: 'RebootEdm', 'MockupEdm', 'GpioEdm', 'EapiBoardInformationEdm', 'Vcnl4010Edm')")]
+            public IEnumerable<string> EDMNames { get; set; }
+        }
+
     }
 }
