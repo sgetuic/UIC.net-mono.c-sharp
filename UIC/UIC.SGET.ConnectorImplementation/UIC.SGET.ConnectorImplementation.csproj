@@ -87,6 +87,7 @@
     <Compile Include="Monitoring\Evaluation\DataPointEvaluatorParam.cs" />
     <Compile Include="Monitoring\Evaluation\DataPointEvaluatorStringImpl.cs" />
     <Compile Include="Monitoring\Evaluation\IDataPointEvaluator.cs" />
+    <Compile Include="Newtonsoft\Json.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SgetUniversalIotConnector.cs" />
   </ItemGroup>

@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{48CBFDD1-C16C-426D-AECC-46989C0C744F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>HAW.AWS.CommunicationAgent</RootNamespace>
+    <AssemblyName>HAW.AWS.CommunicationAgent</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PropertiesFileReader\PropertiesFileReader.cs" />
+    <Compile Include="RESTClient\RESTClient.cs" />
+    <Compile Include="HAWCommunicationAgent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RESTClient\RestServer.cs" />
+    <Compile Include="RESTClient\Routing.cs" />
+    <Compile Include="RESTClient\CommandContract.cs" />
+    <Compile Include="RESTClient\UICRESTDataContract.cs" />
+    <Compile Include="RESTClient\UICRestIMPL.cs" />
+    <Compile Include="RESTClient\UICRestService.cs" />
+    <Compile Include="Wrapper\EDMWrapper.cs" />
+    <Compile Include="Wrapper\DataAndAttributeValueWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
+      <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>
+      <Name>UIC.Communication.M2mgo.CommunicationAgent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.Communication.M2mgo.ProjectAgent\UIC.Communication.M2mgo.ProjectAgent.csproj">
+      <Project>{7fbe24b8-1c8d-406a-a3fc-a7366c9ad572}</Project>
+      <Name>UIC.Communication.M2mgo.ProjectAgent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.Gpio\UIC.EDM.EApi.Gpio.csproj">
+      <Project>{a2c48529-0606-4cd5-a82b-956608cdc95b}</Project>
+      <Name>UIC.EDM.EApi.Gpio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.I2c.Adafruit.VCNL4010\UIC.EDM.EApi.I2c.Adafruit.VCNL4010.csproj">
+      <Project>{cf3cedcf-9d98-40fa-bb33-b092fd51421b}</Project>
+      <Name>UIC.EDM.EApi.I2c.Adafruit.VCNL4010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.I2c\UIC.EDM.EApi.I2c.csproj">
+      <Project>{8911bf0d-bd52-4ce5-ad8d-810edb43e7d3}</Project>
+      <Name>UIC.EDM.EApi.I2c</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.Shared\UIC.EDM.EApi.Shared.csproj">
+      <Project>{319e76ce-fec5-400b-aebf-d1c61ffd9655}</Project>
+      <Name>UIC.EDM.EApi.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.EApi.SystemInformation\UIC.EDM.EApi.BoardInformation.csproj">
+      <Project>{bf95eb75-be3c-4de9-9cb4-1c85c6fa773e}</Project>
+      <Name>UIC.EDM.EApi.BoardInformation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.System.Reboot\UIC.EDM.System.Reboot.csproj">
+      <Project>{739e81bd-8abe-49d8-bc4d-49b232f5193d}</Project>
+      <Name>UIC.EDM.System.Reboot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.EDM.Test.Mockup\UIC.EDM.Test.Mockup.csproj">
+      <Project>{cf8190bf-9dc3-4bd7-bbc3-e4838124058b}</Project>
+      <Name>UIC.EDM.Test.Mockup</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj">
+      <Project>{053ab6aa-b79f-4863-9154-a1f51a1678bd}</Project>
+      <Name>UIC.Framework.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.Framweork.DefaultImplementation\UIC.Framweork.DefaultImplementation.csproj">
+      <Project>{f541717b-4af7-44ca-b35b-94be445243ae}</Project>
+      <Name>UIC.Framweork.DefaultImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.SGET.ConnectorImplementation\UIC.SGET.ConnectorImplementation.csproj">
+      <Project>{c70b4235-f1fe-475e-a219-1be0c30414f5}</Project>
+      <Name>UIC.SGET.ConnectorImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.Util\UIC.Util.csproj">
+      <Project>{6a6813e5-3ae7-4e4f-8efa-39907510759d}</Project>
+      <Name>UIC.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -48,6 +48,8 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             
         }
 
+
+
         public void Connect(Action<Command> commandHandler) {
             _logger.Information("connect");
 
@@ -63,6 +65,8 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             _mqttWarapper?.Dispose();
         }
 
+        // UIC Project ist ein Konfigurationsobjekt, hier sind alle Informationen über das lokale Setup
+        // edms: liste aller verbundenen Devices. Wie sie angesteuert werden ist im UIC beschrieben. Ist für den Weg zurück wichtig
         public void Initialize(string serialId, UicProject project, List<EmbeddedDriverModule> edms) {
             WebApiRequestExecutor webApiRequestExecutor = new WebApiRequestExecutor();
             M2mgoUserTokenWebApiWrapper userTokenWebApiWrapper = new M2mgoUserTokenWebApiWrapper(_serializer, webApiRequestExecutor, _loggerFactory.GetLoggerFor(typeof(M2mgoUserTokenWebApiWrapper)));
@@ -85,10 +89,13 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             
         }
 
+        // Datapoint Value: Sensordaten verknüpft mit einem Zeitpunkt
+        // Attibute Value: Zustandsinformationen. Zeitlich ändert sich es nicht. 
         public void Push(DatapointValue value) {
             Push(new []{value});
         }
 
+        //
         public void Push(IEnumerable<DatapointValue> values) {
             var dtos = values.Select(v => new M2MgoSensorValuePayload.SensorValueDto(_m2MgoProjectBlueprintTranslator.GetKeyFrom(v.Definition), v.Value.ToString()));
             M2MgoPublishMessage msg = new M2MgoPublishMessage(_projectDataTopic, new M2MgoSensorValuePayload(dtos, _serializer));
@@ -105,6 +112,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent
             _mqttWarapper.Pulish(msg);
         }
 
+        // Nur falls im System was passiert wird ein Debugger aufgerufen. Wird vernachlässigt.
         public void Debug(string debug) {
             if (debug == null)
                 throw new ArgumentNullException("debug");

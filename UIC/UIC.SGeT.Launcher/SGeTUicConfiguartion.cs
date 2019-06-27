@@ -23,5 +23,10 @@ namespace UIC.SGeT.Launcher
         {
             get; set;
         }
+
+        public string CommunicationAgent
+        {
+            get; set;
+        }
     }
 }

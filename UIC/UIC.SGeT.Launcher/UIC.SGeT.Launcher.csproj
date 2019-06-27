@@ -118,6 +118,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ProjectReference Include="..\UIC.Communication.Azure.CommunicationAgent\UIC.Communication.Azure.CommunicationAgent.csproj">
       <Project>{05ae8fd8-6b38-40ad-b15b-1749c1a8f4d2}</Project>
       <Name>UIC.Communication.Azure.CommunicationAgent</Name>
@@ -125,6 +126,12 @@
     <ProjectReference Include="..\UIC.Communication.Azure.ProjectAgent\UIC.Communication.Azure.ProjectAgent.csproj">
       <Project>{032a0aae-7a2f-4978-b571-2ff42834e043}</Project>
       <Name>UIC.Communication.Azure.ProjectAgent</Name>
+=======
+    <ProjectReference Include="..\HAW.AWS.CommunicationAgent\HAW.AWS.CommunicationAgent.csproj">
+      <Project>{48cbfdd1-c16c-426d-aecc-46989c0c744f}</Project>
+      <Name>HAW.AWS.CommunicationAgent</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+>>>>>>> HAW-AWS
     </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
       <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>

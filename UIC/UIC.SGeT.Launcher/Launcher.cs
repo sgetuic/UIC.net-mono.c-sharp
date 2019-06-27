@@ -18,9 +18,13 @@ using UIC.SGET.ConnectorImplementation;
 using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
+<<<<<<< HEAD
 using UIC.Communication.Azure.ProjectAgent;
 using CommandLine;
 
+=======
+using HAW.AWS.CommunicationAgent;
+>>>>>>> HAW-AWS
 
 namespace UIC.SGeT.Launcher
 {
@@ -29,7 +33,18 @@ namespace UIC.SGeT.Launcher
         private static ILogger _logger;
         private static ILoggerFactory loggerFactory;
 
+<<<<<<< HEAD
         private static Options options;
+=======
+        static void Main()
+        {
+            UniversalIotConnector uic = null;
+            try
+            {
+                ILoggerFactory loggerFactory = new NlogLoggerFactory();
+                _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
+                _logger.Information("Let's go");
+>>>>>>> HAW-AWS
 
         private static void Start(Options opts)
         {
@@ -64,6 +79,37 @@ namespace UIC.SGeT.Launcher
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
 
+<<<<<<< HEAD
+=======
+                CommunicationAgent communicationAgent;
+
+                if (uicConfiguartion.CommunicationAgent == null)
+                {
+                    communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                    _logger.Information("Used M2MGO Communication Agent as default");
+                }
+                else
+                {
+                    if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
+                    {
+                        communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
+                        _logger.Information("Used HAW Communication Agent");
+                    }
+                    else
+                    {
+                        communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                        _logger.Information("Used M2MGO Communication Agent");
+                    }
+                }
+
+
+
+
+
+                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+
+
+>>>>>>> HAW-AWS
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
                 uic.Initialize(embeddedDriverModules.ToArray());
@@ -106,6 +152,7 @@ namespace UIC.SGeT.Launcher
             Console.ReadLine();
         }
 
+<<<<<<< HEAD
 
 
         private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory) {
@@ -136,6 +183,17 @@ namespace UIC.SGeT.Launcher
             }
 
             return edms;
+=======
+        private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory)
+        {
+            return new List<EmbeddedDriverModule> {
+                new RebootEdm(loggerFactory),
+                new MockupEdm(loggerFactory),
+                new GpioEdm(loggerFactory),
+                new EapiBoardInformationEdm(),
+                new Vcnl4010Edm(loggerFactory),
+            };
+>>>>>>> HAW-AWS
         }
 
         private static UicConfiguartion GetConfiguration(ISerializer serializer)
@@ -154,6 +212,7 @@ namespace UIC.SGeT.Launcher
             return config;
         }
 
+<<<<<<< HEAD
         class Options
         {
             [Option("agent", Required = true, HelpText = "Communication and Project Agent, possible values: 'm2mgo', 'azure'.")]
@@ -162,6 +221,8 @@ namespace UIC.SGeT.Launcher
             [Option("edms", Required = false, HelpText = "Embedded Driver Modules (possible options: 'RebootEdm', 'MockupEdm', 'GpioEdm', 'EapiBoardInformationEdm', 'Vcnl4010Edm')")]
             public IEnumerable<string> EDMNames { get; set; }
         }
+=======
+>>>>>>> HAW-AWS
 
     }
 }

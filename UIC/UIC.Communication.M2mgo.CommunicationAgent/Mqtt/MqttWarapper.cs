@@ -17,6 +17,7 @@ namespace UIC.Communication.M2mgo.CommunicationAgent.Mqtt {
         private Action<Command> _handler;
         private M2MgoProjectBlueprintTranslator _m2MgoProjectBlueprintTranslator;
 
+        // hier findet das komplette MQTT Handling statt
         public MqttWarapper(MqttConnectionWatchdog connectionWatchdog, ILogger logger)
         {
             _mqttConnectionWatchdog = connectionWatchdog;
