@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-<<<<<<< HEAD
-VisualStudioVersion = 15.0.27428.2015
-=======
 VisualStudioVersion = 15.0.27428.2043
->>>>>>> HAW-AWS
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.Framework.Interfaces", "UIC.Framework.Interfaces\UIC.Framework.Interfaces.csproj", "{053AB6AA-B79F-4863-9154-A1F51A1678BD}"
 EndProject
@@ -46,15 +42,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.EDM.EApi.Gpio", "UIC.ED
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.EDM.EApi.Shared", "UIC.EDM.EApi.Shared\UIC.EDM.EApi.Shared.csproj", "{319E76CE-FEC5-400B-AEBF-D1C61FFD9655}"
 EndProject
-<<<<<<< HEAD
+
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{C153DA59-8708-48B1-BC04-F69419CBCE17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.Communication.Azure.CommunicationAgent", "UIC.Communication.Azure.CommunicationAgent\UIC.Communication.Azure.CommunicationAgent.csproj", "{05AE8FD8-6B38-40AD-B15B-1749C1A8F4D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIC.Communication.Azure.ProjectAgent", "UIC.Communication.Azure.ProjectAgent\UIC.Communication.Azure.ProjectAgent.csproj", "{032A0AAE-7A2F-4978-B571-2FF42834E043}"
-=======
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAW.AWS.CommunicationAgent", "HAW.AWS.CommunicationAgent\HAW.AWS.CommunicationAgent.csproj", "{48CBFDD1-C16C-426D-AECC-46989C0C744F}"
->>>>>>> HAW-AWS
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -234,7 +229,6 @@ Global
 		{319E76CE-FEC5-400B-AEBF-D1C61FFD9655}.Release|x64.Build.0 = Release|Any CPU
 		{319E76CE-FEC5-400B-AEBF-D1C61FFD9655}.Release|x86.ActiveCfg = Release|Any CPU
 		{319E76CE-FEC5-400B-AEBF-D1C61FFD9655}.Release|x86.Build.0 = Release|Any CPU
-<<<<<<< HEAD
 		{05AE8FD8-6B38-40AD-B15B-1749C1A8F4D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{05AE8FD8-6B38-40AD-B15B-1749C1A8F4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05AE8FD8-6B38-40AD-B15B-1749C1A8F4D2}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -259,7 +253,6 @@ Global
 		{032A0AAE-7A2F-4978-B571-2FF42834E043}.Release|x64.Build.0 = Release|Any CPU
 		{032A0AAE-7A2F-4978-B571-2FF42834E043}.Release|x86.ActiveCfg = Release|Any CPU
 		{032A0AAE-7A2F-4978-B571-2FF42834E043}.Release|x86.Build.0 = Release|Any CPU
-=======
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -272,7 +265,6 @@ Global
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Release|x64.Build.0 = Release|Any CPU
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Release|x86.ActiveCfg = Release|Any CPU
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F}.Release|x86.Build.0 = Release|Any CPU
->>>>>>> HAW-AWS
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -289,13 +281,10 @@ Global
 		{CF3CEDCF-9D98-40FA-BB33-B092FD51421B} = {7FE818AE-42D1-4006-A8CB-4CDCAAFA2721}
 		{A2C48529-0606-4CD5-A82B-956608CDC95B} = {7FE818AE-42D1-4006-A8CB-4CDCAAFA2721}
 		{319E76CE-FEC5-400B-AEBF-D1C61FFD9655} = {7FE818AE-42D1-4006-A8CB-4CDCAAFA2721}
-<<<<<<< HEAD
 		{C153DA59-8708-48B1-BC04-F69419CBCE17} = {816521BE-27AF-47BB-A4BF-4E20303741EE}
 		{05AE8FD8-6B38-40AD-B15B-1749C1A8F4D2} = {C153DA59-8708-48B1-BC04-F69419CBCE17}
 		{032A0AAE-7A2F-4978-B571-2FF42834E043} = {C153DA59-8708-48B1-BC04-F69419CBCE17}
-=======
 		{48CBFDD1-C16C-426D-AECC-46989C0C744F} = {816521BE-27AF-47BB-A4BF-4E20303741EE}
->>>>>>> HAW-AWS
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18036194-1948-4D0C-BF64-813DE104D780}
