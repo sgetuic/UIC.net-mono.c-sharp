@@ -33,9 +33,6 @@ namespace UIC.SGeT.Launcher
         private static ILogger _logger;
         private static ILoggerFactory loggerFactory;
 
-//<<<<<<< HEAD
-//        private static Options options;
-//=======
         static void Main()
         {
             UniversalIotConnector uic = null;
@@ -44,70 +41,38 @@ namespace UIC.SGeT.Launcher
                 ILoggerFactory loggerFactory = new NlogLoggerFactory();
                 _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
                 _logger.Information("Let's go");
-//>>>>>>> HAW-AWS
-/*
-        private static void Start(Options opts)
-        {
-            options = opts;
-            UniversalIotConnector uic = null;
-            try
-            {
-                ISerializer serializer = new UicSerializer();
-
-                // Azure project JSON demo:
-                //PstUicProject pstProject = new PstUicProject(loggerFactory);
-                //System.Console.Write(serializer.Serialize(pstProject, true));
-
-                CommunicationAgent communicationAgent = null;
-                ProjectAgent projectAgent = null;
-
-                if ("m2mgo".Equals(options.AgentName.ToLower()))
-                {
-                    communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
-                    projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
-                }
-                else if ("azure".Equals(options.AgentName.ToLower()))
-                {
-                    communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
-                    projectAgent = new AzureProjectAgent(serializer, loggerFactory);
-                }
-                else
-                {
-                    throw new Exception("illegal agent name: " + options.AgentName);
-                }*/
                 ISerializer serializer = new UicSerializer();
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
                 
-                CommunicationAgent communicationAgent= null;
+                CommunicationAgent communicationAgent = null;
                 ProjectAgent projectAgent = null;
-                if (uicConfiguartion.CommunicationAgent == null)
+                if (uicConfiguartion.CommunicationAgent.Equals("M2MGO"))
                 {
                     communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                     _logger.Information("Used M2MGO Communication Agent as default");
                     projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                 }
+
+
+                else if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
+                {
+
+                    communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
+                    _logger.Information("Used HAW Communication Agent");
+                    projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                }
+                else if (uicConfiguartion.CommunicationAgent.Equals("AZURE"))
+                {
+                    communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
+                    projectAgent = new AzureProjectAgent(serializer, loggerFactory);
+                    _logger.Information("Used AZURE Communication Agent");
+                }
                 else
                 {
-                    if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
-                    {
-
-                        communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
-                        _logger.Information("Used HAW Communication Agent");
-                        projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
-                    }
-
-                    if (uicConfiguartion.CommunicationAgent.Equals("AZURE"))
-                    {
-                        communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
-                        projectAgent = new AzureProjectAgent(serializer, loggerFactory);
-                        _logger.Information("Used AZURE Communication Agent");
-                    }
-                    else
-                    {
-                        _logger.Information("no agent used");
-                    }
+                    _logger.Information("no agent used");
                 }
+                
 
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
