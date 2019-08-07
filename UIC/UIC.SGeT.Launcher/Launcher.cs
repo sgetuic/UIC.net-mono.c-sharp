@@ -79,7 +79,7 @@ namespace UIC.SGeT.Launcher
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
                 
-                CommunicationAgent communicationAgent=null;
+                CommunicationAgent communicationAgent= null;
                 ProjectAgent projectAgent = null;
                 if (uicConfiguartion.CommunicationAgent == null)
                 {
@@ -97,11 +97,15 @@ namespace UIC.SGeT.Launcher
                         projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                     }
 
-                    else if (uicConfiguartion.CommunicationAgent.Equals("AZURE"))
+                    if (uicConfiguartion.CommunicationAgent.Equals("AZURE"))
                     {
                         communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
                         projectAgent = new AzureProjectAgent(serializer, loggerFactory);
                         _logger.Information("Used AZURE Communication Agent");
+                    }
+                    else
+                    {
+                        _logger.Information("no agent used");
                     }
                 }
 
