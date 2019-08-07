@@ -18,13 +18,8 @@ using UIC.SGET.ConnectorImplementation;
 using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
-//<<<<<<< HEAD
 using UIC.Communication.Azure.ProjectAgent;
-//using CommandLine;
-
-//=======
 using HAW.AWS.CommunicationAgent;
-//>>>>>>> HAW-AWS
 
 namespace UIC.SGeT.Launcher
 {
@@ -53,11 +48,8 @@ namespace UIC.SGeT.Launcher
                     _logger.Information("Used M2MGO Communication Agent as default");
                     projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
                 }
-
-
                 else if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
                 {
-
                     communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
                     _logger.Information("Used HAW Communication Agent");
                     projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
@@ -73,7 +65,6 @@ namespace UIC.SGeT.Launcher
                     _logger.Information("no agent used");
                 }
                 
-
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
                 uic.Initialize(embeddedDriverModules.ToArray());
@@ -133,7 +124,6 @@ namespace UIC.SGeT.Launcher
             }
             return config;
         }
-
 
     }
 }
