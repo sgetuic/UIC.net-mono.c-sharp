@@ -128,6 +128,19 @@ namespace UIC.SGET.ConnectorImplementation
 
         private void PushAttributeValues(UicProject project) {
             // read and publish 
+
+
+            Console.WriteLine("[HAW DEBUG] Name:" + project.Name);
+            Console.WriteLine("[HAW DEBUG] Project Key:" + project.ProjectKey);
+            Console.WriteLine("[HAW DEBUG] Description:" + project.Description);
+            Console.WriteLine("[HAW DEBUG] Owner:" + project.Owner);
+            Console.WriteLine("[HAW DEBUG] Attributes:" + project.Attributes);
+            Console.WriteLine("[HAW DEBUG] DataPointsTaks:" + project.DatapointTasks);
+
+
+
+
+
             foreach (var attribtueDefinition in project.Attributes) {
                 try
                 {
@@ -162,7 +175,7 @@ namespace UIC.SGET.ConnectorImplementation
         private UicProject LoadUicProject() {
             UicProject project;
             var serializedProjectFilepath = _uicConfiguartion.ProjectJsonFilePath;
-            var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
+           var jsonFileHandler = new ConfigurationJsonFileHandler(serializedProjectFilepath, _serializer, _logger);
             
             if (_uicConfiguartion.IsRemoteProjectLoadingEnabled) {
                 project = _projectAgent.LoadProject(_uicConfiguartion);

@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,6 +88,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -86,6 +104,7 @@
     <Compile Include="Launcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PstUicConfiguartion.cs" />
+    <Compile Include="PstUicProject.cs" />
     <Compile Include="SGeTUicConfiguartion.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,8 +115,22 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UIC.Communication.Azure.CommunicationAgent\UIC.Communication.Azure.CommunicationAgent.csproj">
+      <Project>{05ae8fd8-6b38-40ad-b15b-1749c1a8f4d2}</Project>
+      <Name>UIC.Communication.Azure.CommunicationAgent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIC.Communication.Azure.ProjectAgent\UIC.Communication.Azure.ProjectAgent.csproj">
+      <Project>{032a0aae-7a2f-4978-b571-2ff42834e043}</Project>
+      <Name>UIC.Communication.Azure.ProjectAgent</Name>
+	  </ProjectReference>
+    <ProjectReference Include="..\HAW.AWS.CommunicationAgent\HAW.AWS.CommunicationAgent.csproj">
+      <Project>{48cbfdd1-c16c-426d-aecc-46989c0c744f}</Project>
+      <Name>HAW.AWS.CommunicationAgent</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.Communication.M2mgo.CommunicationAgent\UIC.Communication.M2mgo.CommunicationAgent.csproj">
       <Project>{8eb5006f-836c-448d-8901-1a37e27c6459}</Project>
       <Name>UIC.Communication.M2mgo.CommunicationAgent</Name>
@@ -130,6 +163,10 @@
       <Project>{053AB6AA-B79F-4863-9154-A1F51A1678BD}</Project>
       <Name>UIC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIC.Framweork.DefaultImplementation\UIC.Framweork.DefaultImplementation.csproj">
+      <Project>{F541717B-4AF7-44CA-B35B-94BE445243AE}</Project>
+      <Name>UIC.Framweork.DefaultImplementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIC.SGET.ConnectorImplementation\UIC.SGET.ConnectorImplementation.csproj">
       <Project>{C70B4235-F1FE-475E-A219-1BE0C30414F5}</Project>
       <Name>UIC.SGET.ConnectorImplementation</Name>
@@ -138,6 +175,18 @@
       <Project>{6A6813E5-3AE7-4E4F-8EFA-39907510759D}</Project>
       <Name>UIC.Util</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

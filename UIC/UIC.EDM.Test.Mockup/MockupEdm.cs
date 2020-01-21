@@ -18,6 +18,7 @@ namespace UIC.EDM.Test.Mockup
         private Action<DatapointValue> _callback;
         private static readonly Guid CommandOnId = new Guid("{4129a33b-3f65-4169-92c8-95c1942a32f8}");
         private static readonly Guid CommandOffId = new Guid("{7f72d80d-43f8-49ae-a808-5f6026960c49}");
+        private static readonly Guid CommandPrintId = new Guid("{7f72d80d-43f8-49ae-a808-536026960c49}");
 
         public EdmIdentifier Identifier { get; }
 
@@ -36,6 +37,7 @@ namespace UIC.EDM.Test.Mockup
             var commands = new List<CommandDefinition>();
             commands.Add(new SgetCommandDefinition(CommandOnId, UicUriBuilder.CommandFrom(this, "SWITCH_ON"), "Switch On", "1", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"On"}));
             commands.Add(new SgetCommandDefinition(CommandOffId, UicUriBuilder.CommandFrom(this, "SWITCH_OFF"), "Switch Off", "0", UicDataType.Bool, string.Empty, boDatapointDefinition, new []{"Off"}));
+            commands.Add(new SgetCommandDefinition(CommandPrintId, UicUriBuilder.CommandFrom(this, "PRINT"), "PRINT", "0", UicDataType.Bool, string.Empty, boDatapointDefinition, new[] { "PRINT" }));
             return commands.ToArray();
         }
 
@@ -83,6 +85,9 @@ namespace UIC.EDM.Test.Mockup
         }
 
         public bool Handle(Command command) {
+
+            
+
             if(!command.CommandDefinition.Uri.StartsWith(Identifier.Uri)) throw new ApplicationException($"Uri missmatch from command {command.CommandDefinition.Uri} and EDM {Identifier.Uri}");
 
             if (command.CommandDefinition.Id == CommandOnId) {
@@ -90,6 +95,11 @@ namespace UIC.EDM.Test.Mockup
             }
             else if (command.CommandDefinition.Id == CommandOffId) {
                 _callback(new SgetDatapointValue("0", command.CommandDefinition.RelatedDatapoint));
+            }
+            //my print capability
+            else if (command.CommandDefinition.Id == CommandPrintId)
+            {
+                Console.WriteLine("Got Command from Backchannel on class " + this.GetType() + "test-payload: " + command.Payload);
             }
             else {
                 return false;

@@ -1,0 +1,143 @@
+{
+  "ProjectKey": "26895846c960465ebd89f28d10e6460c",
+  "Name": "JU Test",
+  "Description": "Main JU Test Project",
+  "Owner": "SGeT",
+  "CustomerForeignKey": "d41b1d83-6fc1-4a90-b3a3-c3b0bc8118a2",
+  "Attributes": [
+    {
+      "Id": "6beb6a88-8061-4bdf-a900-1efd70a6686d",
+      "Label": "MANUFACTURER",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_MANUFACTURER_STR"
+    },
+    {
+      "Id": "22e6f4fe-03e7-4c6d-b6f5-5cbf0ab9f9c6",
+      "Label": "NAME",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_NAME_STR"
+    },
+    {
+      "Id": "c0adb64c-5a8a-4653-b42f-580b19a60d1c",
+      "Label": "REVISION",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_REVISION_STR"
+    },
+    {
+      "Id": "a65a6538-96d1-4525-b0f2-5059dfa38e0e",
+      "Label": "SERIAL",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_SERIAL_STR"
+    },
+    {
+      "Id": "ffd2c0a2-c3be-43b6-8fbf-3a3bd962356c",
+      "Label": "BIOS_REVISION",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_BIOS_REVISION_STR"
+    },
+    {
+      "Id": "edb7802a-5e66-4b24-8e6e-4e2876b772f1",
+      "Label": "HW_REVISION",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_HW_REVISION_STR"
+    },
+    {
+      "Id": "ec7a1668-353f-471b-a3fe-32ce072701c8",
+      "Label": "PLATFORM_TYPE",
+      "Description": "",
+      "DataType": 0,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_PLATFORM_TYPE_STR"
+    },
+    {
+        "Id": "577fedb1-9d53-421b-9821-104e04d97343",
+        "Label": "EAPI_SPEC_VERSION",
+        "Description": "",
+        "DataType": 1,
+        "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_GET_EAPI_SPEC_VERSION"
+    },
+    {
+      "Id": "61c8382d-cf27-4f53-b06c-40bc458dbe2a",
+      "Label": "BOARD_PNPID",
+      "Description": "",
+      "DataType": 1,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_PNPID_VAL"
+    },
+    {
+      "Id": "ee24f7b9-46aa-41e7-902d-a20ab316172d",
+      "Label": "PLATFORM_REV",
+      "Description": "",
+      "DataType": 1,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_PLATFORM_REV_VAL"
+    },
+    {
+      "Id": "d257cefb-ba12-4637-988f-78bb8fe79bb9",
+      "Label": "DRIVER_VERSION",
+      "Description": "",
+      "DataType": 1,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_DRIVER_VERSION_VAL"
+    },
+    {
+      "Id": "b2bac5b4-48b7-4f85-bc25-3384b2b9c415",
+      "Label": "LIB_VERSION",
+      "Description": "",
+      "DataType": 1,
+      "Uri": "UIC.EDM.EApi.BoardInformation.EapiBoardInformationEdm.attribute.EAPI_ID_BOARD_LIB_VERSION_VAL"
+    }
+  ],
+  "DatapointTasks": [
+    {
+      "PollIntervall": 10,
+      "Description": "Random Bool",
+      "Definition": {
+        "Id": "83f02bea-c22b-46aa-b1c2-4ab8102d8a80",
+        "Label": "Random Bool",
+        "Description": "Digital input mockup",
+        "DataType": 6,
+        "Uri": "UIC.EDM.Test.Mockup.MockupEdm.datapoint.Bool_mock"
+      },
+      "ReportingCondition": {
+        "ReportingThreshoIdInpercent": 50.0,
+        "MinimalAhsoluteChange": -1.0,
+        "ReportingThresholdInMilliSecs": 50000
+      },
+      "MetaData": {
+        "ExpectedMaximum": 0.0,
+        "ExpectedMinimum": 0.0,
+        "WarningThreshold": 0.0,
+        "ErrorThreshold": 0.0,
+        "IslnverseThresholdEvaluation": false,
+        "Tags": "SwitchButton"
+      }
+    },
+    {
+      "PollIntervall": 5,
+      "Description": "Random Integer",
+      "Definition": {
+        "Id": "4087d40d-d4e2-42b1-89a4-9b9d18499a04",
+        "Label": "Random Integer",
+        "Description": "Integer measurement mockup",
+        "DataType": 1,
+        "Uri": "UIC.EDM.Test.Mockup.MockupEdm.datapoint.Integer_mock"
+      },
+      "ReportingCondition": {
+        "ReportingThreshoIdInpercent": 50.0,
+        "MinimalAhsoluteChange": 0.0,
+        "ReportingThresholdInMilliSecs": 30000
+      },
+      "MetaData": {
+        "ExpectedMaximum": 0.0,
+        "ExpectedMinimum": 0.0,
+        "WarningThreshold": 0.0,
+        "ErrorThreshold": 0.0,
+        "IslnverseThresholdEvaluation": false,
+        "Tags": "SimpleValue"
+      }
+    }
+  ]
+}

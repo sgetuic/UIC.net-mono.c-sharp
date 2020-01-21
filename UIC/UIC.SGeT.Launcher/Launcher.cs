@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UIC.Communication.M2mgo.CommunicationAgent;
 using UIC.Communication.M2mgo.ProjectAgent;
+using UIC.Communication.Azure.CommunicationAgent;
 using UIC.EDM.EApi.BoardInformation;
 using UIC.EDM.EApi.Gpio;
 using UIC.EDM.EApi.I2c.Adafruit.VCNL4010;
@@ -16,27 +18,53 @@ using UIC.SGET.ConnectorImplementation;
 using UIC.Util;
 using UIC.Util.Logging;
 using UIC.Util.Serialization;
+using UIC.Communication.Azure.ProjectAgent;
+using HAW.AWS.CommunicationAgent;
 
 namespace UIC.SGeT.Launcher
 {
     public class Launcher
     {
         private static ILogger _logger;
+        private static ILoggerFactory loggerFactory;
 
-        static void Main() {
+        static void Main()
+        {
             UniversalIotConnector uic = null;
-            try {
+            try
+            {
                 ILoggerFactory loggerFactory = new NlogLoggerFactory();
                 _logger = loggerFactory.GetLoggerFor(typeof(Launcher));
                 _logger.Information("Let's go");
-
                 ISerializer serializer = new UicSerializer();
-
                 UicConfiguartion uicConfiguartion = GetConfiguration(serializer);
                 List<EmbeddedDriverModule> embeddedDriverModules = GetEdms(loggerFactory);
-                CommunicationAgent communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
                 
-                ProjectAgent projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                CommunicationAgent communicationAgent = null;
+                ProjectAgent projectAgent = null;
+                if (uicConfiguartion.CommunicationAgent.Equals("M2MGO"))
+                {
+                    communicationAgent = new M2mgoCommunicationAgentImpl(serializer, loggerFactory);
+                    _logger.Information("Used M2MGO Communication Agent as default");
+                    projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                }
+                else if (uicConfiguartion.CommunicationAgent.Equals("AWS"))
+                {
+                    communicationAgent = new HAWCommunicationAgent(serializer, loggerFactory);
+                    _logger.Information("Used HAW Communication Agent");
+                    projectAgent = new M2mgoProjectAgent(serializer, loggerFactory);
+                }
+                else if (uicConfiguartion.CommunicationAgent.Equals("AZURE"))
+                {
+                    communicationAgent = new AzureCommunicationAgentImpl(serializer, loggerFactory);
+                    projectAgent = new AzureProjectAgent(serializer, loggerFactory);
+                    _logger.Information("Used AZURE Communication Agent");
+                }
+                else
+                {
+                    _logger.Information("no agent used");
+                }
+                
                 uic = new SgetUniversalIotConnector(uicConfiguartion, communicationAgent, projectAgent, serializer, loggerFactory);
 
                 uic.Initialize(embeddedDriverModules.ToArray());
@@ -44,7 +72,8 @@ namespace UIC.SGeT.Launcher
                 _logger.Information("Enter to Dispose ....");
                 Console.ReadLine();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 _logger.Error(e);
             }
             finally
@@ -52,20 +81,25 @@ namespace UIC.SGeT.Launcher
                 if (uic != null)
                 {
                     _logger.Information("Dipose uic ");
-                    try {
+                    try
+                    {
                         uic.Dispose();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         _logger.Error(e);
-                    }    
+                    }
                 }
-                
+
             }
 
             _logger.Information("Enter to end ....");
             Console.ReadLine();
         }
 
-        private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory) {
+
+        private static List<EmbeddedDriverModule> GetEdms(ILoggerFactory loggerFactory)
+        {
             return new List<EmbeddedDriverModule> {
                 new RebootEdm(loggerFactory),
                 new MockupEdm(loggerFactory),
@@ -91,6 +125,5 @@ namespace UIC.SGeT.Launcher
             return config;
         }
 
-        
     }
 }

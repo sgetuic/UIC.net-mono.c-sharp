@@ -6,5 +6,6 @@
         bool IsEdmSnychronizationEnabled { get; }
         string ProjectJsonFilePath { get; }
         bool IsRemoteProjectLoadingEnabled { get; }
+        string CommunicationAgent { get; }
     }
 }

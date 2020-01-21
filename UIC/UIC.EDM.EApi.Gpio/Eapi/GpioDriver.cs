@@ -26,19 +26,19 @@ namespace UIC.EDM.EApi.Gpio.Eapi
             _eApiStatusCodes = eApiStatusCodes;
         }
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiGPIOGetDirectionCaps(UInt32 id, ref UInt32 inputs, ref UInt32 outputs);
-        
-        [DllImport("Eapi_1.dll")]
+
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiGPIOGetDirection(UInt32 id, UInt32 bitmask, ref UInt32 directions);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiGPIOSetDirection(UInt32 id, UInt32 bitmask, UInt32 directions);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiGPIOGetLevel(UInt32 id, UInt32 bitmask, ref UInt32 level);
 
-        [DllImport("Eapi_1.dll")]
+        [DllImport("Eapi_1.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern UInt32 EApiGPIOSetLevel(UInt32 id, UInt32 bitmask, UInt32 level);
 
         
